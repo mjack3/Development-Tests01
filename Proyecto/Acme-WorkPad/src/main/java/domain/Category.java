@@ -22,7 +22,6 @@ public class Category extends DomainEntity {
 
 
 	//Getters
-	@NotNull
 	@ManyToOne(targetEntity=Category.class)
 	public Category getCategoryFather() {
 		return categoryFather;

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -26,7 +26,7 @@ public class Folder extends DomainEntity{
 		return folderName;
 	}
 	
-	@OneToMany
+	@ManyToMany
 	@NotNull
 	public List<MailMessage> getMessages() {
 		return messages;

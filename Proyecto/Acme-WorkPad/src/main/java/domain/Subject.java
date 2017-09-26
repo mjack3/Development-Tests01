@@ -50,7 +50,7 @@ public class Subject extends DomainEntity {
 		return syllabus;
 	}
 
-	@Range(min = 0)
+	@Range(min = 1)
 	public Integer getSeats() {
 		return seats;
 	}

@@ -22,10 +22,10 @@ import org.apache.log4j.LogManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import domain.DomainEntity;
 import utilities.internal.DatabaseUtil;
 import utilities.internal.EclipseConsole;
 import utilities.internal.ThrowablePrinter;
-import domain.DomainEntity;
 
 public class PopulateDatabase {
 

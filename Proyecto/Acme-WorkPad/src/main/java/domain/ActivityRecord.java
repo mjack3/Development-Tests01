@@ -32,8 +32,8 @@ public class ActivityRecord extends DomainEntity {
 	}
 
 	@NotNull
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	public Date getWrittenDate() {
 		return writtenDate;
 	}

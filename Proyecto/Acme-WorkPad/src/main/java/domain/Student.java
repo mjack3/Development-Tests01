@@ -24,6 +24,7 @@ public class Student extends Actor {
 		return seminars;
 	}
 
+	@NotNull
 	@ManyToMany
 	public List<GroupSubject> getGroups() {
 		return groups;

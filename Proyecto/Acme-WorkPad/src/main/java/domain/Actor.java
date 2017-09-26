@@ -43,16 +43,17 @@ public class Actor extends DomainEntity {
 		return surname;
 	}
 
-	@NotBlank
 	@Email
 	public String getEmail() {
 		return email;
 	}
 
+	@NotNull
 	public String getPhone() {
 		return phone;
 	}
 
+	@NotNull
 	public String getPostalAddress() {
 		return postalAddress;
 	}

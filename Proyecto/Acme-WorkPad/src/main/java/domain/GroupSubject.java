@@ -13,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.aspectj.lang.annotation.After;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 public class GroupSubject extends DomainEntity {
 
-	private String				title;
+	private String				name;
 	private String				description;
 	private Date				startDate;
 	private Date				endDate;
@@ -31,8 +30,8 @@ public class GroupSubject extends DomainEntity {
 
 	//Getters
 	@NotBlank
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
 	@NotBlank
@@ -41,16 +40,15 @@ public class GroupSubject extends DomainEntity {
 	}
 
 	@NotNull
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	public Date getStartDate() {
 		return startDate;
 	}
 
 	@NotNull
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@After(value = "startDate")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -68,8 +66,8 @@ public class GroupSubject extends DomainEntity {
 	}
 
 	//Setters
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setDescription(String description) {

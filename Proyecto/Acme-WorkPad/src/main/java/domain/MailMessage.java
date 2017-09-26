@@ -31,7 +31,7 @@ public class MailMessage extends DomainEntity{
 	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	public Date getSent() {
 		return sent;
 	}

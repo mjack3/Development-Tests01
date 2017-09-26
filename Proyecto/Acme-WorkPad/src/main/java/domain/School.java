@@ -19,7 +19,6 @@ public class School extends DomainEntity {
 	private String			name;
 	private String			banner;
 	private List<Subject>	subjects;
-	private List<Category>	categories;
 
 
 	//Getters
@@ -28,7 +27,6 @@ public class School extends DomainEntity {
 		return name;
 	}
 
-	@NotBlank
 	@URL
 	public String getBanner() {
 		return banner;
@@ -40,11 +38,6 @@ public class School extends DomainEntity {
 		return subjects;
 	}
 
-	@NotNull
-	@OneToMany
-	public List<Category> getCategories() {
-		return categories;
-	}
 
 	//Setters
 
@@ -60,8 +53,5 @@ public class School extends DomainEntity {
 		this.subjects = subjects;
 	}
 
-	public void setCategories(List<Category> categories) {
-		this.categories = categories;
-	}
 
 }

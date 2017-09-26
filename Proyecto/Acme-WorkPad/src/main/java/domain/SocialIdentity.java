@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -29,13 +30,12 @@ public class SocialIdentity extends DomainEntity {
 		return socialName;
 	}
 
-	@NotBlank
 	@URL
 	public String getLink() {
 		return link;
 	}
 
-	@URL
+	@NotNull
 	public String getPhoto() {
 		return photo;
 	}
