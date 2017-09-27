@@ -20,14 +20,14 @@ import org.hibernate.validator.constraints.Range;
 @Access(AccessType.PROPERTY)
 public class Subject extends DomainEntity {
 
-	private String						name;
+	private String						title;
 	private String						ticker;
 	private String						syllabus;
 	private Integer						seats;
 	private List<Bulletin>				bulletins;
 	private List<Activity>				activities;
 	private List<Assignment>			assigments;
-	private List<GroupSubject>			groups;
+	private List<Group>					groups;
 	private Teacher						teacher;
 	private List<BibliographyRecord>	bibliographiesRecords;
 	private Category					category;
@@ -37,8 +37,8 @@ public class Subject extends DomainEntity {
 
 	//Getters
 	@NotBlank
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
 	@Pattern(regexp = "^\\w{2}-\\d{5}$")
@@ -52,7 +52,7 @@ public class Subject extends DomainEntity {
 		return syllabus;
 	}
 
-	@Range(min = 1)
+	@Range(min = 0)
 	public Integer getSeats() {
 		return seats;
 	}
@@ -89,7 +89,7 @@ public class Subject extends DomainEntity {
 
 	@NotNull
 	@OneToMany
-	public List<GroupSubject> getGroups() {
+	public List<Group> getGroups() {
 		return groups;
 	}
 
@@ -112,8 +112,8 @@ public class Subject extends DomainEntity {
 	}
 
 	//Setters
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setTicker(String ticker) {
@@ -140,7 +140,7 @@ public class Subject extends DomainEntity {
 		this.assigments = assigments;
 	}
 
-	public void setGroups(List<GroupSubject> groups) {
+	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
 

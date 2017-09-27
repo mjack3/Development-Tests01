@@ -13,10 +13,17 @@ import javax.validation.constraints.NotNull;
 @Access(AccessType.PROPERTY)
 public class Administrator extends Actor {
 
-	private List<School> schools;
-
+	private List<School> 	schools;
+	private List<Subject>	subjects;
 
 	//Getters
+	
+	@NotNull
+	@OneToMany
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+
 	@NotNull
 	@OneToMany
 	public List<School> getSchools() {
@@ -27,6 +34,11 @@ public class Administrator extends Actor {
 
 	public void setSchools(List<School> schools) {
 		this.schools = schools;
+	}
+	
+
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
 	}
 
 }

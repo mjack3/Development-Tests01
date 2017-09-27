@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class Student extends Actor {
 
 	private List<Seminar>		seminars;
-	private List<GroupSubject>	groups;
+	private List<Group>			groups;
 	private List<Subject>		subjects;
 
 
@@ -27,7 +27,7 @@ public class Student extends Actor {
 
 	@NotNull
 	@ManyToMany
-	public List<GroupSubject> getGroups() {
+	public List<Group> getGroups() {
 		return groups;
 	}
 
@@ -42,7 +42,7 @@ public class Student extends Actor {
 		this.seminars = seminars;
 	}
 
-	public void setGroups(List<GroupSubject> groups) {
+	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
 

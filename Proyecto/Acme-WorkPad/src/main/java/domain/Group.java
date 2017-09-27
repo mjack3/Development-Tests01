@@ -7,8 +7,8 @@ import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -18,14 +18,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class GroupSubject extends DomainEntity {
+@Table(name="GroupSubject")
+public class Group extends DomainEntity {
 
 	private String				name;
 	private String				description;
 	private Date				startDate;
 	private Date				endDate;
 	private List<Submission>	submission;
-	private List<Student>		students;
 
 
 	//Getters
@@ -59,12 +59,6 @@ public class GroupSubject extends DomainEntity {
 		return submission;
 	}
 
-	@NotNull
-	@ManyToMany
-	public List<Student> getStudents() {
-		return students;
-	}
-
 	//Setters
 	public void setName(String name) {
 		this.name = name;
@@ -86,8 +80,5 @@ public class GroupSubject extends DomainEntity {
 		this.submission = submission;
 	}
 
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}
 
 }

@@ -54,7 +54,7 @@ public class Seminar extends DomainEntity {
 		return hall;
 	}
 
-	@Range(min = 1)
+	@Range(min = 0)
 	public Integer getSeats() {
 		return seats;
 	}

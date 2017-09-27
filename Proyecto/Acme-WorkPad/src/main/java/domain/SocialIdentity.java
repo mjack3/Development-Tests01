@@ -40,6 +40,8 @@ public class SocialIdentity extends DomainEntity {
 		return photo;
 	}
 
+	//Setters
+	
 	public void setNick(String nick) {
 		this.nick = nick;
 	}
