@@ -37,4 +37,17 @@ public class SubjectService {
 
 		return subjects;
 	}
+
+	/**
+	 * Actualiza la información de una asignatura
+	 * 
+	 * @param subject
+	 */
+
+	public void update(final Subject subject) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(this.repository.exists(subject.getId()));
+		this.repository.save(subject);
+	}
+
 }

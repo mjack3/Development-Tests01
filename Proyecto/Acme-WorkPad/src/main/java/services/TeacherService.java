@@ -53,7 +53,7 @@ public class TeacherService {
 	 * @return profesor logueado
 	 */
 
-	private Teacher checkPrincipal() {
+	public Teacher checkPrincipal() {
 		// TODO Auto-generated method stub
 		final UserAccount account = LoginService.getPrincipal();
 		Assert.isTrue(account.getAuthorities().iterator().next().getAuthority().equals("TEACHER"));
