@@ -24,9 +24,16 @@ public class SubjectService {
 		super();
 	}
 
-	public Collection<Subject> findSubjectWord(final String word) {
+	public Collection<Subject> findSubjectsByWordWithoutSeats(final String word) {
 		Assert.notNull(word);
-		final Collection<Subject> subjects = this.repository.findSubjectWord(word);
+		final Collection<Subject> subjects = this.repository.findSubjectsByWordWithoutSeats(word);
+
+		return subjects;
+	}
+
+	public Collection<Subject> findSubjectsByWordWithSeats(final String word) {
+		Assert.notNull(word);
+		final Collection<Subject> subjects = this.repository.findSubjectsByWordWithSeats(word);
 
 		return subjects;
 	}

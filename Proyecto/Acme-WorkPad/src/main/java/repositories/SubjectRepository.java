@@ -15,10 +15,19 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	/**
 	 * 
 	 * @param word
-	 * @return all instance that contain a word in title or description
+	 * @return all instance without seats that contains word
 	 */
 
-	@Query("select s from Subject s where s.title LIKE %?1% OR s.description LIKE %?1%")
-	Collection<Subject> findSubjectWord(String word);
+	@Query("select s from Subject s where s.name LIKE '%?1%' and s.seats <= s.students.size")
+	Collection<Subject> findSubjectsByWordWithoutSeats(String word);
+
+	/**
+	 * 
+	 * @param word
+	 * @return all instance with seats that contains word
+	 */
+
+	@Query("select s from Subject s where s.name LIKE '%?1%' and s.seats > s.students.size ")
+	Collection<Subject> findSubjectsByWordWithSeats(String word);
 
 }
