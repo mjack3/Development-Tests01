@@ -102,7 +102,7 @@ public class Subject extends DomainEntity {
 	@NotNull
 	@ManyToOne(optional = false)
 	public Administrator getAdministator() {
-		return administator;
+		return administrator;
 	}
 
 	@NotNull
@@ -157,7 +157,7 @@ public class Subject extends DomainEntity {
 	}
 
 	public void setAdministator(Administrator administator) {
-		this.administator = administator;
+		this.administrator = administator;
 	}
 
 	public void setStudents(List<Student> students) {
