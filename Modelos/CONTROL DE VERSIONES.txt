@@ -1,0 +1,4 @@
+Version 02
+================================================
+1- Relacion varios a varios entre Studen y Subject mediante el verbo Enroles
+2- Algunas correcciones menores en el verbo de algunas relaciones
