@@ -31,7 +31,7 @@ public class Subject extends DomainEntity {
 	private Teacher						teacher;
 	private List<BibliographyRecord>	bibliographiesRecords;
 	private Category					category;
-	private Administrator				administator;
+	private Administrator				administrator;
 	private List<Student>				students;
 
 
