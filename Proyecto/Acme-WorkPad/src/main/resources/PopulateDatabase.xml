@@ -182,7 +182,6 @@
 		</property>
 		<property name="subjects">
 			<list>
-				<ref bean="subject1"/>
 			</list>
 		</property>
 	</bean>
@@ -329,7 +328,6 @@
 		</property>
 		<property name="subjects">
 			<list>
-				<ref bean="subject2"/>
 			</list>
 		</property>
 	</bean>

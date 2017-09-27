@@ -22,30 +22,30 @@ public class Teacher extends Actor {
 	@NotNull
 	@OneToMany
 	public List<BibliographyRecord> getBibliographiesRecords() {
-		return bibliographiesRecords;
+		return this.bibliographiesRecords;
 	}
 
 	@NotNull
 	@OneToMany
 	public List<Seminar> getSeminars() {
-		return seminars;
+		return this.seminars;
 	}
 
 	@NotNull
-	@OneToMany
+	@OneToMany(mappedBy = "teacher")
 	public List<Subject> getSubjects() {
-		return subjects;
+		return this.subjects;
 	}
 
-	public void setBibliographiesRecords(List<BibliographyRecord> bibliographiesRecords) {
+	public void setBibliographiesRecords(final List<BibliographyRecord> bibliographiesRecords) {
 		this.bibliographiesRecords = bibliographiesRecords;
 	}
 
-	public void setSeminars(List<Seminar> seminars) {
+	public void setSeminars(final List<Seminar> seminars) {
 		this.seminars = seminars;
 	}
 
-	public void setSubjects(List<Subject> subjects) {
+	public void setSubjects(final List<Subject> subjects) {
 		this.subjects = subjects;
 	}
 
