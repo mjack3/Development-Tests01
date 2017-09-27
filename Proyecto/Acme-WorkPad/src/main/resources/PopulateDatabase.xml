@@ -253,6 +253,14 @@
 				<ref bean="group4"/>
 			</list>
 		</property>
+		
+		<property name="subjects">
+			<list>
+				<ref bean="subject2"/>
+				<ref bean="subject1"/>
+			</list>
+		</property>
+		
 	</bean>
 	
 	<bean id="folderInbox3" class="domain.Folder">
@@ -392,6 +400,13 @@
 				<ref bean="group3"/>
 			</list>
 		</property>
+		
+		<property name="subjects">
+			<list>
+				<ref bean="subject2"/>
+				
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="folderInbox5" class="domain.Folder">
@@ -524,6 +539,13 @@
 		<property name="teacher" ref="actor2" />
 		<property name="category" ref="category1" />
 		<property name="administator" ref="actor1" />
+		
+		<property name="students">
+			<list>
+				<ref bean="actor3"/>
+				<ref bean="actor5"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="subject2" class="domain.Subject">
@@ -561,6 +583,13 @@
 		<property name="teacher" ref="actor2" />
 		<property name="category" ref="category2" />
 		<property name="administator" ref="actor1" />
+			<property name="students">
+			<list>
+				<ref bean="actor3"/>
+				
+			</list>
+			</property>
+		
 	</bean>
 	
 	<bean id="category1" class="domain.Category">

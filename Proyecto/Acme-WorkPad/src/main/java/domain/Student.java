@@ -15,6 +15,7 @@ public class Student extends Actor {
 
 	private List<Seminar>		seminars;
 	private List<GroupSubject>	groups;
+	private List<Subject>		subjects;
 
 
 	//Getters
@@ -30,6 +31,12 @@ public class Student extends Actor {
 		return groups;
 	}
 
+	@NotNull
+	@ManyToMany
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+
 	//Setters
 	public void setSeminars(List<Seminar> seminars) {
 		this.seminars = seminars;
@@ -37,6 +44,10 @@ public class Student extends Actor {
 
 	public void setGroups(List<GroupSubject> groups) {
 		this.groups = groups;
+	}
+
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
 	}
 
 }

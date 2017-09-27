@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,7 @@ public class Subject extends DomainEntity {
 	private List<BibliographyRecord>	bibliographiesRecords;
 	private Category					category;
 	private Administrator				administator;
+	private List<Student>				students;
 
 
 	//Getters
@@ -103,6 +105,12 @@ public class Subject extends DomainEntity {
 		return administator;
 	}
 
+	@NotNull
+	@ManyToMany
+	public List<Student> getStudents() {
+		return students;
+	}
+
 	//Setters
 	public void setName(String name) {
 		this.name = name;
@@ -150,6 +158,10 @@ public class Subject extends DomainEntity {
 
 	public void setAdministator(Administrator administator) {
 		this.administator = administator;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 }
