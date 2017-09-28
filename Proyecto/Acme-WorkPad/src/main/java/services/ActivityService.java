@@ -1,6 +1,8 @@
 
 package services;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,37 @@ public class ActivityService {
 	}
 
 	/**
+	 * Actualiza información de una Activity
+	 * 
+	 * @param activity
+	 * @return
+	 */
+
+	public Activity update(final Activity activity) {
+		Assert.isTrue(this.repository.exists(activity.getId()));
+		this.checkIsPrincipal(activity);
+
+		final Activity saved = this.repository.save(activity);
+
+		return saved;
+	}
+
+	public void delete(final Activity activity) {
+		Assert.notNull(activity);
+		Assert.isTrue(this.repository.exists(activity.getId()));
+		this.checkIsPrincipal(activity);
+
+		final Subject subject = this.subjectService.findSubjectByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), activity.getId());
+
+		subject.getActivities().remove(activity);
+		this.subjectService.update(subject);
+		this.repository.delete(activity);
+
+	}
+
+	//	Others methods --------------------------------
+
+	/**
 	 * Comprueba que el profesor es instructor en la asignatura
 	 * 
 	 * @param subject
@@ -79,5 +112,23 @@ public class ActivityService {
 	private void checkNotContainsActivity(final Subject subject, final Activity activity) {
 		// TODO Auto-generated method stub
 		Assert.isTrue(!subject.getActivities().contains(activity));
+	}
+
+	/**
+	 * Comprueba que se tiene permisos sobre la asignatura
+	 * 
+	 * @param activity
+	 */
+
+	private void checkIsPrincipal(final Activity activity) {
+		// TODO Auto-generated method stub
+		boolean sw = false;
+
+		final Collection<Subject> subjects = this.teacherService.checkPrincipal().getSubjects();
+		for (final Subject subject : subjects)
+			if (subject.getActivities().contains(activity))
+				sw = true;
+
+		Assert.isTrue(sw);
 	}
 }

@@ -50,4 +50,21 @@ public class SubjectService {
 		this.repository.save(subject);
 	}
 
+	/**
+	 * Devuelve la asignatura asociada a un profesor y a una actividad
+	 * @param id
+	 * @param id2
+	 * @return
+	 */
+	
+	public Subject findSubjectByTeacherIdActivityId(int id, int id2) {
+		// TODO Auto-generated method stub
+		Assert.notNull(id);
+		Assert.notNull(id2);
+		
+		Subject subject = repository.findSubjectByTeacherIdActivityId(id, id2);
+		Assert.notNull(subject);
+		return subject;
+	}
+
 }

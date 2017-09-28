@@ -30,4 +30,14 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	@Query("select s from Subject s where s.name LIKE '%?1%' and s.seats > s.students.size ")
 	Collection<Subject> findSubjectsByWordWithSeats(String word);
 
+	/**
+	 * Devuelve la asignatura asociada al profesor y actividad
+	 * 
+	 * @param id
+	 * @param id2
+	 * @return
+	 */
+	@Query("select ts from Teacher t join t.subjects ts join ts.activities tsa where t.id = ?1 and tsa.id=?2")
+	Subject findSubjectByTeacherIdActivityId(int id, int id2);
+
 }
