@@ -15,6 +15,7 @@ import security.UserAccount;
 import domain.Activity;
 import domain.Assignment;
 import domain.Subject;
+import domain.Submission;
 import domain.Teacher;
 
 @Transactional
@@ -29,6 +30,9 @@ public class TeacherService {
 
 	@Autowired
 	private SubjectService		subjectService;
+
+	@Autowired
+	private SubmissionService	submissionService;
 
 
 	public TeacherService() {
@@ -113,8 +117,45 @@ public class TeacherService {
 		this.assignmentService.delete(assignment);
 	}
 
+	/**
+	 * Añade una puntuación a un submission
+	 * 
+	 * @param submission
+	 * @param value
+	 */
+
+	public void valorateSubmission(final Submission submission, final Integer value) {
+		Assert.notNull(submission);
+		this.checkIsPrincipal(submission);
+
+		submission.setGrade(value);
+		submission.setMark(value * 0.1);
+		this.submissionService.save(submission);
+	}
+
 	// Help methods
 
+	/**
+	 * Comprueba que el profesor logueado puede valorar este envío
+	 * 
+	 * @param submission
+	 */
+
+	private void checkIsPrincipal(final Submission submission) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(this.existAssignmentByTeacherIdSubmissionId(this.checkPrincipal().getId(), submission.getId()));
+	}
+
+	private boolean existAssignmentByTeacherIdSubmissionId(final int teacherId, final int submissionId) {
+		// TODO Auto-generated method stub
+		boolean sw = false;
+		final Assignment a = this.repository.getAssignmentByTeacherIdSubmissionId(teacherId, submissionId);
+
+		if (a != null)
+			sw = true;
+
+		return sw;
+	}
 	/**
 	 * Comprueba que el logueado es profesor
 	 * 

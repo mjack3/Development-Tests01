@@ -44,4 +44,13 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 	@Query("select tsa from Teacher t join t.subjects ts join ts.assigments tsa where t.id=?1 AND ts.id = ?2")
 	Collection<Assignment> getAssignmentsByTeacherIdSubjectId(int teacherId, int subjectId);
 
+	/**
+	 * Devuelve el proyecto asociado a una entrega y profesor
+	 * 
+	 * @param teacherId
+	 * @param submissionId
+	 */
+	@Query("select assigments from Teacher t join t.subjects subjects join subjects.assigments assigments join assigments.submission submission where t.id = ?1 AND submission.id = ?2")
+	Assignment getAssignmentByTeacherIdSubmissionId(int teacherId, int submissionId);
+
 }
