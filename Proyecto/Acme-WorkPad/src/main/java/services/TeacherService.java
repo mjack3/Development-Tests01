@@ -24,6 +24,12 @@ public class TeacherService {
 	@Autowired
 	private TeacherRepository	repository;
 
+	@Autowired
+	private AssignmentService	assignmentService;
+
+	@Autowired
+	private SubjectService		subjectService;
+
 
 	public TeacherService() {
 		// TODO Auto-generated constructor stub
@@ -60,7 +66,54 @@ public class TeacherService {
 		return assignments;
 	}
 
-	// Others methods ----------------------------------------
+	// Others business methods ----------------------------------------
+
+	/**
+	 * Almacena un Assignment en una asignatura impartida por el profesor
+	 * 
+	 * @param subject
+	 * @return
+	 */
+
+	public Assignment saveAssignment(final Subject subject, final Assignment assignment) {
+		Assert.notNull(subject);
+		this.checkSubjectIsPrincipal(subject);
+
+		final Assignment saved = this.assignmentService.save(assignment);
+		subject.getAssigments().add(saved);
+
+		this.subjectService.update(subject);
+
+		return saved;
+
+	}
+
+	public Assignment updateAssignment(final Subject subject, final Assignment assignment) {
+		Assert.notNull(subject);
+		Assert.notNull(assignment);
+		this.checkSubjectIsPrincipal(subject);
+
+		final Assignment saved = this.assignmentService.update(assignment);
+		return saved;
+	}
+
+	/**
+	 * Elimina un Assignment de una asignatura impartida por el profesor logueado
+	 * 
+	 * @param assignment
+	 * @param subject
+	 */
+	public void deleteAssignement(final Assignment assignment, final Subject subject) {
+		Assert.notNull(assignment);
+		this.checkSubjectIsPrincipal(subject);
+
+		subject.getAssigments().remove(assignment);
+		this.subjectService.update(subject);
+
+		this.assignmentService.delete(assignment);
+	}
+
+	// Help methods
 
 	/**
 	 * Comprueba que el logueado es profesor
