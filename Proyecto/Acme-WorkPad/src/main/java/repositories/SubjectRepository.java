@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import domain.Administrator;
 import domain.Subject;
 
 @Repository
@@ -29,6 +30,10 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 
 	@Query("select s from Subject s where s.name LIKE '%?1%' and s.seats > s.students.size ")
 	Collection<Subject> findSubjectsByWordWithSeats(String word);
+	
+	
+	@Query("select s.administrator from Subject s where s.id=?1")
+	Administrator findAdministratorRegisterSubject(Integer a);
 
 	/**
 	 * Devuelve la asignatura asociada al profesor y actividad
