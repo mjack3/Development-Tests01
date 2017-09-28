@@ -13,6 +13,7 @@ import repositories.TeacherRepository;
 import security.LoginService;
 import security.UserAccount;
 import domain.Activity;
+import domain.Assignment;
 import domain.Subject;
 import domain.Teacher;
 
@@ -43,6 +44,20 @@ public class TeacherService {
 
 		return activities;
 
+	}
+
+	/**
+	 * Devuelve los Assignments que el profesor tiene en una asignatura que imparte
+	 * 
+	 * @param subject
+	 * @return
+	 */
+
+	public Collection<Assignment> listAllAssignment(final Subject subject) {
+		this.checkSubjectIsPrincipal(subject);
+		final Collection<Assignment> assignments = this.repository.getAssignmentsByTeacherIdSubjectId(this.checkPrincipal().getId(), subject.getId());
+
+		return assignments;
 	}
 
 	// Others methods ----------------------------------------

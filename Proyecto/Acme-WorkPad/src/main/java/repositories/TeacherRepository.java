@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Activity;
+import domain.Assignment;
 import domain.Teacher;
 
 @Repository
@@ -31,5 +32,16 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
 	@Query("select ts.activities from Teacher t join t.subjects ts where t.id = ?2 and ts.id = ?1")
 	Collection<Activity> findAllActivitiesBySubject(int subjectId, int teacherId);
+
+	/**
+	 * Devuelve los asssignments asociados a una asignatura y a un profesor
+	 * 
+	 * @param teacherId
+	 * @param subjectId
+	 * @return
+	 */
+
+	@Query("select tsa from Teacher t join t.subjects ts join ts.assigments tsa where t.id=?1 AND ts.id = ?2")
+	Collection<Assignment> getAssignmentsByTeacherIdSubjectId(int teacherId, int subjectId);
 
 }
