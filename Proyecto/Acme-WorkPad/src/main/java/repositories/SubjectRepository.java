@@ -19,7 +19,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	 * @return all instance without seats that contains word
 	 */
 
-	@Query("select s from Subject s where s.title LIKE '%?1%' and s.seats <= s.students.size")
+	@Query("select s from Subject s where s.title like concat('%', ?1, '%') and s.seats <= s.students.size")
 	Collection<Subject> findSubjectsByWordWithoutSeats(String word);
 
 	/**
@@ -28,7 +28,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	 * @return all instance with seats that contains word
 	 */
 
-	@Query("select s from Subject s where s.title LIKE '%?1%' and s.seats > s.students.size ")
+	@Query("select s from Subject s where s.title like concat('%', ?1, '%') and s.seats > s.students.size")
 	Collection<Subject> findSubjectsByWordWithSeats(String word);
 
 	@Query("select s.administrator from Subject s where s.id=?1")

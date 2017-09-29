@@ -29,11 +29,22 @@
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url pattern="/" access="permitAll" /> 
 
+
+
+
+
+		<!-- SUBJECTS -->
+		<security:intercept-url pattern="/subject/list.do" access="permitAll" />
+		<security:intercept-url pattern="/subject/search.do" access="permitAll" />
+
+
+
 		<security:intercept-url pattern="/favicon.ico" access="permitAll" /> 
 		<security:intercept-url pattern="/images/**" access="permitAll" /> 
 		<security:intercept-url pattern="/scripts/**" access="permitAll" /> 
 		<security:intercept-url pattern="/styles/**" access="permitAll" /> 
-
+		 
+		
 		<security:intercept-url pattern="/views/misc/index.jsp" access="permitAll" /> 
 
 		<security:intercept-url pattern="/security/login.do" access="permitAll" /> 

@@ -22,6 +22,10 @@
 			Add your own converters using entries of the following form: 
 			<bean class="converters.Class1ToClass2" /> 
 		-->
+		
+		<bean class="converters.SubjectToStringConverter" /> 
+		<bean class="converters.StringToSubjectConverter" />
+		
 	</util:list>
 	
 </beans>

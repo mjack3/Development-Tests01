@@ -52,19 +52,25 @@ public class SubjectService {
 
 	/**
 	 * Devuelve la asignatura asociada a un profesor y a una actividad
+	 * 
 	 * @param id
 	 * @param id2
 	 * @return
 	 */
-	
-	public Subject findSubjectByTeacherIdActivityId(int id, int id2) {
+
+	public Subject findSubjectByTeacherIdActivityId(final int id, final int id2) {
 		// TODO Auto-generated method stub
 		Assert.notNull(id);
 		Assert.notNull(id2);
-		
-		Subject subject = repository.findSubjectByTeacherIdActivityId(id, id2);
+
+		final Subject subject = this.repository.findSubjectByTeacherIdActivityId(id, id2);
 		Assert.notNull(subject);
 		return subject;
+	}
+
+	public Collection<Subject> findAll() {
+		// TODO Auto-generated method stub
+		return this.repository.findAll();
 	}
 
 }
