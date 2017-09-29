@@ -33,7 +33,9 @@
 	</form>
 
  </div>
- 
+  
+  LISTAR GENÉRICO FEO PARA QUE PODAIS VER EL BUSCADOR <BR/>
+  
 <display:table name="subjects" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag"> 
 	
