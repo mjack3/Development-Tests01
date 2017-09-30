@@ -2,6 +2,7 @@
 package repositories;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,5 +44,15 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	 */
 	@Query("select ts from Teacher t join t.subjects ts join ts.activities tsa where t.id = ?1 and tsa.id=?2")
 	Subject findSubjectByTeacherIdActivityId(int id, int id2);
+
+	/**
+	 * Seleciona asignaturas por estudiante
+	 * 
+	 * @param id
+	 * @return
+	 */
+
+	@Query("select a.subjects from Student a where a.id=?1")
+	List<Subject> subjectsByStudents(int id);
 
 }

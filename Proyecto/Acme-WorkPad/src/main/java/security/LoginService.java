@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import domain.Actor;
+
 @Service
 @Transactional
 public class LoginService implements UserDetailsService {
@@ -46,6 +48,61 @@ public class LoginService implements UserDetailsService {
 		result.getAuthorities().size();
 
 		return result;
+	}
+
+	public static boolean isAnyAuthenticated() {
+		try {
+			SecurityContext context;
+			Authentication authentication;
+			Object principal;
+
+			context = SecurityContextHolder.getContext();
+			authentication = context.getAuthentication();
+			principal = authentication.getPrincipal();
+
+			return principal instanceof UserAccount;
+		} catch (final Throwable t) {
+			return false;
+		}
+	}
+
+	private static UserAccount getAuthenticated() {
+		try {
+			UserAccount result;
+			SecurityContext context;
+			Authentication authentication;
+			Object principal;
+
+			context = SecurityContextHolder.getContext();
+			authentication = context.getAuthentication();
+			principal = authentication.getPrincipal();
+			result = (UserAccount) principal;
+
+			return result;
+		} catch (final Throwable t) {
+			return null;
+		}
+	}
+
+	public static boolean hasRole(final String role) {
+		final UserAccount account = LoginService.getAuthenticated();
+
+		if (account == null)
+			return false;
+
+		for (final Authority e : account.getAuthorities())
+			if (e.getAuthority().equalsIgnoreCase(role))
+				return true;
+
+		return false;
+	}
+
+	public Actor findActorByUsername(final String username) {
+		return this.userRepository.findActorByUsername(LoginService.getPrincipal().getUsername());
+	}
+
+	public Actor findActorByUsername(final Integer id) {
+		return this.userRepository.findActorByUsernameId(id);
 	}
 
 	public static UserAccount getPrincipal() {
@@ -74,4 +131,11 @@ public class LoginService implements UserDetailsService {
 		return result;
 	}
 
+	public boolean exists(final Integer id) {
+		return this.userRepository.exists(id);
+	}
+
+	public UserAccount findOne(final Integer id) {
+		return this.userRepository.findOne(id);
+	}
 }

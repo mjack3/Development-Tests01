@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(name="GroupSubject")
-public class Group extends DomainEntity {
+public class GroupSubject extends DomainEntity {
 
 	private String				name;
 	private String				description;

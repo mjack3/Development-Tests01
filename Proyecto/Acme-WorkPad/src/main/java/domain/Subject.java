@@ -27,7 +27,7 @@ public class Subject extends DomainEntity {
 	private List<Bulletin>				bulletins;
 	private List<Activity>				activities;
 	private List<Assignment>			assigments;
-	private List<Group>					groups;
+	private List<GroupSubject>					groups;
 	private Teacher						teacher;
 	private List<BibliographyRecord>	bibliographiesRecords;
 	private Category					category;
@@ -89,7 +89,7 @@ public class Subject extends DomainEntity {
 
 	@NotNull
 	@OneToMany
-	public List<Group> getGroups() {
+	public List<GroupSubject> getGroups() {
 		return this.groups;
 	}
 
@@ -140,7 +140,7 @@ public class Subject extends DomainEntity {
 		this.assigments = assigments;
 	}
 
-	public void setGroups(final List<Group> groups) {
+	public void setGroups(final List<GroupSubject> groups) {
 		this.groups = groups;
 	}
 
