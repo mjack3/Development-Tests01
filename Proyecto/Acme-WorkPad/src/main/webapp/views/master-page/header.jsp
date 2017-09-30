@@ -27,11 +27,6 @@
 					</security:authorize>
 					
 					
-					<security:authorize access="permitAll()">
-						<li><li><a class="fNiv" href="subject/list.do"><spring:message code="master.page.subject.list" /></a></li>
-					
-					 </security:authorize> 
-					
 					
 					
 					<security:authorize access="isAuthenticated()">

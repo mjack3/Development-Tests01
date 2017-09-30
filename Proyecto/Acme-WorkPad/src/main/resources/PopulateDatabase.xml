@@ -1656,7 +1656,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group1" class="domain.Group">
+	<bean id="group1" class="domain.GroupSubject">
 		<property name="name" value="Group1" />
 		<property name="description" value="Grupo1 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />
@@ -1668,7 +1668,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group2" class="domain.Group">
+	<bean id="group2" class="domain.GroupSubject">
 		<property name="name" value="Group2" />
 		<property name="description" value="Grupo2 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />
@@ -1680,7 +1680,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group3" class="domain.Group">
+	<bean id="group3" class="domain.GroupSubject">
 		<property name="name" value="Group3" />
 		<property name="description" value="Grupo3 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />
@@ -1692,7 +1692,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group4" class="domain.Group">
+	<bean id="group4" class="domain.GroupSubject">
 		<property name="name" value="Group4" />
 		<property name="description" value="Grupo4 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />
@@ -1704,7 +1704,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group5" class="domain.Group">
+	<bean id="group5" class="domain.GroupSubject">
 		<property name="name" value="Group5" />
 		<property name="description" value="Grupo5 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />
@@ -1715,7 +1715,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group6" class="domain.Group">
+	<bean id="group6" class="domain.GroupSubject">
 		<property name="name" value="Group6" />
 		<property name="description" value="Grupo6 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />
@@ -1726,7 +1726,7 @@
 		</property>
 	</bean>
 	
-	<bean id="group7" class="domain.Group">
+	<bean id="group7" class="domain.GroupSubject">
 		<property name="name" value="Group7" />
 		<property name="description" value="Grupo7 para trabajos iniciales" />
 		<property name="startDate" value="20/09/2017 12:00:00" />

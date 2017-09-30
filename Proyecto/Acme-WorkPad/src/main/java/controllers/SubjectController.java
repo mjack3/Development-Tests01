@@ -42,17 +42,17 @@ public class SubjectController extends AbstractController {
 	public ModelAndView search(@RequestParam(defaultValue = "") final String keyword, final String sw) {
 		ModelAndView view;
 
-		Collection<Subject> subjects;
+		Collection<Subject> subject;
 
 		view = new ModelAndView("subject/list");
 
 		if (sw.equals("sin"))
-			subjects = this.subjectService.findSubjectsByWordWithoutSeats(keyword);
+			subject = this.subjectService.findSubjectsByWordWithoutSeats(keyword);
 		else
-			subjects = this.subjectService.findSubjectsByWordWithSeats(keyword);
+			subject = this.subjectService.findSubjectsByWordWithSeats(keyword);
 
-		view.addObject("subjects", subjects);
-		view.addObject("requestURI", "subjects/list.do");
+		view.addObject("a", 3);
+		view.addObject("subject", subject);
 
 		return view;
 	}

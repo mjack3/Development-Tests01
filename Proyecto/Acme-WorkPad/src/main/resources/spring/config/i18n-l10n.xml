@@ -28,7 +28,7 @@
 		<value>/views/profile/messages</value>
 		<value>/views/subject/messages</value>
 		
-		<value>/views/groupSubject/messages</value>
+		<value>/views/groupsubject/messages</value>
 	</util:list>
 
 </beans>
