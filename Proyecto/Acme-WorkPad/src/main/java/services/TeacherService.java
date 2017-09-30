@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
 import repositories.TeacherRepository;
 import security.LoginService;
 import security.UserAccount;
@@ -17,7 +16,6 @@ import domain.Assignment;
 import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
-
 @Transactional
 @Service
 public class TeacherService {
@@ -36,11 +34,42 @@ public class TeacherService {
 
 
 	public TeacherService() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	//	CRUDs methods --------------------------------
 
+	/**
+	 * Actualiza un profesor existente
+	 * @param actor Profesor a actualizar
+	 * @return profesor actualizado
+	 */
+	
+	public Teacher update(Teacher actor) {
+		
+		Assert.notNull(actor);
+		Assert.isTrue(repository.exists(actor.getId()));
+		Assert.isTrue(actor.getPhone().matches("^$|^\\\\+([1-9][0-9]{0,2}) (\\\\([1-9][0-9]{0,3}\\\\)) ([a-zA-Z0-9 -]{4,})$"));
+
+		return repository.save(actor);
+	}
+	
+	/**
+	 * Crea un nuevo profesor
+	 * @param actor Profesor a crear
+	 * @return profesor creado
+	 */
+
+	public Teacher create(Teacher actor) {
+		
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getPhone().matches("^$|^\\\\+([1-9][0-9]{0,2}) (\\\\([1-9][0-9]{0,3}\\\\)) ([a-zA-Z0-9 -]{4,})$"));
+
+		return repository.save(actor);
+	}
+	
+	// Others methods ----------------------------------------
+	
 	/**
 	 * 
 	 * @return all subjects that teacher logged is
@@ -69,9 +98,6 @@ public class TeacherService {
 
 		return assignments;
 	}
-
-	// Others business methods ----------------------------------------
-
 	/**
 	 * Almacena un Assignment en una asignatura impartida por el profesor
 	 * 
