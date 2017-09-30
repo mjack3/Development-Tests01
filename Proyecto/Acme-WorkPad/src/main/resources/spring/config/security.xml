@@ -37,7 +37,16 @@
 		<security:intercept-url pattern="/subject/list.do" access="permitAll" />
 		<security:intercept-url pattern="/subject/search.do" access="permitAll" />
 
+			<!-- subject karli -->
 
+		<security:intercept-url pattern="/subject/search.do" access="permitAll" />
+		<security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/list.do"/>
+
+		<security:intercept-url access="permitAll" pattern="/subject/student/save.do"/>
+    	<security:intercept-url access="permitAll" pattern="/subject/list.do"/>
+       	<security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/list.do"/>
+       <security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/register/list.do"/>
+			<!-- fin -->
 
 		<security:intercept-url pattern="/favicon.ico" access="permitAll" /> 
 		<security:intercept-url pattern="/images/**" access="permitAll" /> 

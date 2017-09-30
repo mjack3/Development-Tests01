@@ -1,7 +1,9 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.LoginService;
+import services.StudentService;
 import services.SubjectService;
+import domain.Student;
 import domain.Subject;
 
 @Controller
@@ -18,7 +23,13 @@ import domain.Subject;
 public class SubjectController extends AbstractController {
 
 	@Autowired
-	private SubjectService	subjectService;
+	SubjectService	subjectService;
+
+	@Autowired
+	LoginService	loginService;
+
+	@Autowired
+	StudentService	studentService;
 
 
 	public SubjectController() {
@@ -46,18 +57,75 @@ public class SubjectController extends AbstractController {
 		return view;
 	}
 
+	/*
+	 * 
+	 * 
+	 * KARLI
+	 */
+
+	//Lista de asignatura por estudiante
+	@RequestMapping(value = "/student/list", method = RequestMethod.GET)
+	public ModelAndView listSubjectByStudent() {
+		ModelAndView result;
+
+		result = new ModelAndView("subject/list");
+		result.addObject("a", 1);
+		final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		result.addObject("subject", this.subjectService.subjectsByStudents(d.getId()));
+
+		return result;
+	}
+
+	//Lista para registrarse
+
+	@RequestMapping(value = "/student/register/list.do", method = RequestMethod.GET)
+	public ModelAndView listRegister() {
+		ModelAndView result;
+		final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		result = new ModelAndView("subject/list");
+		result.addObject("a", 2);
+		if (this.studentService.exists(d.getId())) {
+			final List<Subject> subjectByStudent = new ArrayList<Subject>();
+			for (final Subject sub : d.getSubjects())
+				subjectByStudent.add(sub);
+			result.addObject("subjectByStudent", subjectByStudent);
+		}
+
+		result.addObject("subject", this.subjectService.findAll());
+
+		return result;
+	}
+
+	//Lista general
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
+		ModelAndView result;
 
-		ModelAndView view;
+		result = new ModelAndView("subject/list");
+		result.addObject("a", 3);
+		result.addObject("subject", this.subjectService.findAll());
 
-		Collection<Subject> subjects;
-
-		view = new ModelAndView("subject/list");
-
-		subjects = this.subjectService.findAll();
-		view.addObject("subjects", subjects);
-		view.addObject("requestURI", "subjects/list.do");
-		return view;
+		return result;
 	}
+
+	//Para Suscribirse
+	@RequestMapping(value = "/student/subscribe", method = RequestMethod.GET)
+	public ModelAndView subscribe(@RequestParam final Subject q) {
+		ModelAndView result;
+
+		final Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		if ((!student.getSubjects().contains(q)) && q.getSeats() > 0) {
+			q.setSeats(q.getSeats() - 1);
+			this.subjectService.save(q);
+			final List<Subject> subjects = student.getSubjects();
+			subjects.add(q);
+			student.setSubjects(subjects);
+
+			this.studentService.save(student);
+
+		}
+		result = new ModelAndView("redirect:/subject/student/list.do");
+		return result;
+	}
+
 }

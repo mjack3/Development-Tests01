@@ -29,8 +29,16 @@
 		<bean class="converters.StringToTeacherConverter" />
 		
 		
+		
 		<bean class="converters.SubjectToStringConverter" /> 
 		<bean class="converters.StringToSubjectConverter" />
+		
+		
+		<!-- KARLI -->
+		
+		<bean class="converters.GroupSubjectToStringConverter" />  
+  		<bean class="converters.StringToGroupSubjectConverter" /> 
+		
 		
 	</util:list>
 	

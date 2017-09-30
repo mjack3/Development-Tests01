@@ -44,6 +44,24 @@
 				        </li>
 					</security:authorize>
 					
+					
+					<!-- KARLI -->
+					
+					
+					<security:authorize access="hasRole('STUDENT')">
+					<li><a href="subject/student/register/list.do"><spring:message
+          code="master.page.subject" /></a></li>
+       <li><a href="subject/student/list.do"><spring:message
+          code="master.page.student.subject" /></a></li>
+       
+      </security:authorize>
+
+	<security:authorize access="isAnonymous()">
+       <li><a href="subject/list.do"><spring:message
+          code="master.page.subject" /></a></li>
+       
+      </security:authorize>
+					
 				</ul>
 			</div>
 		</div>

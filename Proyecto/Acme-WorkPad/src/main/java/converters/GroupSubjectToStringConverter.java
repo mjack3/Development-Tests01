@@ -5,14 +5,14 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Student;
+import domain.GroupSubject;
 
 @Component
 @Transactional
-public class StudentToStringConverter implements Converter<Student, String> {
+public class GroupSubjectToStringConverter implements Converter<GroupSubject, String> {
 
 	@Override
-	public String convert(Student ar) {
+	public String convert(GroupSubject ar) {
 		String res;
 		if (ar == null) {
 			res = null;
@@ -20,7 +20,6 @@ public class StudentToStringConverter implements Converter<Student, String> {
 			res = String.valueOf(ar.getId());
 		}
 		return res;
-
 	}
 
 }

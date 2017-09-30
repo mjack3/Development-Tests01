@@ -5,14 +5,14 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Student;
+import domain.Submission;
 
 @Component
 @Transactional
-public class StudentToStringConverter implements Converter<Student, String> {
+public class SubmissionToStringConverter implements Converter<Submission, String> {
 
 	@Override
-	public String convert(Student ar) {
+	public String convert(Submission ar) {
 		String res;
 		if (ar == null) {
 			res = null;

@@ -7,20 +7,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Subject;
-import repositories.SubjectRepository;
+import domain.Submission;
+import repositories.SubmissionRepository;
 
 @Component
 @Transactional
-public class StringToSubjectConverter implements Converter<String, Subject> {
+public class StringToSubmissionConverter implements Converter<String, Submission> {
 
 	@Autowired
-	SubjectRepository arRepository;
+	SubmissionRepository arRepository;
 
 
 	@Override
-	public Subject convert(String text) {
-		Subject result;
+	public Submission convert(String text) {
+		Submission result;
 		int id;
 		try {
 			if (StringUtils.isEmpty(text)) {
