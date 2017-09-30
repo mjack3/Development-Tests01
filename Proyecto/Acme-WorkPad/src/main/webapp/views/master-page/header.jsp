@@ -41,6 +41,13 @@
 					</security:authorize>
 					
 					
+					<!-- Reme -->
+					
+					<security:authorize access="hasRole('ADMINISTRATOR')">
+						<li><a class="fNiv" href="administrator/subject/list.do"><spring:message code="master.page.mySubject" /></a></li>
+					</security:authorize>
+					
+					
 					<!-- KARLI -->
 					
 					

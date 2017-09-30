@@ -73,6 +73,18 @@
 </security:authorize>
  
  
+ <!-- Reme -->
+ <security:authorize access="hasRole('ADMINISTRATOR')">
+
+	<jstl:if test="${var==2}">
+
+		<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subjects}" requestURI="subject/list.do"
+			hidden_fields="id,version,userAccount,administrator">
+		</acme:list>
+		
+	</jstl:if>
+
+</security:authorize>
  
  
  
