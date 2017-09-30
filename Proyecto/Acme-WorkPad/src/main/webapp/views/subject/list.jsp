@@ -39,7 +39,7 @@
 <jstl:if test="${a==1}">
 <security:authorize access="hasRole('STUDENT')">
 
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/student/list.do" pagesize="6">
+<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/student/list.do" hidden_fields="administrator" pagesize="6">
 <a href="groupsubject/student/create.do"> <spring:message
 							code='subject.createGroup' /></a>
 
@@ -50,7 +50,7 @@
 
 <security:authorize access="hasRole('STUDENT')">
 <jstl:if test="${a==2}">
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/student/register/list.do" pagesize="6" variable="e">
+<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/student/register/list.do" hidden_fields="administrator" pagesize="6" variable="e">
 <a href="groupsubject/student/create.do"> <spring:message
 							code='subject.createGroup' /></a>
 <jstl:if test="${e.seats>0 and !subjectByStudent.contains(e)}">
@@ -65,7 +65,7 @@
 <security:authorize access="!hasRole('STUDENT')">
 
 <jstl:if test="${a==3}">
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/list.do" pagesize="6" variable="e">
+<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" hidden_fields="administrator"  requestURI="subject/list.do" pagesize="6" variable="e">
 
 </acme:list>
 

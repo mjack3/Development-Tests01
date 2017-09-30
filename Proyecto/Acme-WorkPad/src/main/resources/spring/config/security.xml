@@ -44,6 +44,8 @@
     	<security:intercept-url access="permitAll" pattern="/subject/list.do"/>
        	<security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/list.do"/>
        <security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/register/list.do"/>
+        <security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/subscribe.do"/>
+       
 			<!-- fin -->
 
 		<security:intercept-url pattern="/favicon.ico" access="permitAll" /> 
