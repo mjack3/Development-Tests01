@@ -29,6 +29,7 @@
 		<value>/views/subject/messages</value>
 		
 		<value>/views/groupsubject/messages</value>
+		<value>/views/student/messages</value>
 	</util:list>
 
 </beans>

@@ -25,15 +25,23 @@
 		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
 
 	<!-- Access control -->
+	
+	
 
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url pattern="/" access="permitAll" /> 
 
 
-
+		<!-- ADRI -->
+		
+		<security:intercept-url pattern="/student/create.do" access="isAnonymous()" />
+		<security:intercept-url pattern="/student/save.do" access="isAnonymous()" /> 
+		
+		<!-- FIN ADRI -->
 
 
 		<!-- SUBJECTS -->
+		
 		<security:intercept-url pattern="/subject/search.do" access="permitAll" />
 
 			<!-- subject karli -->
@@ -72,6 +80,7 @@
 		<security:intercept-url pattern="/profile/action-3.do" access="isAuthenticated()" /> 
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
+	
 
 		<security:form-login 
 			login-page="/security/login.do"

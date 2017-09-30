@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class Student extends Actor {
 
 	private List<Seminar>		seminars;
-	private List<GroupSubject>			groups;
+	private List<GroupSubject>	groups;
 	private List<Subject>		subjects;
 
 

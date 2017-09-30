@@ -24,6 +24,7 @@
 				<ul class="nav navbar-nav">
 					<security:authorize access="isAnonymous()">
 						<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
+						<li><a class="fNiv" href="student/create.do"><spring:message code="master.page.student.create" /></a></li>
 					</security:authorize>
 					
 					

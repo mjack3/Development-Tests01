@@ -1,21 +1,31 @@
 
 package services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import repositories.TeacherRepository;
-import security.LoginService;
-import security.UserAccount;
+
 import domain.Activity;
+import domain.ActivityRecord;
 import domain.Assignment;
+import domain.BibliographyRecord;
+import domain.Folder;
+import domain.MailMessage;
+import domain.Seminar;
+import domain.SocialIdentity;
 import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
+import repositories.TeacherRepository;
+import security.LoginService;
+import security.UserAccount;
 @Transactional
 @Service
 public class TeacherService {
@@ -38,6 +48,62 @@ public class TeacherService {
 	}
 
 	//	CRUDs methods --------------------------------
+	
+	/**
+	 * Crea un nuevo profesor
+	 * @param actor Profesor a crear
+	 * @return profesor creado
+	 */
+
+	public Teacher create() {
+		
+		Teacher res = new Teacher();
+		
+		res.setActivitiesRecords(new ArrayList<ActivityRecord>());
+		res.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
+		res.setEmail("");
+		res.setFolders(createFolders());
+		res.setName("");
+		res.setPhone("");
+		res.setPostalAddress("");
+		res.setSeminars(new ArrayList<Seminar>());
+		res.setSocialIdentities(new ArrayList<SocialIdentity>());
+		res.setSubjects(new ArrayList<Subject>());
+		res.setSurname("");
+		res.setUserAccount(new UserAccount());
+
+		return res;
+	}
+	
+	/**
+	 * Crea las carpetas por defecto del correo
+	 * 
+	 * @return Carpetas creadas
+	 */
+	private List<Folder> createFolders() {
+		List<Folder> res = new ArrayList<Folder>();
+		
+		Folder inbox = new Folder();
+		inbox.setFolderName("inbox");
+		inbox.setMessages(new ArrayList<MailMessage>());
+		
+		Folder outbox = new Folder();
+		outbox.setFolderName("outbox");
+		outbox.setMessages(new ArrayList<MailMessage>());
+		
+		Folder trashbox = new Folder();
+		trashbox.setFolderName("trashbox");
+		trashbox.setMessages(new ArrayList<MailMessage>());
+		
+		Folder spambox = new Folder();
+		spambox.setFolderName("spambox");
+		spambox.setMessages(new ArrayList<MailMessage>());
+		
+		res.addAll(Arrays.asList(inbox,outbox,trashbox,spambox));
+		
+		return res;
+	}
+
 
 	/**
 	 * Actualiza un profesor existente
@@ -49,7 +115,6 @@ public class TeacherService {
 		
 		Assert.notNull(actor);
 		Assert.isTrue(repository.exists(actor.getId()));
-		Assert.isTrue(actor.getPhone().matches("^$|^\\\\+([1-9][0-9]{0,2}) (\\\\([1-9][0-9]{0,3}\\\\)) ([a-zA-Z0-9 -]{4,})$"));
 
 		return repository.save(actor);
 	}
@@ -60,10 +125,9 @@ public class TeacherService {
 	 * @return profesor creado
 	 */
 
-	public Teacher create(Teacher actor) {
+	public Teacher save(Teacher actor) {
 		
 		Assert.notNull(actor);
-		Assert.isTrue(actor.getPhone().matches("^$|^\\\\+([1-9][0-9]{0,2}) (\\\\([1-9][0-9]{0,3}\\\\)) ([a-zA-Z0-9 -]{4,})$"));
 
 		return repository.save(actor);
 	}

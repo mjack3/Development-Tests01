@@ -22,12 +22,21 @@
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StudentToStringConverter" />
 		<bean class="converters.TeacherToStringConverter" />
+		<bean class="converters.ActivityRecordToStringConverter" />
+		<bean class="converters.FolderToStringConverter" />
+		<bean class="converters.SeminarToStringConverter" />
+		<bean class="converters.SocialIdentityToStringConverter" />
+		<bean class="converters.AuthorityToStringConverter" />
 		
 		
 		<bean class="converters.StringToAdministratorConverter" />
 		<bean class="converters.StringToStudentConverter" />
 		<bean class="converters.StringToTeacherConverter" />
-		
+		<bean class="converters.StringToActivityRecordConverter" />
+		<bean class="converters.StringToFolderConverter" />
+		<bean class="converters.StringToSeminarConverter" />
+		<bean class="converters.StringToSocialIdentityConverter" />
+		<bean class="converters.StringToAuthorityConverter" />
 		
 		
 		<bean class="converters.SubjectToStringConverter" /> 
