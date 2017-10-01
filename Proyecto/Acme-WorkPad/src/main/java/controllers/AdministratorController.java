@@ -39,13 +39,13 @@ public class AdministratorController extends AbstractController {
 
 		final Administrator a = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		result = new ModelAndView("subject/list");
-		result.addObject("var", 2);
+		result.addObject("requestURI", "/administrator/subject/list.do");
 		final List<Subject> subjectByAdministrator = new ArrayList<Subject>();
 		if (this.administratorService.exists(a.getId()))
 			for (final Subject sub : a.getSubjects())
 				subjectByAdministrator.add(sub);
 
-		result.addObject("subjects", subjectByAdministrator);
+		result.addObject("subject", subjectByAdministrator);
 
 		return result;
 	}

@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Student;
+import domain.Subject;
 import security.LoginService;
 import services.StudentService;
 import services.SubjectService;
-import domain.Student;
-import domain.Subject;
 
 @Controller
 @RequestMapping("/subject")
@@ -69,9 +69,15 @@ public class SubjectController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/list");
-		result.addObject("a", 1);
+		result.addObject("requestURI", "/subject/student/list.do");
 		final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		result.addObject("subject", this.subjectService.subjectsByStudents(d.getId()));
+		if (this.studentService.exists(d.getId())) {
+			final List<Subject> subjectByStudent = new ArrayList<Subject>();
+			for (final Subject sub : d.getSubjects())
+				subjectByStudent.add(sub);
+			result.addObject("subjectByStudent", subjectByStudent);
+		}
 
 		return result;
 	}
@@ -83,7 +89,7 @@ public class SubjectController extends AbstractController {
 		ModelAndView result;
 		final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		result = new ModelAndView("subject/list");
-		result.addObject("a", 2);
+		result.addObject("requestURI", "/subject/student/register/list.do");
 		if (this.studentService.exists(d.getId())) {
 			final List<Subject> subjectByStudent = new ArrayList<Subject>();
 			for (final Subject sub : d.getSubjects())
@@ -102,7 +108,7 @@ public class SubjectController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/list");
-		result.addObject("a", 3);
+		result.addObject("requestURI", "/subject/list.do");
 		result.addObject("subject", this.subjectService.findAll());
 
 		return result;

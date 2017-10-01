@@ -36,56 +36,35 @@
   
 <!-- LIST DE KARLI -->
 
-<jstl:if test="${a==1}">
-<security:authorize access="hasRole('STUDENT')">
-
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/student/list.do" hidden_fields="administrator" pagesize="6">
 
 
 
-</acme:list>
-</security:authorize>
-</jstl:if>
+<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator" pagesize="6">
 
 <security:authorize access="hasRole('STUDENT')">
-<jstl:if test="${a==2}">
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}"  requestURI="subject/student/register/list.do" hidden_fields="administrator" pagesize="6" variable="e">
-
 <jstl:if test="${e.seats>0 and !subjectByStudent.contains(e)}">
 <a href="subject/student/subscribe.do?q=${e.id}"> <spring:message
 							code='subject.registerSubject' /></a>
 							</jstl:if>
+</security:authorize >
+<security:authorize access="hasRole('ADMINISTRATOR')">
+
+<a href="administrator/subject/delete.do?q=${e.id}"> <spring:message
+							code='acme.delete' /></a>
+
+
+</security:authorize>
+<security:authorize access="hasRole('ADMINISTRATOR')">
+
+<a href="administrator/subject/edit.do?q=${e.id}"> <spring:message
+							code='acme.edit' /></a>
+</security:authorize>
 </acme:list>
 
-</jstl:if>
-</security:authorize>
 
-<security:authorize access="!hasRole('STUDENT')">
-
-<jstl:if test="${a==3}">
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" hidden_fields="administrator"  requestURI="subject/list.do" pagesize="6" variable="e">
-
-</acme:list>
-
-</jstl:if>
-</security:authorize>
  
- 
- <!-- Reme -->
- <security:authorize access="hasRole('ADMINISTRATOR')">
+ <!-- Reme Adaptado-->
 
-	<jstl:if test="${var==2}">
-
-		<acme:list list="${subjects}" requestURI="subject/list.do" variable="subjectId" entityUrl="{}"
-			hidden_fields="id,version,userAccount,administrator,bulletins,teacher,bibliographiesRecords,activities,groups,students,category,assigments"
-			deleteUrl="administrator/subject/delete.do" editUrl="administrator/subject/edit.do">
-			
-			
-		</acme:list>
-		
-	</jstl:if>
-
-</security:authorize>
  
  
  
