@@ -46,4 +46,27 @@ public class ActivityTeacherController extends AbstractController {
 
 		return resul;
 	}
+
+	@RequestMapping(value = "edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int q) {
+		final Activity activity = this.activityService.findOnePrincipal(q);
+		final ModelAndView resul = this.createEditModelAndView(activity);
+
+		resul.addObject("requestURI", "activity/teacher/edit.do");
+		return resul;
+	}
+
+	private ModelAndView createEditModelAndView(final Activity activity) {
+		// TODO Auto-generated method stub
+		return this.createEditModelAndView(activity, null);
+	}
+
+	private ModelAndView createEditModelAndView(final Activity activity, final String message) {
+		// TODO Auto-generated method stub
+		final ModelAndView resul = new ModelAndView("activity/edit");
+
+		resul.addObject("activity", activity);
+		resul.addObject("message", message);
+		return resul;
+	}
 }

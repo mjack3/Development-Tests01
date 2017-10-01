@@ -131,4 +131,20 @@ public class ActivityService {
 
 		Assert.isTrue(sw);
 	}
+
+	/**
+	 * Devuelve una actividad asignada al profesor logueado en alguna asignatura
+	 * 
+	 * @param q
+	 * @return
+	 */
+
+	public Activity findOnePrincipal(final int q) {
+		// TODO Auto-generated method stub
+		Assert.notNull(q);
+		Assert.isTrue(this.repository.exists(q));
+
+		return this.repository.findOneByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), q);
+	}
+
 }
