@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import domain.Subject;
 import repositories.SubjectRepository;
 import security.LoginService;
+import domain.Subject;
+import domain.Teacher;
 
 @Transactional
 @Service
@@ -26,6 +27,8 @@ public class SubjectService {
 
 	@Autowired
 	private LoginService		loginService;
+	@Autowired
+	private TeacherService		teacherService;
 
 
 	public SubjectService() {
@@ -111,10 +114,8 @@ public class SubjectService {
 
 			return this.repository.save(aux);
 
-		} else {
-
+		} else
 			return this.repository.save(entity);
-		}
 	}
 
 	public Subject findOne(final Integer id) {
@@ -132,4 +133,21 @@ public class SubjectService {
 		return this.repository.save(arg0);
 	}
 
+	/**
+	 * Devuelve una asignatura que el profesor logueado imparte
+	 * 
+	 * @param subjectId
+	 * @return
+	 */
+
+	public Subject findOnePrincipal(final int subjectId) {
+		// TODO Auto-generated method stub
+
+		final Subject subject = this.repository.findOne(subjectId);
+		final Teacher teacher = this.teacherService.checkPrincipal();
+
+		Assert.isTrue(teacher.getSubjects().contains(subject));
+
+		return subject;
+	}
 }
