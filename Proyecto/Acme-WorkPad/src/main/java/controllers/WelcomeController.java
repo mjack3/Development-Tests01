@@ -13,14 +13,22 @@ package controllers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Actor;
+import security.LoginService;
+
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController extends AbstractController {
+
+	@Autowired
+	private LoginService loginService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -40,8 +48,40 @@ public class WelcomeController extends AbstractController {
 		moment = formatter.format(new Date());
 
 		result = new ModelAndView("welcome/index");
-		result.addObject("name", name);
+		if (LoginService.isAnyAuthenticated() == true) {
+			Actor a = loginService.findActorByUsername(LoginService.getPrincipal().getUsername());
+			result.addObject("name", a.getName());
+		} else {
+			result.addObject("name", name);
+		}
 		result.addObject("moment", moment);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/cookies")
+	public ModelAndView cookies() {
+		ModelAndView result;
+
+		result = new ModelAndView("legislation/cookies");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/lopd")
+	public ModelAndView lopd() {
+		ModelAndView result;
+
+		result = new ModelAndView("legislation/lopd");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/lssi")
+	public ModelAndView lssi() {
+		ModelAndView result;
+
+		result = new ModelAndView("legislation/lssi");
 
 		return result;
 	}

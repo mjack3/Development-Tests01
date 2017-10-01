@@ -44,7 +44,7 @@
 		
 		<security:intercept-url pattern="/subject/search.do" access="permitAll" />
 
-			<!-- subject karli -->
+			<!-- karli -->
 
 		
 
@@ -56,6 +56,12 @@
         <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/create.do"/> 
         <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/save.do"/>
         <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/list.do"/>
+        <security:intercept-url pattern="/welcome/cookies.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/welcome/lopd.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/welcome/lssi.do"
+			access="permitAll" />
         
 			<!-- fin -->
 	
