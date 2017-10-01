@@ -27,7 +27,8 @@
 		<bean class="converters.SeminarToStringConverter" />
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.AuthorityToStringConverter" />
-		
+		<bean class="converters.SubmissionToStringConverter"/>
+		<bean class="converters.SubjectToStringConverter" />
 		
 		<bean class="converters.StringToAdministratorConverter" />
 		<bean class="converters.StringToStudentConverter" />
@@ -37,9 +38,7 @@
 		<bean class="converters.StringToSeminarConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		<bean class="converters.StringToAuthorityConverter" />
-		
-		
-		<bean class="converters.SubjectToStringConverter" /> 
+		<bean class="converters.StringToSubmissionConverter" />
 		<bean class="converters.StringToSubjectConverter" />
 		
 		

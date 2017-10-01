@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import domain.Subject;
 import repositories.SubjectRepository;
 import security.LoginService;
-import domain.Student;
-import domain.Subject;
 
 @Transactional
 @Service
@@ -93,7 +92,6 @@ public class SubjectService {
 		Assert.notNull(entity);
 
 		Subject aux = new Subject();
-		final Student a = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		if (this.exists(entity.getId())) {
 
 			aux = this.repository.findOne(entity.getId());
@@ -114,15 +112,9 @@ public class SubjectService {
 			return this.repository.save(aux);
 
 		} else {
-			aux = this.repository.save(entity);
-			final List<Subject> subjects = a.getSubjects();
 
-			subjects.add(aux);
-			a.setSubjects(subjects);
-			this.studentService.save(a);
-
+			return this.repository.save(entity);
 		}
-		return this.repository.save(entity);
 	}
 
 	public Subject findOne(final Integer id) {
@@ -135,6 +127,8 @@ public class SubjectService {
 	}
 
 	public List<Subject> save(final List<Subject> arg0) {
+		Assert.notNull(arg0);
+		Assert.noNullElements(arg0.toArray());
 		return this.repository.save(arg0);
 	}
 

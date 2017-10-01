@@ -12,7 +12,7 @@
 <form:hidden path="id"/>
 <form:hidden path="version"/>
 <form:hidden path="submission"/>
-<form:hidden path="students"/>
+
 
 <acme:inputText code="groupsubject.name" path="name"/>
 <acme:inputText code="groupsubject.description" path="description"/>

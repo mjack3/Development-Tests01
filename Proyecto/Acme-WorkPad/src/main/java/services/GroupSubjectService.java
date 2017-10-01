@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import repositories.GroupSubjectRepository;
-import security.LoginService;
 import domain.GroupSubject;
 import domain.Student;
 import domain.Submission;
+import repositories.GroupSubjectRepository;
+import security.LoginService;
 
 @Service
 @Transactional
@@ -28,6 +28,9 @@ public class GroupSubjectService {
 
 	@Autowired
 	private StudentService			studentService;
+
+	@Autowired
+	private SubjectService			subjectService;
 
 
 	public GroupSubjectService() {
@@ -49,6 +52,7 @@ public class GroupSubjectService {
 		Assert.notNull(entity);
 
 		GroupSubject aux = new GroupSubject();
+
 		final Student a = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		if (this.exists(entity.getId())) {
 			aux = this.groupSubjectRepository.findOne(entity.getId());
@@ -58,6 +62,7 @@ public class GroupSubjectService {
 			aux.setStartDate(entity.getStartDate());
 			aux.setEndDate(entity.getEndDate());
 			aux.setSubmission(entity.getSubmission());
+			return this.groupSubjectRepository.save(aux);
 
 		} else {
 			aux = this.groupSubjectRepository.save(entity);
@@ -65,9 +70,10 @@ public class GroupSubjectService {
 
 			groups.add(aux);
 			a.setGroups(groups);
+
 			this.studentService.save(a);
 		}
-		return this.groupSubjectRepository.save(entity);
+		return aux;
 	}
 
 	public GroupSubject findOne(final Integer id) {

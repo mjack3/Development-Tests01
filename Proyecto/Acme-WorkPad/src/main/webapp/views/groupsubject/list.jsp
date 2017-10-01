@@ -8,4 +8,9 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<acme:list  list="${groupsubject}" requestURI="groupsubject/student/list.do" hidden_fields="students,submission"  pagesize="6"/>
+<acme:list  list="${groupsubject}" requestURI="groupsubject/student/list.do" entityUrl="{submission:submission/list.do}"  pagesize="6"
+
+
+/>
+<a href="groupsubject/student/create.do?q=${q.id}"> <spring:message
+							code='subject.createGroup' /></a>

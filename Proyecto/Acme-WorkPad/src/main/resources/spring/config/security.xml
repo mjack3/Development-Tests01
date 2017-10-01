@@ -52,8 +52,11 @@
     	<security:intercept-url access="permitAll" pattern="/subject/list.do"/>
        	<security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/list.do"/>
        <security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/register/list.do"/>
-        <security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/subscribe.do"/>
-       
+        <security:intercept-url access="hasRole('STUDENT')" pattern="/subject/student/subscribe.do"/> 
+        <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/create.do"/> 
+        <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/save.do"/>
+        <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/list.do"/>
+        
 			<!-- fin -->
 	
 	<!-- reme -->
