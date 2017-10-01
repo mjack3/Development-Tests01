@@ -32,6 +32,7 @@
 
 		<bean class="converters.SubmissionToStringConverter"/>
 		<bean class="converters.SubjectToStringConverter" />
+		<bean class="converters.MailMessageToStringConverter" />
 		
 
 		<bean class="converters.BibliographyRecordToStringConverter" />
@@ -61,6 +62,7 @@
 		<bean class="converters.SubjectToStringConverter" /> 
 		<bean class="converters.StringToSubmissionConverter" />
 		<bean class="converters.StringToSubjectConverter" />
+		<bean class="converters.StringToMailMessageConverter" />
 		
 		
 		

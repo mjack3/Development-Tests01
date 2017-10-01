@@ -32,13 +32,16 @@ public class StudentService {
 	@Autowired
 	private StudentRepository	repository;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	public StudentService() {
 		super();
 	}
 
 	//CRUD Methods
-	
+
 	public Student create() {
 
 		Student res = new Student();
@@ -59,6 +62,7 @@ public class StudentService {
 		account.setAuthorities(Arrays.asList(auth));
 		res.setUserAccount(account);
 		res.setGroups(new ArrayList<GroupSubject>());
+		res.setFolders(folderService.save(folderService.createDefaultFolders()));
 
 		return res;
 	}
@@ -72,26 +76,25 @@ public class StudentService {
 		List<Folder> res = new ArrayList<Folder>();
 
 		Folder inbox = new Folder();
-		inbox.setFolderName("inbox");
+		inbox.setFolderName("Inbox");
 		inbox.setMessages(new ArrayList<MailMessage>());
 
 		Folder outbox = new Folder();
-		outbox.setFolderName("outbox");
+		outbox.setFolderName("Outbox");
 		outbox.setMessages(new ArrayList<MailMessage>());
 
 		Folder trashbox = new Folder();
-		trashbox.setFolderName("trashbox");
+		trashbox.setFolderName("Trashbox");
 		trashbox.setMessages(new ArrayList<MailMessage>());
 
 		Folder spambox = new Folder();
-		spambox.setFolderName("spambox");
+		spambox.setFolderName("Spambox");
 		spambox.setMessages(new ArrayList<MailMessage>());
 
-		res.addAll(Arrays.asList(inbox,outbox,trashbox,spambox));
+		res.addAll(Arrays.asList(inbox, outbox, trashbox, spambox));
 
 		return res;
 	}
-
 
 	/**
 	 * Actualiza un estudiante existente
@@ -121,11 +124,9 @@ public class StudentService {
 
 		Assert.notNull(actor);
 
-
 		Md5PasswordEncoder enc = new Md5PasswordEncoder();
 		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
 
-		
 		return this.repository.save(actor);
 	}
 

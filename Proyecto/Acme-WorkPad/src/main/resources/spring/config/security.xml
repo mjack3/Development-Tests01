@@ -68,6 +68,23 @@
         <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/create.do"/> 
         <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/save.do"/>
         <security:intercept-url access="hasRole('STUDENT')" pattern="/groupsubject/student/list.do"/>
+        
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/list.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/create.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/delete.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/save.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/edit.do"/>
+        
+        
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/list.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/create.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/delete.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/save.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/edit.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/view.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/move.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/moveTo.do"/>
+		
         <security:intercept-url pattern="/welcome/cookies.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/welcome/lopd.do"

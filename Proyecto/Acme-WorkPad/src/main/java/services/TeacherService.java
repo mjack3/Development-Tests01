@@ -28,6 +28,7 @@ import repositories.TeacherRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+
 @Transactional
 @Service
 public class TeacherService {
@@ -44,23 +45,28 @@ public class TeacherService {
 	@Autowired
 	private SubmissionService	submissionService;
 
+	@Autowired
+	private FolderService		folderService;
+
 
 	public TeacherService() {
 		super();
 	}
 
 	//	CRUDs methods --------------------------------
-	
+
 	/**
 	 * Crea un nuevo profesor
-	 * @param actor Profesor a crear
+	 * 
+	 * @param actor
+	 *            Profesor a crear
 	 * @return profesor creado
 	 */
 
 	public Teacher create() {
-		
+
 		Teacher res = new Teacher();
-		
+
 		res.setActivitiesRecords(new ArrayList<ActivityRecord>());
 		res.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
 		res.setEmail("");
@@ -77,10 +83,11 @@ public class TeacherService {
 		auth.setAuthority("TEACHER");
 		account.setAuthorities(Arrays.asList(auth));
 		res.setUserAccount(account);
+		res.setFolders(folderService.save(folderService.createDefaultFolders()));
 
 		return res;
 	}
-	
+
 	/**
 	 * Crea las carpetas por defecto del correo
 	 * 
@@ -88,51 +95,54 @@ public class TeacherService {
 	 */
 	private List<Folder> createFolders() {
 		List<Folder> res = new ArrayList<Folder>();
-		
+
 		Folder inbox = new Folder();
 		inbox.setFolderName("inbox");
 		inbox.setMessages(new ArrayList<MailMessage>());
-		
+
 		Folder outbox = new Folder();
 		outbox.setFolderName("outbox");
 		outbox.setMessages(new ArrayList<MailMessage>());
-		
+
 		Folder trashbox = new Folder();
 		trashbox.setFolderName("trashbox");
 		trashbox.setMessages(new ArrayList<MailMessage>());
-		
+
 		Folder spambox = new Folder();
 		spambox.setFolderName("spambox");
 		spambox.setMessages(new ArrayList<MailMessage>());
-		
-		res.addAll(Arrays.asList(inbox,outbox,trashbox,spambox));
-		
+
+		res.addAll(Arrays.asList(inbox, outbox, trashbox, spambox));
+
 		return res;
 	}
 
-
 	/**
 	 * Actualiza un profesor existente
-	 * @param actor Profesor a actualizar
+	 * 
+	 * @param actor
+	 *            Profesor a actualizar
 	 * @return profesor actualizado
 	 */
-	
+
 	public Teacher update(Teacher actor) {
-		
+
 		Assert.notNull(actor);
 		Assert.isTrue(repository.exists(actor.getId()));
 
 		return repository.save(actor);
 	}
-	
+
 	/**
 	 * Crea un nuevo profesor
-	 * @param actor Profesor a crear
+	 * 
+	 * @param actor
+	 *            Profesor a crear
 	 * @return profesor creado
 	 */
 
 	public Teacher save(Teacher actor) {
-		
+
 		Assert.notNull(actor);
 		
 		Md5PasswordEncoder enc = new Md5PasswordEncoder();
@@ -140,9 +150,9 @@ public class TeacherService {
 
 		return repository.save(actor);
 	}
-	
+
 	// Others methods ----------------------------------------
-	
+
 	/**
 	 * 
 	 * @return all subjects that teacher logged is

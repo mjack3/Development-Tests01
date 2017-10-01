@@ -38,6 +38,8 @@
 							<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				          </ul>
 				        </li>
+				        	<li><a href="folder/actor/list.do"><spring:message
+									code="master.page.actor.folders" /> </a></li>
 					</security:authorize>
 					
 					
