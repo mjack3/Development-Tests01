@@ -1,13 +1,11 @@
 
 package controllers;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,10 +26,12 @@ public class GroupSubjectController {
 	LoginService			loginservice;
 	@Autowired
 	private SubjectService	subjectservice;
+	
+	private Integer subjectId = null;
 
 
 	@RequestMapping(value = "/student/create", method = RequestMethod.GET)
-	public ModelAndView create(HttpServletRequest request) {
+	public ModelAndView create() {
 		ModelAndView result;
 
 		result = createNewModelAndView(groupsubjectService.create(), null);
@@ -43,15 +43,10 @@ public class GroupSubjectController {
 	public ModelAndView saveCreate(@Valid GroupSubject groupsubject, BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			for (ObjectError e : binding.getAllErrors()) {
-				System.out.println(e);
-			}
 			result = createNewModelAndView(groupsubject, null);
 		} else {
 			try {
-
-				groupsubjectService.save(groupsubject);
-
+				groupsubjectService.save(groupsubject,subjectId);
 				result = new ModelAndView("redirect:/subject/student/list.do");
 			} catch (Throwable th) {
 				th.printStackTrace();
@@ -76,6 +71,8 @@ public class GroupSubjectController {
 		result = new ModelAndView("groupsubject/list");
 
 		result.addObject("groupsubject", subjectservice.findOne(q).getGroups());
+		
+		subjectId = q;
 
 		return result;
 	}

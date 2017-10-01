@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import domain.GroupSubject;
 import domain.Student;
+import domain.Subject;
 import domain.Submission;
 import repositories.GroupSubjectRepository;
 import security.LoginService;
@@ -48,7 +49,7 @@ public class GroupSubjectService {
 		return groupSubject;
 	}
 
-	public GroupSubject save(final GroupSubject entity) {
+	public GroupSubject save(final GroupSubject entity, final Integer subjectId) {
 		Assert.notNull(entity);
 
 		GroupSubject aux = new GroupSubject();
@@ -62,6 +63,22 @@ public class GroupSubjectService {
 			aux.setStartDate(entity.getStartDate());
 			aux.setEndDate(entity.getEndDate());
 			aux.setSubmission(entity.getSubmission());
+			
+			final List<GroupSubject> groups = a.getGroups();
+
+			groups.add(aux);
+			a.setGroups(groups);
+
+			this.studentService.save(a);
+			
+			Subject subject = subjectService.findOne(subjectId);
+			
+			final List<GroupSubject> groupsSubject = subject.getGroups();
+			groupsSubject.add(aux);
+			subject.setGroups(groupsSubject);
+			
+			this.subjectService.save(subject);
+			
 			return this.groupSubjectRepository.save(aux);
 
 		} else {
@@ -72,8 +89,18 @@ public class GroupSubjectService {
 			a.setGroups(groups);
 
 			this.studentService.save(a);
+			
+			Subject subject = subjectService.findOne(subjectId);
+			
+			final List<GroupSubject> groupsSubject = subject.getGroups();
+			groupsSubject.add(aux);
+			subject.setGroups(groupsSubject);
+			
+			this.subjectService.save(subject);
+			
+			return aux;
 		}
-		return aux;
+
 	}
 
 	public GroupSubject findOne(final Integer id) {

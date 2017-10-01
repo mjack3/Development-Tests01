@@ -8,22 +8,9 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasRole('STUDENT')">
-<form:form action="groupsubject/student/save.do" modelAttribute="groupsubject">
-<form:hidden path="id"/>
-<form:hidden path="version"/>
-<form:hidden path="submission"/>
 
+<acme:acme_form hiddenFields="id,version,submission" type="create" entity="${groupsubject}" url="groupsubject/student/save.do" cancel="welcome/index.do">
+</acme:acme_form>
 
-<acme:inputText code="groupsubject.name" path="name"/>
-<acme:inputText code="groupsubject.description" path="description"/>
-<acme:inputText code="groupsubject.startDate" path="startDate"/>
-<acme:inputText code="groupsubject.endDate" path="endDate"/>
-<br/>
-
-<acme:submit name="save" code="acme.save"/>
-
-
-
-
-</form:form>
 </security:authorize>
+
