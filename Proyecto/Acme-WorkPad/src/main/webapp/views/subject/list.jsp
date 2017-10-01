@@ -39,7 +39,7 @@
 
 
 
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator" pagesize="6">
+<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator,activities" pagesize="6">
 
 <security:authorize access="hasRole('STUDENT')">
 <jstl:if test="${e.seats>0 and !subjectByStudent.contains(e)}">
