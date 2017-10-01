@@ -19,6 +19,7 @@
 
 	<util:list id="converters">
 	
+		<bean class="converters.ActivityToStringConverter" />
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StudentToStringConverter" />
 		<bean class="converters.TeacherToStringConverter" />
@@ -29,7 +30,7 @@
 		<bean class="converters.AuthorityToStringConverter" />
 		<bean class="converters.SubmissionToStringConverter"/>
 		<bean class="converters.SubjectToStringConverter" />
-		
+		<bean class="converters.StringToActivityConverter" />
 		<bean class="converters.StringToAdministratorConverter" />
 		<bean class="converters.StringToStudentConverter" />
 		<bean class="converters.StringToTeacherConverter" />
