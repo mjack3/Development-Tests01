@@ -78,8 +78,11 @@
 
 	<jstl:if test="${var==2}">
 
-		<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do, activities:activity/list.do, groups:groupsubject/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subjects}" requestURI="subject/list.do"
-			hidden_fields="id,version,userAccount,administrator">
+		<acme:list list="${subjects}" requestURI="subject/list.do" variable="id" entityUrl="{}"
+			hidden_fields="id,version,userAccount,administrator,bulletins,teacher,bibliographiesRecords,activities,groups,students,category,assigments"
+			deleteUrl="administrator/subject/delete.do" editUrl="administrator/subject/edit.do">
+			
+			
 		</acme:list>
 		
 	</jstl:if>

@@ -1,6 +1,8 @@
 
 package services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class AdministratorService {
 
 	/**
 	 * Actualiza un administrador existente
-	 * 
+	 *
 	 * @param actor
 	 *            administrador a actualizar
 	 * @return administrador actualizado
@@ -45,7 +47,7 @@ public class AdministratorService {
 
 	/**
 	 * Crea un nuevo administrador
-	 * 
+	 *
 	 * @param actor
 	 *            administrador a crear
 	 * @return administrador creado
@@ -74,4 +76,15 @@ public class AdministratorService {
 
 		return this.repository.getPrincipal(account.getId());
 	}
+
+	public boolean exists(final Integer id) {
+		Assert.notNull(id);
+
+		return this.repository.exists(id);
+	}
+
+	public List<Administrator> findAll() {
+		return this.repository.findAll();
+	}
+
 }

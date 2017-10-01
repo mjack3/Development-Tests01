@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.Administrator;
@@ -45,6 +46,72 @@ public class AdministratorController extends AbstractController {
 				subjectByAdministrator.add(sub);
 
 		result.addObject("subjects", subjectByAdministrator);
+
+		return result;
+	}
+
+	// Edition ----------------------------------------------------------------
+
+	@RequestMapping(value = "/subject/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final Subject s) {
+		ModelAndView result;
+		result = new ModelAndView("subject/edit");
+		result.addObject("subject", s);
+		return result;
+	}
+
+	/*
+	 * @RequestMapping(value = "/subject/edit", method = RequestMethod.POST, params = "save")
+	 * public ModelAndView save(@Valid final Announcement announcement, final BindingResult binding) {
+	 * ModelAndView result;
+	 *
+	 * if (binding.hasErrors())
+	 * result = this.createEditModelAndView(announcement);
+	 * else
+	 * try {
+	 * this.announcementService.save(announcement);
+	 * result = new ModelAndView("redirect:list.do");
+	 * } catch (final Throwable oops) {
+	 * result = this.createEditModelAndView(announcement, "announcement.commit.error");
+	 * }
+	 *
+	 * return result;
+	 * }
+	 */
+
+	/*
+	 * @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	 * public ModelAndView delete(final Announcement announcement, final BindingResult binding) {
+	 * ModelAndView result;
+	 *
+	 * try {
+	 * this.announcementService.delete(announcement);
+	 * result = new ModelAndView("redirect:list.do");
+	 * } catch (final Throwable oops) {
+	 * result = this.createEditModelAndView(announcement, "announcement.commit.error");
+	 * }
+	 *
+	 * return result;
+	 * }
+	 */
+
+	// Ancillary methods ------------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Subject subject) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(subject, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Subject subject, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("subject/edit");
+
+		result.addObject("subject", subject);
+		result.addObject("message", message);
 
 		return result;
 	}
