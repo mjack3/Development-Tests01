@@ -12,5 +12,5 @@
 
 
 />
-<a href="groupsubject/student/create.do?q=${q.id}"> <spring:message
+<a href="groupsubject/student/create.do"> <spring:message
 							code='subject.createGroup' /></a>
