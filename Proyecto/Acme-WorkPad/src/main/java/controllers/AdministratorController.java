@@ -53,10 +53,10 @@ public class AdministratorController extends AbstractController {
 	// Edition ----------------------------------------------------------------
 
 	@RequestMapping(value = "/subject/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final Subject s) {
+	public ModelAndView edit(@RequestParam final Integer q) {
 		ModelAndView result;
 		result = new ModelAndView("subject/edit");
-		result.addObject("subject", s);
+		result.addObject("subject", subjectService.findOne(q));
 		return result;
 	}
 
