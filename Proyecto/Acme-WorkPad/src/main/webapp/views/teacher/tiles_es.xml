@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- 
- * tiles.xml
+ * tiles_es.xml
  *
  * Copyright (C) 2017 Universidad de Sevilla
  * 
@@ -13,17 +13,17 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
-       
+      
 <tiles-definitions>
 
-	<definition name="student/create" extends="master.page">	
-		<put-attribute name="title" value="SignUp" />
-		<put-attribute name="body" value="/views/student/create.jsp" />
+	<definition name="teacher/create" extends="master.page">	
+		<put-attribute name="title" value="Crear Profesor" />
+		<put-attribute name="body" value="/views/teacher/create.jsp" />
 	</definition>
 	
-	<definition name="student/edit" extends="master.page">	
-		<put-attribute name="title" value="Edit Personal Data" />
-		<put-attribute name="body" value="/views/student/edit.jsp" />
+	<definition name="teacher/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar Datos Personales" />
+		<put-attribute name="body" value="/views/teacher/edit.jsp" />
 	</definition>
-
+	
 </tiles-definitions>

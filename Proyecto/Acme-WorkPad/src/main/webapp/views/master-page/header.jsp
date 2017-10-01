@@ -56,6 +56,7 @@
           code="master.page.subject" /></a></li>
        <li><a href="subject/student/list.do"><spring:message
           code="master.page.student.subject" /></a></li>
+          <li><a href="student/edit.do"><spring:message code="master.page.actor.edit" /></a></li>
        
       </security:authorize>
 
@@ -63,6 +64,14 @@
        <li><a href="subject/list.do"><spring:message
           code="master.page.subject" /></a></li>
        
+      </security:authorize>
+      
+      <security:authorize access="hasRole('ADMINISTRATOR')">
+      	<li><a href="teacher/administrator/create.do"><spring:message code="master.page.teacher.create" /></a></li>
+      </security:authorize>
+      
+      <security:authorize access="hasRole('TEACHER')">
+       <li><a href="teacher/edit.do"><spring:message code="master.page.actor.edit" /></a></li>
       </security:authorize>
 					
 				</ul>

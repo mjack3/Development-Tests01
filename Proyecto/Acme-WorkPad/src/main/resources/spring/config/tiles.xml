@@ -29,6 +29,7 @@
 		<value>/views/subject/tiles.xml</value>
 		<value>/views/groupsubject/tiles.xml</value>
 		<value>/views/student/tiles.xml</value>
+		<value>/views/teacher/tiles.xml</value>
 		<value>/views/legislation/tiles.xml</value>
 	</util:list>
 

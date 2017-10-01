@@ -9,6 +9,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -24,6 +25,7 @@ import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
 import repositories.TeacherRepository;
+import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 @Transactional
@@ -70,7 +72,11 @@ public class TeacherService {
 		res.setSocialIdentities(new ArrayList<SocialIdentity>());
 		res.setSubjects(new ArrayList<Subject>());
 		res.setSurname("");
-		res.setUserAccount(new UserAccount());
+		UserAccount account = new UserAccount();
+		Authority auth = new Authority();
+		auth.setAuthority("TEACHER");
+		account.setAuthorities(Arrays.asList(auth));
+		res.setUserAccount(account);
 
 		return res;
 	}
@@ -128,6 +134,9 @@ public class TeacherService {
 	public Teacher save(Teacher actor) {
 		
 		Assert.notNull(actor);
+		
+		Md5PasswordEncoder enc = new Md5PasswordEncoder();
+		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
 
 		return repository.save(actor);
 	}

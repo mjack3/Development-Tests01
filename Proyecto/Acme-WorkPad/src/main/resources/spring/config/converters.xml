@@ -18,7 +18,8 @@
 	">
 
 	<util:list id="converters">
-	
+							
+							<!-- ADRI -->
 		<bean class="converters.ActivityToStringConverter" />
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StudentToStringConverter" />
@@ -28,9 +29,10 @@
 		<bean class="converters.SeminarToStringConverter" />
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.AuthorityToStringConverter" />
-		<bean class="converters.SubmissionToStringConverter"/>
-		<bean class="converters.SubjectToStringConverter" />
-		<bean class="converters.StringToActivityConverter" />
+		<bean class="converters.BibliographyRecordToStringConverter" />
+		<bean class="converters.UserAccountToStringConverter" />
+
+		
 		<bean class="converters.StringToAdministratorConverter" />
 		<bean class="converters.StringToStudentConverter" />
 		<bean class="converters.StringToTeacherConverter" />
@@ -39,6 +41,18 @@
 		<bean class="converters.StringToSeminarConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		<bean class="converters.StringToAuthorityConverter" />
+
+		<bean class="converters.StringToBibliographyRecordConverter" />
+		<bean class="converters.StringToUserAccountConverter" />
+		
+							<!-- FIN ADRI -->
+							
+		<bean class="converters.SubmissionToStringConverter"/>
+		<bean class="converters.SubjectToStringConverter" />
+		<bean class="converters.StringToActivityConverter" />
+							
+		<bean class="converters.SubjectToStringConverter" /> 
+		<bean class="converters.SubjectToStringConverter" /> 
 		<bean class="converters.StringToSubmissionConverter" />
 		<bean class="converters.StringToSubjectConverter" />
 		

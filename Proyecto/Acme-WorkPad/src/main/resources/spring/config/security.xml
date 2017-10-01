@@ -36,6 +36,13 @@
 		
 		<security:intercept-url pattern="/student/create.do" access="isAnonymous()" />
 		<security:intercept-url pattern="/student/save.do" access="isAnonymous()" /> 
+		<security:intercept-url pattern="/student/saveEdit.do" access="hasRole('STUDENT')" /> 
+		<security:intercept-url pattern="/student/edit.do" access="hasRole('STUDENT')" /> 
+		
+		<security:intercept-url pattern="/teacher/administrator/create.do" access="hasRole('ADMINISTRATOR')" />
+		<security:intercept-url pattern="/teacher/administrator/save.do" access="hasRole('ADMINISTRATOR')" />
+		<security:intercept-url pattern="/teacher/saveEdit.do" access="hasRole('TEACHER')" />
+		<security:intercept-url pattern="/teacher/edit.do" access="hasRole('TEACHER')" />  
 		
 		<!-- FIN ADRI -->
 

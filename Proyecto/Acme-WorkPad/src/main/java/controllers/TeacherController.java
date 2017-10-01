@@ -9,27 +9,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Student;
-import services.StudentService;
+import domain.Teacher;
+import services.TeacherService;
 
 @Controller
-@RequestMapping("/student")
-public class StudentController {
+@RequestMapping("/teacher")
+public class TeacherController {
 
 	@Autowired
-	private StudentService	studentService;
+	private TeacherService	teacherService;
 
 
-
-	public StudentController() {
+	public TeacherController() {
 		super();
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/administrator/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
 
-		result = createNewModelAndView(studentService.create(), null);
+		result = createNewModelAndView(teacherService.create(), null);
 
 		return result;
 	}
@@ -38,59 +37,58 @@ public class StudentController {
 	public ModelAndView edit() {
 		ModelAndView result;
 
-		result = createEditModelAndView(studentService.checkPrincipal(), null);
+		result = createEditModelAndView(teacherService.checkPrincipal(), null);
 
 		return result;
 	}
 
-	@RequestMapping(value="/save", method=RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@Valid Student student, BindingResult binding) {
+	@RequestMapping(value="/administrator/save", method=RequestMethod.POST, params = "save")
+	public ModelAndView saveCreate(@Valid Teacher teacher, BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			result = createNewModelAndView(student, null);
+			result = createNewModelAndView(teacher, null);
 		} else {
 			try {
-				studentService.save(student);
+				teacherService.save(teacher);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (Throwable th) {
 				th.printStackTrace();
-				result = createNewModelAndView(student, "student.commit.error");
+				result = createNewModelAndView(teacher, "student.commit.error");
 		}
 		
 	}
 	return result;
 }
-	
 	@RequestMapping(value="/saveEdit", method=RequestMethod.POST, params = "save")
-	public ModelAndView saveEdit(@Valid Student student, BindingResult binding) {
+	public ModelAndView saveEdit(@Valid Teacher teacher, BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			result = createEditModelAndView(student, null);
+			result = createEditModelAndView(teacher, null);
 		} else {
 			try {
-				studentService.save(student);
+				teacherService.save(teacher);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (Throwable th) {
 				th.printStackTrace();
-				result = createEditModelAndView(student, "student.commit.error");
+				result = createEditModelAndView(teacher, "student.commit.error");
 		}
 		
 	}
 	return result;
 }
 
-protected ModelAndView createNewModelAndView(Student student, String message) {
+protected ModelAndView createNewModelAndView(Teacher teacher, String message) {
 	ModelAndView result;
-	result = new ModelAndView("student/create");
-	result.addObject("student", student);
+	result = new ModelAndView("teacher/create");
+	result.addObject("teacher", teacher);
 	result.addObject("message", message);
 	return result;
 }
 
-protected ModelAndView createEditModelAndView(Student student, String message) {
+protected ModelAndView createEditModelAndView(Teacher teacher, String message) {
 	ModelAndView result;
-	result = new ModelAndView("student/edit");
-	result.addObject("student", student);
+	result = new ModelAndView("teacher/edit");
+	result.addObject("teacher", teacher);
 	result.addObject("message", message);
 	return result;
 }
