@@ -32,6 +32,11 @@
 		<security:intercept-url pattern="/" access="permitAll" /> 
 
 
+		<!-- MIGUEL -->
+		
+		<security:intercept-url pattern="/**/search.do" access="permitAll" />
+		<security:intercept-url pattern="/**/teacher/**" access="hasRole('TEACHER')" />
+	
 		<!-- ADRI -->
 		
 		<security:intercept-url pattern="/student/create.do" access="isAnonymous()" />
@@ -49,7 +54,7 @@
 
 		<!-- SUBJECTS -->
 		
-		<security:intercept-url pattern="/subject/search.do" access="permitAll" />
+		
 
 			<!-- karli -->
 

@@ -18,8 +18,8 @@ import domain.Activity;
 import domain.Subject;
 
 @Controller
-@RequestMapping("/teacher/activity")
-public class TeacherActivityController extends AbstractController {
+@RequestMapping("/activity/teacher")
+public class ActivityTeacherController extends AbstractController {
 
 	@Autowired
 	private TeacherService	teacherService;
@@ -30,7 +30,7 @@ public class TeacherActivityController extends AbstractController {
 	private SubjectService	subjectService;
 
 
-	public TeacherActivityController() {
+	public ActivityTeacherController() {
 		super();
 	}
 
@@ -42,6 +42,7 @@ public class TeacherActivityController extends AbstractController {
 		final Collection<Activity> activities = this.teacherService.findAllActivitiesBySubject(subject);
 
 		resul.addObject("activities", activities);
+		resul.addObject("requestURI", "activity/teacher/list.do");
 
 		return resul;
 	}

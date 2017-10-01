@@ -150,4 +150,17 @@ public class SubjectService {
 
 		return subject;
 	}
+
+	/**
+	 * Devuelve asignaturas impartidas por el profesor
+	 * 
+	 * @param checkPrincipal
+	 * @return
+	 */
+
+	public Collection<Subject> findAllByPrincipal(final Teacher checkPrincipal) {
+		// TODO Auto-generated method stub
+		Assert.notNull(checkPrincipal);
+		return this.repository.findAllByPrincipal(checkPrincipal.getId());
+	}
 }

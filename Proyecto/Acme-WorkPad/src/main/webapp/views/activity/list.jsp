@@ -19,7 +19,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 	
-	<acme:list  requestURI="${requestURI }" list="${activities }">
+	<acme:list editUrl="activity/teacher/edit.do"  requestURI="${requestURI }" list="${activities }">
 	
 	
 	

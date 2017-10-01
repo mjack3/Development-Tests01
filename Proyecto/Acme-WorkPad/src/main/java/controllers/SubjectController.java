@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Student;
-import domain.Subject;
 import security.LoginService;
 import services.StudentService;
 import services.SubjectService;
+import domain.Student;
+import domain.Subject;
 
 @Controller
 @RequestMapping("/subject")
@@ -53,6 +53,7 @@ public class SubjectController extends AbstractController {
 
 		view.addObject("a", 3);
 		view.addObject("subject", subject);
+		view.addObject("requestURI", "subject/search.do");
 
 		return view;
 	}

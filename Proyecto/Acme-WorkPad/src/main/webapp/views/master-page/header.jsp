@@ -60,11 +60,19 @@
        
       </security:authorize>
 
-	<security:authorize access="isAnonymous()">
+	<security:authorize access="permitAll()">
        <li><a href="subject/list.do"><spring:message
           code="master.page.subject" /></a></li>
        
       </security:authorize>
+
+      
+      <security:authorize access="hasRole('TEACHER')">
+       <li><a href="subject/teacher/list.do"><spring:message
+          code="master.page.teacher.subject" /></a></li>
+       
+      </security:authorize>
+
       
       <security:authorize access="hasRole('ADMINISTRATOR')">
       	<li><a href="teacher/administrator/create.do"><spring:message code="master.page.teacher.create" /></a></li>
@@ -73,6 +81,7 @@
       <security:authorize access="hasRole('TEACHER')">
        <li><a href="teacher/edit.do"><spring:message code="master.page.actor.edit" /></a></li>
       </security:authorize>
+
 					
 				</ul>
 			</div>

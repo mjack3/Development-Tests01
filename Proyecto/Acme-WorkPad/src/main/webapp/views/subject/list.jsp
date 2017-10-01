@@ -39,7 +39,7 @@
 
 
 
-<acme:list entityUrl="{bulletins:bulletin/list.do, teacher:teacher/view.do, bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator,activities" pagesize="6">
+<acme:list entityUrl="{bulletins:bulletin/list.do,teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, groups:groupsubject/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator,activities" pagesize="6">
 
 <security:authorize access="hasRole('STUDENT')">
 <jstl:if test="${e.seats>0 and !subjectByStudent.contains(e)}">
@@ -59,6 +59,17 @@
 <a href="administrator/subject/edit.do?q=${e.id}"> <spring:message
 							code='acme.edit' /></a>
 </security:authorize>
+
+
+<security:authorize access="hasRole('TEACHER')">
+
+<a href="activity/teacher/list.do?subjectId=${e.id }"> <spring:message code="subject.activities" /> </a>
+
+
+
+</security:authorize>
+
+
 </acme:list>
 
 
