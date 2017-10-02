@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.SubjectRepository;
-import security.LoginService;
 import domain.Subject;
 import domain.Teacher;
+import repositories.SubjectRepository;
+import security.LoginService;
 
 @Transactional
 @Service
@@ -51,7 +51,7 @@ public class SubjectService {
 
 	/**
 	 * Actualiza la información de una asignatura
-	 * 
+	 *
 	 * @param subject
 	 */
 
@@ -63,7 +63,7 @@ public class SubjectService {
 
 	/**
 	 * Devuelve la asignatura asociada a un profesor y a una actividad
-	 * 
+	 *
 	 * @param id
 	 * @param id2
 	 * @return
@@ -133,9 +133,18 @@ public class SubjectService {
 		return this.repository.save(arg0);
 	}
 
+	public void delete(final Subject subject) {
+		Assert.notNull(subject);
+
+		//subject.getActivities();
+
+		this.repository.delete(subject);
+
+	}
+
 	/**
 	 * Devuelve una asignatura que el profesor logueado imparte
-	 * 
+	 *
 	 * @param subjectId
 	 * @return
 	 */
@@ -153,7 +162,7 @@ public class SubjectService {
 
 	/**
 	 * Devuelve asignaturas impartidas por el profesor
-	 * 
+	 *
 	 * @param checkPrincipal
 	 * @return
 	 */
@@ -174,4 +183,5 @@ public class SubjectService {
 		Assert.isTrue(LoginService.isAnyAuthenticated());
 		return this.repository.findSubjectsByWordWithSeats(keyword, LoginService.getPrincipal().getId());
 	}
+
 }

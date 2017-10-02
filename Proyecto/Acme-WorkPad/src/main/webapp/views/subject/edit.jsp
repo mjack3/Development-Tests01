@@ -13,7 +13,7 @@
 
 
 <acme:acme_form hiddenFields="id,version,userAccount,administrator,bulletins,teacher,bibliographiesRecords,activities,groups,students,category,assigments"
-type="edit" entity="${subject}" url="administrator/subject/edit.do" numberSteps="0.25" cancel="welcome/index.do">
+type="edit" entity="${subject}" url="subject/administrator/edit.do" numberSteps="0.25" cancel="welcome/index.do">
 
 </acme:acme_form>
 

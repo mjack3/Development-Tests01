@@ -48,14 +48,14 @@
 </security:authorize >
 <security:authorize access="hasRole('ADMINISTRATOR')">
 
-<a href="administrator/subject/delete.do?q=${e.id}"> <spring:message
+<a href="subject/administrator/delete.do?q=${e.id}"> <spring:message
 							code='acme.delete' /></a>
 
 
 </security:authorize>
 <security:authorize access="hasRole('ADMINISTRATOR')">
 
-<a href="administrator/subject/edit.do?q=${e.id}"> <spring:message
+<a href="subject/administrator/edit.do?q=${e.id}"> <spring:message
 							code='acme.edit' /></a>
 </security:authorize>
 
