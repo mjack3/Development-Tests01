@@ -217,7 +217,9 @@ public class MailMessageService {
 
 	public MailMessage save(MailMessage arg0) {
 		Assert.notNull(arg0);
-
+		List<String> actors = administratorService.allActorName();
+		Assert.isTrue(actors.contains(arg0.getRecipient().getUserAccount().getUsername()));
+		Assert.isTrue(actors.contains(arg0.getSender().getUserAccount().getUsername()));
 		return mailMessageRepository.save(arg0);
 	}
 
@@ -232,4 +234,5 @@ public class MailMessageService {
 
 		return mailMessageRepository.messagesByFolder(folder_id);
 	}
+
 }

@@ -152,10 +152,10 @@ public class AdministratorService {
 	public Object[] MinMaxAvgAssigmentsOfSubjects() {
 		return repository.MinMaxAvgAssigmentsOfSubjects();
 	}
-	
-	public List<Object> getDashboard(){
+
+	public List<Object> getDashboard() {
 		List<Object> res = new ArrayList<Object>();
-		
+
 		res.add(this.teacherMoreSubjects());
 		res.add(this.teacherMinSubjects());
 		res.add(this.teacherAverageSubjects());
@@ -163,15 +163,12 @@ public class AdministratorService {
 		res.add(this.MinMaxAvgSeatsOfSubjects());
 		res.add(this.MinMaxAvgStudentsOfSubjects());
 		res.add(this.MinMaxAvgAssigmentsOfSubjects());
-		
-		
-		
 
-		
-		
 		return res;
 	}
-	
-	
+
+	public List<String> allActorName() {
+		return repository.allActorName();
+	}
 
 }

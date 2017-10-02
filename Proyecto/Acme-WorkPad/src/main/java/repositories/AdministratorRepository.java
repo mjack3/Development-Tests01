@@ -1,3 +1,4 @@
+
 package repositories;
 
 import java.util.List;
@@ -10,8 +11,8 @@ import domain.Administrator;
 import domain.Teacher;
 
 @Repository
-public interface AdministratorRepository extends JpaRepository<Administrator, Integer>{
-	
+public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
+
 	/**
 	 * 
 	 * @param id
@@ -19,7 +20,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select a from Administrator a where a.userAccount.id = ?1")
 	Administrator getPrincipal(int id);
-	
+
 	/**
 	 * 
 	 * @param
@@ -27,7 +28,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select t from Teacher t where t.subjects.size = (select max(c.subjects.size) from Teacher c)")
 	List<Teacher> teacherMoreSubjects();
-	
+
 	/**
 	 * 
 	 * @param
@@ -35,7 +36,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select t from Teacher t where t.subjects.size = (select min(c.subjects.size) from Teacher c)")
 	List<Teacher> teacherMinSubjects();
-	
+
 	/**
 	 * 
 	 * @param
@@ -44,7 +45,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	@Query("select t from Teacher t where t.subjects.size >= (select avg(c.subjects.size)*0.9 from Teacher c) or t.subjects.size <= (select avg(c.subjects.size)*1.1 from Teacher c)")
 	List<Teacher> teacherAverageSubjects();
 	//TODO
-	
+
 	/**
 	 * 
 	 * @param
@@ -52,7 +53,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select min(t.subjects.size), max(t.subjects.size), avg(t.subjects.size) from Teacher t")
 	Object[] teacherMinMaxAvgSubjects();
-	
+
 	/**
 	 * 
 	 * @param
@@ -60,7 +61,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select min(s.seats), max(s.seats), avg(s.seats) from Subject s")
 	Object[] MinMaxAvgSeatsOfSubjects();
-	
+
 	/**
 	 * 
 	 * @param
@@ -68,7 +69,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select min(s.students.size), max(s.students.size), avg(s.students.size) from Subject s")
 	Object[] MinMaxAvgStudentsOfSubjects();
-	
+
 	/**
 	 * 
 	 * @param
@@ -76,4 +77,13 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 */
 	@Query("select min(s.assigments.size), max(s.assigments.size), avg(s.assigments.size) from Subject s")
 	Object[] MinMaxAvgAssigmentsOfSubjects();
+	/**
+	 * 
+	 * @param
+	 * @return Lista de todos los actores.
+	 */
+
+	@Query("select a.userAccount.username from Actor a")
+	List<String> allActorName();
+
 }

@@ -9,7 +9,9 @@
 
 <security:authorize access="hasRole('STUDENT')">
 
-<acme:acme_form hiddenFields="id,version,submission" type="create" entity="${group}" url="group/student/save.do" cancel="welcome/index.do">
+<acme:acme_form hiddenFields="id,version,submission" type="create" entity="${group}" date_stamp="startDate,endDate" url="group/student/save.do" cancel="welcome/index.do">
+
+		
 </acme:acme_form>
 
 </security:authorize>

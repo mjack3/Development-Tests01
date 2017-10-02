@@ -56,11 +56,12 @@ public class GroupController {
 			result = createNewModelAndView(groupsubject, null);
 		} else {
 			try {
+
 				grouptService.save(groupsubject, subjectId);
 				result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
 			} catch (Throwable th) {
 				th.printStackTrace();
-				result = createNewModelAndView(groupsubject, "groupsubject.commit.error");
+				result = createNewModelAndView(groupsubject, "acme.error.message");
 			}
 		}
 		return result;
