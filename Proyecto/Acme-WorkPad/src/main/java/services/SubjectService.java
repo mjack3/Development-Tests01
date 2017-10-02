@@ -15,7 +15,7 @@ import domain.Activity;
 import domain.Assignment;
 import domain.BibliographyRecord;
 import domain.Bulletin;
-import domain.GroupSubject;
+import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
@@ -33,11 +33,8 @@ public class SubjectService {
 	private StudentService				studentService;
 
 	@Autowired
-	private LoginService				loginService;
-	@Autowired
 	private TeacherService				teacherService;
-	@Autowired
-	private BibliographyRecordService	bibliographyRecordService;
+
 
 
 	public SubjectService() {
@@ -150,7 +147,7 @@ public class SubjectService {
 
 		subject.setActivities(new ArrayList<Activity>());
 		subject.setBulletins(new ArrayList<Bulletin>());
-		subject.setGroups(new ArrayList<GroupSubject>());
+		subject.setGroups(new ArrayList<Group>());
 
 		subject.setStudents(new ArrayList<Student>());
 		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());

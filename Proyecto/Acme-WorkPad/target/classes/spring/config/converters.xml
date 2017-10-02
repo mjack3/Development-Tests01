@@ -74,8 +74,22 @@
 		
 		<!-- KARLI -->
 		
-		<bean class="converters.GroupSubjectToStringConverter" />  
-  		<bean class="converters.StringToGroupSubjectConverter" /> 
+		<bean class="converters.GroupToStringConverter" />  
+  		<bean class="converters.StringToGroupConverter" /> 
+  		
+  		
+  		<!-- REME -->
+  		
+  		<bean class="converters.CategoryToStringConverter" />  
+  		<bean class="converters.StringToCategoryConverter" />
+  		
+  		 <bean class="converters.BulletinToStringConverter" />  
+  		<bean class="converters.StringToBulletinConverter" />
+  		
+  		<bean class="converters.AssignmentToStringConverter" />  
+  		<bean class="converters.StringToAssignmentConverter" />
+  		
+  		<!-- fin REME -->
 		
 		
 	</util:list>

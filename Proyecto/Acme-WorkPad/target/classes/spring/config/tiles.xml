@@ -26,8 +26,10 @@
 		<value>/views/administrator/tiles.xml</value>
 		<value>/views/customer/tiles.xml</value>
 		<value>/views/profile/tiles.xml</value>
+		<value>/views/bulletin/tiles.xml</value>
+
 		<value>/views/subject/tiles.xml</value>
-		<value>/views/groupsubject/tiles.xml</value>
+		<value>/views/group/tiles.xml</value>
 		<value>/views/student/tiles.xml</value>
 
 
