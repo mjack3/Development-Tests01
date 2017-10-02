@@ -76,6 +76,12 @@
 		
 		<bean class="converters.GroupSubjectToStringConverter" />  
   		<bean class="converters.StringToGroupSubjectConverter" /> 
+  		
+  		
+  		<!-- REME -->
+  		
+  		<bean class="converters.CategoryToStringConverter" />  
+  		<bean class="converters.StringToCategoryConverter" />
 		
 		
 	</util:list>
