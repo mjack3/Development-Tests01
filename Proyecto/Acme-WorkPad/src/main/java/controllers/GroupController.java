@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.LoginService;
-import services.GroupService;
-import services.SubjectService;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
+import security.LoginService;
+import services.GroupService;
+import services.SubjectService;
 
 @Controller
 @RequestMapping("/group")
 public class GroupController {
 
 	@Autowired
-	GroupService		groupsubjectService;
+	GroupService			grouptService;
 	@Autowired
 	LoginService			loginservice;
 	@Autowired
@@ -41,7 +41,7 @@ public class GroupController {
 		ModelAndView result;
 
 		if (subjectscond) {
-			result = createNewModelAndView(groupsubjectService.create(), null);
+			result = createNewModelAndView(grouptService.create(), null);
 		} else {
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
@@ -56,7 +56,7 @@ public class GroupController {
 			result = createNewModelAndView(groupsubject, null);
 		} else {
 			try {
-				groupsubjectService.save(groupsubject, subjectId);
+				grouptService.save(groupsubject, subjectId);
 				result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
 			} catch (Throwable th) {
 				th.printStackTrace();

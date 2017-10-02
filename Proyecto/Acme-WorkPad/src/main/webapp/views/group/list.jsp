@@ -8,7 +8,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<acme:list  list="${groupsubject}" requestURI="group/student/list.do" entityUrl="{submission:submission/list.do}" variable="student" pagesize="6">
+<acme:list  list="${group}" requestURI="group/student/list.do" entityUrl="{submission:submission/list.do}" variable="student" pagesize="6">
 
 
 
