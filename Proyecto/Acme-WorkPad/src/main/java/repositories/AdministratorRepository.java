@@ -41,7 +41,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	 * @param
 	 * @return el profesor que enseña el promedio de asignaturas más menos 10%.
 	 */
-	@Query("select t from Teacher t where t.subjects.size = (select avg(c.subjects.size) from Teacher c)")
+	@Query("select t from Teacher t where t.subjects.size >= (select avg(c.subjects.size)*0.9 from Teacher c) or t.subjects.size <= (select avg(c.subjects.size)*1.1 from Teacher c)")
 	List<Teacher> teacherAverageSubjects();
 	//TODO
 	

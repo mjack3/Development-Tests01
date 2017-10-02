@@ -1901,5 +1901,17 @@
 		<property name="authors" value="Paco Romero y Juan Palomo" />
 		<property name="locator" value="666604200859"/>
 	</bean>
+	<bean id="spamWord1" class="domain.SpamWord">
+		<property name="name" value="viagra" />
+	</bean>
+	<bean id="spamWord2" class="domain.SpamWord">
+		<property name="name" value="cialis" />
+	</bean>
+	<bean id="spamWord3" class="domain.SpamWord">
+		<property name="name" value="sex" />
+	</bean>
+	<bean id="spamWord4" class="domain.SpamWord">
+		<property name="name" value="jes extender" />
+	</bean>
 	
 </beans>

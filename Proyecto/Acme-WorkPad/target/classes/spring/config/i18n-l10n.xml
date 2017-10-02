@@ -30,8 +30,17 @@
 		
 		<value>/views/groupsubject/messages</value>
 		<value>/views/student/messages</value>
+
+
+		<value>/views/activity/messages</value>
+
+
 		<value>/views/teacher/messages</value>
+
 		<value>/views/legislation/messages</value>
+		<value>/views/mailmessage/messages</value>
+		<value>/views/folder/messages</value>
+
 	</util:list>
 
 </beans>

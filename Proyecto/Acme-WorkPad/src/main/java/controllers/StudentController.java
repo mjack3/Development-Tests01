@@ -68,7 +68,7 @@ public class StudentController {
 			result = createEditModelAndView(student, null);
 		} else {
 			try {
-				studentService.save(student);
+				studentService.update(student);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (Throwable th) {
 				th.printStackTrace();

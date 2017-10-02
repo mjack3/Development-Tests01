@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 import domain.ActivityRecord;
 import domain.Administrator;
 import domain.SocialIdentity;
+import domain.Teacher;
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
@@ -123,5 +124,54 @@ public class AdministratorService {
 	public List<Administrator> findAll() {
 		return this.repository.findAll();
 	}
+
+	public List<Teacher> teacherMoreSubjects() {
+		return repository.teacherMoreSubjects();
+	}
+
+	public List<Teacher> teacherMinSubjects() {
+		return repository.teacherMinSubjects();
+	}
+
+	public List<Teacher> teacherAverageSubjects() {
+		return repository.teacherAverageSubjects();
+	}
+
+	public Object[] teacherMinMaxAvgSubjects() {
+		return repository.teacherMinMaxAvgSubjects();
+	}
+
+	public Object[] MinMaxAvgSeatsOfSubjects() {
+		return repository.MinMaxAvgSeatsOfSubjects();
+	}
+
+	public Object[] MinMaxAvgStudentsOfSubjects() {
+		return repository.MinMaxAvgStudentsOfSubjects();
+	}
+
+	public Object[] MinMaxAvgAssigmentsOfSubjects() {
+		return repository.MinMaxAvgAssigmentsOfSubjects();
+	}
+	
+	public List<Object> getDashboard(){
+		List<Object> res = new ArrayList<Object>();
+		
+		res.add(this.teacherMoreSubjects());
+		res.add(this.teacherMinSubjects());
+		res.add(this.teacherAverageSubjects());
+		res.add(this.teacherMinMaxAvgSubjects());
+		res.add(this.MinMaxAvgSeatsOfSubjects());
+		res.add(this.MinMaxAvgStudentsOfSubjects());
+		res.add(this.MinMaxAvgAssigmentsOfSubjects());
+		
+		
+		
+
+		
+		
+		return res;
+	}
+	
+	
 
 }

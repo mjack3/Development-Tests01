@@ -39,6 +39,8 @@
 		<value>/views/teacher/tiles.xml</value>
 
 		<value>/views/legislation/tiles.xml</value>
+		<value>/views/mailmessage/tiles.xml</value>
+		<value>/views/folder/tiles.xml</value>
 
 	</util:list>
 
