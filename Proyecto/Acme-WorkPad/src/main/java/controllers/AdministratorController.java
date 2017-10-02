@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Administrator;
-import domain.Subject;
 import security.LoginService;
 import services.AdministratorService;
 import services.SubjectService;
+import domain.Administrator;
+import domain.Subject;
 
 @Controller
 @RequestMapping("/administrator")
@@ -46,7 +46,7 @@ public class AdministratorController extends AbstractController {
 				subjectByAdministrator.add(sub);
 
 		result.addObject("subject", subjectByAdministrator);
-
+		result.addObject("requestSearch", "subject/authenticated/search.do");
 		return result;
 	}
 
@@ -56,7 +56,7 @@ public class AdministratorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final Integer q) {
 		ModelAndView result;
 		result = new ModelAndView("subject/edit");
-		result.addObject("subject", subjectService.findOne(q));
+		result.addObject("subject", this.subjectService.findOne(q));
 		return result;
 	}
 
@@ -64,7 +64,7 @@ public class AdministratorController extends AbstractController {
 	 * @RequestMapping(value = "/subject/edit", method = RequestMethod.POST, params = "save")
 	 * public ModelAndView save(@Valid final Announcement announcement, final BindingResult binding) {
 	 * ModelAndView result;
-	 *
+	 * 
 	 * if (binding.hasErrors())
 	 * result = this.createEditModelAndView(announcement);
 	 * else
@@ -74,7 +74,7 @@ public class AdministratorController extends AbstractController {
 	 * } catch (final Throwable oops) {
 	 * result = this.createEditModelAndView(announcement, "announcement.commit.error");
 	 * }
-	 *
+	 * 
 	 * return result;
 	 * }
 	 */
@@ -83,14 +83,14 @@ public class AdministratorController extends AbstractController {
 	 * @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	 * public ModelAndView delete(final Announcement announcement, final BindingResult binding) {
 	 * ModelAndView result;
-	 *
+	 * 
 	 * try {
 	 * this.announcementService.delete(announcement);
 	 * result = new ModelAndView("redirect:list.do");
 	 * } catch (final Throwable oops) {
 	 * result = this.createEditModelAndView(announcement, "announcement.commit.error");
 	 * }
-	 *
+	 * 
 	 * return result;
 	 * }
 	 */

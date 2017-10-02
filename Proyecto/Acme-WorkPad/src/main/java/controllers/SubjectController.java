@@ -58,6 +58,25 @@ public class SubjectController extends AbstractController {
 		return view;
 	}
 
+	@RequestMapping(value = "/authenticated/search", method = RequestMethod.GET)
+	public ModelAndView search2(@RequestParam(defaultValue = "") final String keyword, final String sw) {
+		ModelAndView view;
+
+		Collection<Subject> subject;
+
+		view = new ModelAndView("subject/list");
+
+		if (sw.equals("sin"))
+			subject = this.subjectService.findSubjectsByWordWithoutSeatsByPrincipal(keyword);
+		else
+			subject = this.subjectService.findSubjectsByWordWithSeatsByPrincipal(keyword);
+
+		view.addObject("subject", subject);
+		view.addObject("requestURI", "subject/authenticated/search.do");
+
+		return view;
+	}
+
 	/*
 	 * 
 	 * 
@@ -80,6 +99,7 @@ public class SubjectController extends AbstractController {
 			result.addObject("subjectByStudent", subjectByStudent);
 		}
 
+		result.addObject("requestSearch", "subject/authenticated/search.do");
 		return result;
 	}
 
@@ -99,7 +119,7 @@ public class SubjectController extends AbstractController {
 		}
 
 		result.addObject("subject", this.subjectService.findAll());
-
+		result.addObject("requestSearch", "subject/authenticated/search.do");
 		return result;
 	}
 
@@ -111,7 +131,7 @@ public class SubjectController extends AbstractController {
 		result = new ModelAndView("subject/list");
 		result.addObject("requestURI", "/subject/list.do");
 		result.addObject("subject", this.subjectService.findAll());
-
+		result.addObject("requestSearch", "subject/search.do");
 		return result;
 	}
 

@@ -163,4 +163,15 @@ public class SubjectService {
 		Assert.notNull(checkPrincipal);
 		return this.repository.findAllByPrincipal(checkPrincipal.getId());
 	}
+
+	public Collection<Subject> findSubjectsByWordWithoutSeatsByPrincipal(final String keyword) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		return this.repository.findSubjectsByWordWithoutSeats(keyword, LoginService.getPrincipal().getId());
+	}
+
+	public Collection<Subject> findSubjectsByWordWithSeatsByPrincipal(final String keyword) {
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		return this.repository.findSubjectsByWordWithSeats(keyword, LoginService.getPrincipal().getId());
+	}
 }

@@ -25,11 +25,11 @@
 					<security:authorize access="isAnonymous()">
 						<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 						<li><a class="fNiv" href="student/create.do"><spring:message code="master.page.student.create" /></a></li>
-						 <li><a href="subject/list.do"><spring:message
-          			code="master.page.subject" /></a></li>
+						 
 					</security:authorize>
 					
-					
+					<li><a href="subject/list.do"><spring:message
+          			code="master.page.subject" /></a></li>
 					
 					
 					<security:authorize access="isAuthenticated()">
@@ -50,14 +50,15 @@
 					<security:authorize access="hasRole('ADMINISTRATOR')">
 						<li><a class="fNiv" href="administrator/subject/list.do"><spring:message code="master.page.mySubject" /></a></li>
 					</security:authorize>
-						 <li><a href="subject/student/list.do"><spring:message
-          	code="master.page.student.subject" /></a></li>
+						 
 					
 					
 					<!-- KARLI -->
 					
 					
 					<security:authorize access="hasRole('STUDENT')">
+					<li><a href="subject/student/list.do"><spring:message
+          	code="master.page.student.subject" /></a></li>
 					<li><a href="subject/student/register/list.do"><spring:message
           code="master.page.subject" /></a></li>
       

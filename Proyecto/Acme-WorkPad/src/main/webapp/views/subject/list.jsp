@@ -22,15 +22,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+
 <div> 
-	<form method="GET" action="subject/search.do"> 
-	
+	<jstl:out value="${requestSearch }" />
+	<form method="GET" action="${requestSearch }">
 	<input type="radio" name="sw" value="sin"> <spring:message code="subject.withoutSeats" /> <br>
   	<input checked="checked" type="radio" name="sw" value="con"> <spring:message code="subject.withSeats" /> <br>
 	
 		<input type="text" name="keyword"/>
 		<button type="submit"><spring:message code="subject.search" /></button>
 	</form>
+	
 
  </div>
   
