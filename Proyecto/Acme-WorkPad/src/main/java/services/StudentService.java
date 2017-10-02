@@ -44,11 +44,11 @@ public class StudentService {
 
 	public Student create() {
 
-		Student res = new Student();
+		final Student res = new Student();
 
 		res.setActivitiesRecords(new ArrayList<ActivityRecord>());
 		res.setEmail("");
-		res.setFolders(createFolders());
+		res.setFolders(this.createFolders());
 		res.setName("");
 		res.setPhone("");
 		res.setPostalAddress("");
@@ -56,38 +56,38 @@ public class StudentService {
 		res.setSocialIdentities(new ArrayList<SocialIdentity>());
 		res.setSubjects(new ArrayList<Subject>());
 		res.setSurname("");
-		UserAccount account = new UserAccount();
-		Authority auth = new Authority();
+		final UserAccount account = new UserAccount();
+		final Authority auth = new Authority();
 		auth.setAuthority("STUDENT");
 		account.setAuthorities(Arrays.asList(auth));
 		res.setUserAccount(account);
 		res.setGroups(new ArrayList<Group>());
-		res.setFolders(folderService.save(folderService.createDefaultFolders()));
+		res.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 
 		return res;
 	}
 
 	/**
 	 * Crea las carpetas por defecto del correo
-	 * 
+	 *
 	 * @return Carpetas creadas
 	 */
 	private List<Folder> createFolders() {
-		List<Folder> res = new ArrayList<Folder>();
+		final List<Folder> res = new ArrayList<Folder>();
 
-		Folder inbox = new Folder();
+		final Folder inbox = new Folder();
 		inbox.setFolderName("Inbox");
 		inbox.setMessages(new ArrayList<MailMessage>());
 
-		Folder outbox = new Folder();
+		final Folder outbox = new Folder();
 		outbox.setFolderName("Outbox");
 		outbox.setMessages(new ArrayList<MailMessage>());
 
-		Folder trashbox = new Folder();
+		final Folder trashbox = new Folder();
 		trashbox.setFolderName("Trashbox");
 		trashbox.setMessages(new ArrayList<MailMessage>());
 
-		Folder spambox = new Folder();
+		final Folder spambox = new Folder();
 		spambox.setFolderName("Spambox");
 		spambox.setMessages(new ArrayList<MailMessage>());
 
@@ -98,7 +98,7 @@ public class StudentService {
 
 	/**
 	 * Actualiza un estudiante existente
-	 * 
+	 *
 	 * @param actor
 	 *            Estudiante a actualizar
 	 * @return estudiante actualizado
@@ -114,7 +114,7 @@ public class StudentService {
 
 	/**
 	 * Crea un nuevo estudiante
-	 * 
+	 *
 	 * @param actor
 	 *            Estudiante a crear
 	 * @return estudiante creado
@@ -124,7 +124,7 @@ public class StudentService {
 
 		Assert.notNull(actor);
 
-		Md5PasswordEncoder enc = new Md5PasswordEncoder();
+		final Md5PasswordEncoder enc = new Md5PasswordEncoder();
 		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
 
 		return this.repository.save(actor);
@@ -134,7 +134,7 @@ public class StudentService {
 
 	/**
 	 * Comprueba que el logueado es profesor
-	 * 
+	 *
 	 * @return profesor logueado
 	 */
 
@@ -150,6 +150,12 @@ public class StudentService {
 		// TODO Auto-generated method stub
 		Assert.notNull(id);
 		return this.repository.exists(id);
+	}
+
+	public void delete(final Student student) {
+		Assert.notNull(student);
+
+		this.repository.delete(student);
 	}
 
 }

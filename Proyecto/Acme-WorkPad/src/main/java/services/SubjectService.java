@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,6 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import domain.Activity;
+import domain.Assignment;
+import domain.BibliographyRecord;
+import domain.Bulletin;
+import domain.GroupSubject;
+import domain.Student;
 import domain.Subject;
 import domain.Teacher;
 import repositories.SubjectRepository;
@@ -20,15 +27,17 @@ import security.LoginService;
 public class SubjectService {
 
 	@Autowired
-	private SubjectRepository	repository;
+	private SubjectRepository			repository;
 
 	@Autowired
-	private StudentService		studentService;
+	private StudentService				studentService;
 
 	@Autowired
-	private LoginService		loginService;
+	private LoginService				loginService;
 	@Autowired
-	private TeacherService		teacherService;
+	private TeacherService				teacherService;
+	@Autowired
+	private BibliographyRecordService	bibliographyRecordService;
 
 
 	public SubjectService() {
@@ -136,10 +145,19 @@ public class SubjectService {
 	public void delete(final Subject subject) {
 		Assert.notNull(subject);
 
-		//subject.getActivities();
+		for (final Student s : subject.getStudents())
+			this.studentService.delete(s);
+
+		subject.setActivities(new ArrayList<Activity>());
+		subject.setBulletins(new ArrayList<Bulletin>());
+		subject.setGroups(new ArrayList<GroupSubject>());
+
+		subject.setStudents(new ArrayList<Student>());
+		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
+
+		subject.setAssigments(new ArrayList<Assignment>());
 
 		this.repository.delete(subject);
-
 	}
 
 	/**

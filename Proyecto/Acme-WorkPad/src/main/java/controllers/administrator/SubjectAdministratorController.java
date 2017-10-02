@@ -81,15 +81,16 @@ public class SubjectAdministratorController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Subject q, final BindingResult binding) {
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final HttpServletRequest request, @RequestParam final Subject q) {
 		ModelAndView result;
 
 		try {
 			this.subjectService.delete(q);
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
-		} catch (final Throwable oops) {
+		} catch (final Throwable th) {
 			result = this.createEditModelAndView(q, "subject.commit.error");
+			System.out.print(q);
 		}
 
 		return result;
