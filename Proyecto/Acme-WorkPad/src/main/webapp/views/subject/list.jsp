@@ -62,7 +62,10 @@
 
 <security:authorize access="hasRole('TEACHER')">
 
-<a href="activity/teacher/list.do?subjectId=${e.id }"> <spring:message code="subject.activities" /> </a>
+
+<jstl:if test="${principal.subjects.contains(e)}">
+	<a href="activity/teacher/list.do?subjectId=${e.id }"> <spring:message code="subject.activities" /> </a>
+</jstl:if>
 
 
 

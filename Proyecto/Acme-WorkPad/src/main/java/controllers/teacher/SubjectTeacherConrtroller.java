@@ -38,6 +38,7 @@ public class SubjectTeacherConrtroller extends AbstractController {
 		resul.addObject("requestURI", "subject/teacher/list.do");
 		resul.addObject("requestSearch", "subject/authenticated/search.do");
 
+		resul.addObject("principal", this.teacherService.checkPrincipal());
 		return resul;
 	}
 }

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.LoginService;
+import services.AdministratorService;
 import services.StudentService;
 import services.SubjectService;
+import services.TeacherService;
 import domain.Student;
 import domain.Subject;
 
@@ -23,13 +25,17 @@ import domain.Subject;
 public class SubjectController extends AbstractController {
 
 	@Autowired
-	SubjectService	subjectService;
+	SubjectService					subjectService;
 
 	@Autowired
-	LoginService	loginService;
+	LoginService					loginService;
 
 	@Autowired
-	StudentService	studentService;
+	StudentService					studentService;
+	@Autowired
+	private TeacherService			teacherService;
+	@Autowired
+	private AdministratorService	administratorService;
 
 
 	public SubjectController() {
@@ -51,7 +57,8 @@ public class SubjectController extends AbstractController {
 		else
 			subject = this.subjectService.findSubjectsByWordWithSeats(keyword);
 
-		view.addObject("a", 3);
+		if (LoginService.hasRole("TEACHER"))
+			view.addObject("principal", this.teacherService.checkPrincipal());
 		view.addObject("subject", subject);
 		view.addObject("requestURI", "subject/search.do");
 
@@ -73,6 +80,8 @@ public class SubjectController extends AbstractController {
 
 		view.addObject("subject", subject);
 		view.addObject("requestURI", "subject/authenticated/search.do");
+		if (LoginService.hasRole("TEACHER"))
+			view.addObject("principal", this.teacherService.checkPrincipal());
 
 		return view;
 	}
@@ -132,9 +141,12 @@ public class SubjectController extends AbstractController {
 		result.addObject("requestURI", "/subject/list.do");
 		result.addObject("subject", this.subjectService.findAll());
 		result.addObject("requestSearch", "subject/search.do");
+
+		if (LoginService.hasRole("TEACHER"))
+			result.addObject("principal", this.teacherService.checkPrincipal());
+
 		return result;
 	}
-
 	//Para Suscribirse
 	@RequestMapping(value = "/student/subscribe", method = RequestMethod.GET)
 	public ModelAndView subscribe(@RequestParam final Subject q) {
