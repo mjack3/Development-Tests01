@@ -82,6 +82,11 @@
   		
   		<bean class="converters.CategoryToStringConverter" />  
   		<bean class="converters.StringToCategoryConverter" />
+  		
+  		 <bean class="converters.BulletinToStringConverter" />  
+  		<bean class="converters.StringToBulletinConverter" />
+  		
+  		<!-- fin REME -->
 		
 		
 	</util:list>
