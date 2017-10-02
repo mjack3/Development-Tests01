@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import domain.GroupSubject;
+import repositories.GroupRepository;
+import security.LoginService;
+import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
-import repositories.GroupSubjectRepository;
-import security.LoginService;
 
 @Service
 @Transactional
-public class GroupSubjectService {
+public class GroupService {
 
 	@Autowired
-	private GroupSubjectRepository	groupSubjectRepository;
+	private GroupRepository	groupRepository;
 
 	@Autowired
 	private LoginService			loginService;
@@ -34,12 +34,12 @@ public class GroupSubjectService {
 	private SubjectService			subjectService;
 
 
-	public GroupSubjectService() {
+	public GroupService() {
 		super();
 	}
 
-	public GroupSubject create() {
-		final GroupSubject groupSubject = new GroupSubject();
+	public Group create() {
+		final Group groupSubject = new Group();
 		groupSubject.setName(new String());
 		groupSubject.setDescription(new String());
 		groupSubject.setStartDate(new Date());
@@ -49,14 +49,14 @@ public class GroupSubjectService {
 		return groupSubject;
 	}
 
-	public GroupSubject save(final GroupSubject entity, final Integer subjectId) {
+	public Group save(final Group entity, final Integer subjectId) {
 		Assert.notNull(entity);
 
-		GroupSubject aux = new GroupSubject();
+		Group aux = new Group();
 
 		final Student a = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		if (this.exists(entity.getId())) {
-			aux = this.groupSubjectRepository.findOne(entity.getId());
+			aux = this.groupRepository.findOne(entity.getId());
 
 			aux.setName(entity.getName());
 			aux.setDescription(entity.getDescription());
@@ -64,7 +64,7 @@ public class GroupSubjectService {
 			aux.setEndDate(entity.getEndDate());
 			aux.setSubmission(entity.getSubmission());
 			
-			final List<GroupSubject> groups = a.getGroups();
+			final List<Group> groups = a.getGroups();
 
 			groups.add(aux);
 			a.setGroups(groups);
@@ -73,17 +73,17 @@ public class GroupSubjectService {
 			
 			Subject subject = subjectService.findOne(subjectId);
 			
-			final List<GroupSubject> groupsSubject = subject.getGroups();
+			final List<Group> groupsSubject = subject.getGroups();
 			groupsSubject.add(aux);
 			subject.setGroups(groupsSubject);
 			
 			this.subjectService.save(subject);
 			
-			return this.groupSubjectRepository.save(aux);
+			return this.groupRepository.save(aux);
 
 		} else {
-			aux = this.groupSubjectRepository.save(entity);
-			final List<GroupSubject> groups = a.getGroups();
+			aux = this.groupRepository.save(entity);
+			final List<Group> groups = a.getGroups();
 
 			groups.add(aux);
 			a.setGroups(groups);
@@ -92,7 +92,7 @@ public class GroupSubjectService {
 			
 			Subject subject = subjectService.findOne(subjectId);
 			
-			final List<GroupSubject> groupsSubject = subject.getGroups();
+			final List<Group> groupsSubject = subject.getGroups();
 			groupsSubject.add(aux);
 			subject.setGroups(groupsSubject);
 			
@@ -103,26 +103,26 @@ public class GroupSubjectService {
 
 	}
 
-	public GroupSubject findOne(final Integer id) {
+	public Group findOne(final Integer id) {
 		Assert.notNull(id);
-		return this.groupSubjectRepository.findOne(id);
+		return this.groupRepository.findOne(id);
 	}
 
 	public boolean exists(final Integer id) {
 		Assert.notNull(id);
-		return this.groupSubjectRepository.exists(id);
+		return this.groupRepository.exists(id);
 	}
 
-	public List<GroupSubject> findAll() {
-		return this.groupSubjectRepository.findAll();
+	public List<Group> findAll() {
+		return this.groupRepository.findAll();
 	}
 
 	public void flush() {
-		this.groupSubjectRepository.flush();
+		this.groupRepository.flush();
 	}
 
-	public List<GroupSubject> save(final List<GroupSubject> arg0) {
-		return this.groupSubjectRepository.save(arg0);
+	public List<Group> save(final List<Group> arg0) {
+		return this.groupRepository.save(arg0);
 	}
 
 }

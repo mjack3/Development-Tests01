@@ -7,20 +7,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.GroupSubject;
-import repositories.GroupSubjectRepository;
+import repositories.GroupRepository;
+import domain.Group;
 
 @Component
 @Transactional
-public class StringToGroupSubjectConverter implements Converter<String, GroupSubject> {
+public class StringToGroupConverter implements Converter<String, Group> {
 
 	@Autowired
-	GroupSubjectRepository arRepository;
+	GroupRepository arRepository;
 
 
 	@Override
-	public GroupSubject convert(String text) {
-		GroupSubject result;
+	public Group convert(String text) {
+		Group result;
 		int id;
 		try {
 			if (StringUtils.isEmpty(text)) {

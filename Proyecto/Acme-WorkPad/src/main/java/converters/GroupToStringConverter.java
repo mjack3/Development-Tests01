@@ -5,14 +5,14 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.GroupSubject;
+import domain.Group;
 
 @Component
 @Transactional
-public class GroupSubjectToStringConverter implements Converter<GroupSubject, String> {
+public class GroupToStringConverter implements Converter<Group, String> {
 
 	@Override
-	public String convert(GroupSubject ar) {
+	public String convert(Group ar) {
 		String res;
 		if (ar == null) {
 			res = null;

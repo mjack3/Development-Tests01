@@ -12,18 +12,18 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.StudentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.ActivityRecord;
 import domain.Folder;
-import domain.GroupSubject;
+import domain.Group;
 import domain.MailMessage;
 import domain.Seminar;
 import domain.SocialIdentity;
 import domain.Student;
 import domain.Subject;
-import repositories.StudentRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Transactional
 @Service
@@ -61,7 +61,7 @@ public class StudentService {
 		auth.setAuthority("STUDENT");
 		account.setAuthorities(Arrays.asList(auth));
 		res.setUserAccount(account);
-		res.setGroups(new ArrayList<GroupSubject>());
+		res.setGroups(new ArrayList<Group>());
 		res.setFolders(folderService.save(folderService.createDefaultFolders()));
 
 		return res;

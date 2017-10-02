@@ -18,8 +18,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name="GroupSubject")
-public class GroupSubject extends DomainEntity {
+@Table(name = "`group`")
+public class Group extends DomainEntity {
 
 	private String				name;
 	private String				description;

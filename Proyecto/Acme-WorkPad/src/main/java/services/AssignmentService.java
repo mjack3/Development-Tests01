@@ -55,4 +55,9 @@ public class AssignmentService {
 		this.teacherService.checkPrincipal();
 		this.repository.delete(assignment);
 	}
+
+	public Assignment findOne(int assignmentId) {
+		Assert.notNull(assignmentId);
+		return this.repository.findOne(assignmentId);
+	}
 }

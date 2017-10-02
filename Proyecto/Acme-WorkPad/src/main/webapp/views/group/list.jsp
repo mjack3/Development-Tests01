@@ -8,7 +8,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<acme:list  list="${groupsubject}" requestURI="groupsubject/student/list.do" entityUrl="{submission:submission/list.do}" variable="student" pagesize="6">
+<acme:list  list="${groupsubject}" requestURI="group/student/list.do" entityUrl="{submission:submission/list.do}" variable="student" pagesize="6">
 
 
 
@@ -19,7 +19,7 @@
 
 <jstl:if test="${subjectscond==true}">
 
-<a href="groupsubject/student/create.do"> <spring:message
+<a href="group/student/create.do"> <spring:message
 							code='subject.createGroup' /></a>
 </jstl:if>						
 </security:authorize>

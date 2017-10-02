@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.GroupSubject;
+import security.LoginService;
+import services.GroupService;
+import services.SubjectService;
+import domain.Group;
 import domain.Student;
 import domain.Subject;
-import security.LoginService;
-import services.GroupSubjectService;
-import services.SubjectService;
 
 @Controller
-@RequestMapping("/groupsubject")
-public class GroupSubjectController {
+@RequestMapping("/group")
+public class GroupController {
 
 	@Autowired
-	GroupSubjectService		groupsubjectService;
+	GroupService		groupsubjectService;
 	@Autowired
 	LoginService			loginservice;
 	@Autowired
@@ -50,14 +50,14 @@ public class GroupSubjectController {
 	}
 
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@Valid GroupSubject groupsubject, BindingResult binding) {
+	public ModelAndView saveCreate(@Valid Group groupsubject, BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			result = createNewModelAndView(groupsubject, null);
 		} else {
 			try {
 				groupsubjectService.save(groupsubject, subjectId);
-				result = new ModelAndView("redirect:/groupsubject/student/list.do?q=" + subjectId);
+				result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
 			} catch (Throwable th) {
 				th.printStackTrace();
 				result = createNewModelAndView(groupsubject, "groupsubject.commit.error");
@@ -66,10 +66,10 @@ public class GroupSubjectController {
 		return result;
 	}
 
-	protected ModelAndView createNewModelAndView(GroupSubject groupsubject, String message) {
+	protected ModelAndView createNewModelAndView(Group groupsubject, String message) {
 		ModelAndView result;
-		result = new ModelAndView("groupsubject/create");
-		result.addObject("groupsubject", groupsubject);
+		result = new ModelAndView("group/create");
+		result.addObject("group", groupsubject);
 		result.addObject("message", message);
 		return result;
 	}
@@ -78,9 +78,9 @@ public class GroupSubjectController {
 	public ModelAndView list(@RequestParam Integer q) {
 		ModelAndView result;
 
-		result = new ModelAndView("groupsubject/list");
+		result = new ModelAndView("group/list");
 		final Student student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
-		result.addObject("groupsubject", subjectservice.findOne(q).getGroups());
+		result.addObject("group", subjectservice.findOne(q).getGroups());
 		List<Subject> subjects = new ArrayList<Subject>();
 		subjectscond = false;
 

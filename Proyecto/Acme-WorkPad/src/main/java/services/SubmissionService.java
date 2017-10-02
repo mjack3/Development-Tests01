@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.SubmissionRepository;
+import domain.Assignment;
+import domain.Student;
 import domain.Submission;
 
 @Service
@@ -18,7 +20,11 @@ public class SubmissionService {
 
 	@Autowired
 	private SubmissionRepository	repository;
-
+	
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private AssignmentService assignmentService;
 
 	public SubmissionService() {
 		super();
@@ -54,6 +60,18 @@ public class SubmissionService {
 
 	public <S extends Submission> List<S> save(final Iterable<S> arg0) {
 		return this.submissionRepository.save(arg0);
+	}
+	
+	public Submission create(int assignmentId){
+		Student student = this.studentService.checkPrincipal();
+		Assert.notNull(student);
+		Assignment assignment = this.assignmentService.findOne(assignmentId);
+		Assert.notNull(assignment);
+		
+		
+		
+		return null;
+		
 	}
 
 }
