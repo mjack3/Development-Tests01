@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Student;
+import domain.Subject;
 import security.LoginService;
 import services.AdministratorService;
 import services.StudentService;
 import services.SubjectService;
 import services.TeacherService;
-import domain.Student;
-import domain.Subject;
 
 @Controller
 @RequestMapping("/subject")
@@ -112,26 +112,6 @@ public class SubjectController extends AbstractController {
 		return result;
 	}
 
-	//Lista para registrarse
-
-	@RequestMapping(value = "/student/register/list.do", method = RequestMethod.GET)
-	public ModelAndView listRegister() {
-		ModelAndView result;
-		final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
-		result = new ModelAndView("subject/list");
-		result.addObject("requestURI", "/subject/student/register/list.do");
-		if (this.studentService.exists(d.getId())) {
-			final List<Subject> subjectByStudent = new ArrayList<Subject>();
-			for (final Subject sub : d.getSubjects())
-				subjectByStudent.add(sub);
-			result.addObject("subjectByStudent", subjectByStudent);
-		}
-
-		result.addObject("subject", this.subjectService.findAll());
-		result.addObject("requestSearch", "subject/authenticated/search.do");
-		return result;
-	}
-
 	//Lista general
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -142,8 +122,19 @@ public class SubjectController extends AbstractController {
 		result.addObject("subject", this.subjectService.findAll());
 		result.addObject("requestSearch", "subject/search.do");
 
-		if (LoginService.hasRole("TEACHER"))
+		if (LoginService.hasRole("TEACHER")) {
 			result.addObject("principal", this.teacherService.checkPrincipal());
+		}
+		//Cambio karli para quedar una sola lista
+		if (LoginService.hasRole("STUDENT")) {
+			final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			if (this.studentService.exists(d.getId())) {
+				final List<Subject> subjectByStudent = new ArrayList<Subject>();
+				for (final Subject sub : d.getSubjects())
+					subjectByStudent.add(sub);
+				result.addObject("subjectByStudent", subjectByStudent);
+			}
+		}
 
 		return result;
 	}
