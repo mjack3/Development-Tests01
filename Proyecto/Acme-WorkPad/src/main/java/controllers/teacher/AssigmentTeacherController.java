@@ -133,4 +133,25 @@ public class AssigmentTeacherController extends AbstractController {
 		resul.addObject("requestURI", "assignment/teacher/list.do");
 		return resul;
 	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int q) {
+
+		ModelAndView resul;
+		try {
+			final Subject subject = this.subjectService.findOneByAssignment(q);
+			final Assignment assignment = this.assignmentService.findOnePrinicpal(q);
+
+			subject.getAssigments().remove(assignment);
+			this.subjectService.update(subject);
+
+			this.assignmentService.delete(assignment);
+			resul = new ModelAndView("redirect:/assignment/teacher/list.do?subjectId=" + subject.getId());
+
+		} catch (final Throwable oops) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+		}
+
+		return resul;
+	}
 }
