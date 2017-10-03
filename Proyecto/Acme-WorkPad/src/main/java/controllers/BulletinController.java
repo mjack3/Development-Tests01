@@ -56,8 +56,7 @@ public class BulletinController {
 				subject.getBulletins().add(saved);
 				subjectService.save(subject);
 				result = new ModelAndView(
-						"redirect:/subject/display.do?subjectId=" + subject.getId());
-				redirectAttrs.addFlashAttribute("message", "actor.commit.ok");
+						"redirect:/bulletin/actor/list.do?q=" + subject.getId());
 			}
 		} catch (Throwable oops) {
 			if (binding.hasErrors())
