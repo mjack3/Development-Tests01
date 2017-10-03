@@ -41,6 +41,7 @@
 		<value>/views/legislation/tiles.xml</value>
 		<value>/views/mailmessage/tiles.xml</value>
 		<value>/views/folder/tiles.xml</value>
+		<value>/views/submission/tiles.xml</value>
 
 	</util:list>
 

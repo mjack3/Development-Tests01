@@ -1,9 +1,6 @@
 
 package forms;
 
-import java.util.List;
-
-import javax.persistence.ElementCollection;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -14,7 +11,7 @@ public class SubmissionForm {
 	private int groupId;
 	private int assignmentId;
 	private String			content;
-	private List<String>	attachments;
+	private String	attachments;
 	private Integer			grade;
 	private Integer			tryNumber;
 	private Double			mark;
@@ -37,9 +34,8 @@ public class SubmissionForm {
 		return content;
 	}
 
-	@NotNull
-	@ElementCollection(targetClass = String.class)
-	public List<String> getAttachments() {
+	
+	public String getAttachments() {
 		return attachments;
 	}
 
@@ -52,7 +48,7 @@ public class SubmissionForm {
 		this.content = content;
 	}
 
-	public void setAttachments(List<String> attachments) {
+	public void setAttachments(String attachments) {
 		this.attachments = attachments;
 	}
 

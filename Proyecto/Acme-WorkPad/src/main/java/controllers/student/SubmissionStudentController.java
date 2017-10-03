@@ -25,7 +25,7 @@ import controllers.AbstractController;
 import forms.SubmissionForm;
 
 @Controller
-@RequestMapping("/actor/bulletin")
+@RequestMapping("/submission/student")
 public class SubmissionStudentController extends AbstractController {
 
 	// Constructors -----------------------------------------------------------

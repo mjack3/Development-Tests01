@@ -1,5 +1,7 @@
 package services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -104,7 +106,12 @@ public class SubmissionService {
 
 	public Submission reconstruct(SubmissionForm form, BindingResult binding) {
 		Submission submission = new Submission();
-		submission.setAttachments(form.getAttachments());
+		String[] array = form.getAttachments().split(",");
+		List<String> str = new ArrayList<String>(Arrays.asList(array));
+		
+		 
+		
+		submission.setAttachments(str);
 		submission.setContent(form.getContent());
 		submission.setGrade(form.getGrade());
 		submission.setTryNumber(form.getTryNumber());
