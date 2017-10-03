@@ -95,4 +95,9 @@ public class BulletinService {
 		return bulletin;
 	}
 
+	public Collection<Bulletin> findBySubject(Integer q) {
+		return this.bulletinRepository.findBySubject(q);
+
+	}
+
 }

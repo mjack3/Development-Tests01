@@ -481,9 +481,9 @@ public class Kreator {
 		System.err.println(String.format(">> i18n-l10n.xml was configured", clazz.getSimpleName().toLowerCase()));
 	}
 	
-	private static final String class_name = "OfferTransport";
-	private static final String user_name = "transporter";
-	private static final String[] roles = new String[] { "TRANSPORTER" };
+	private static final String class_name = "Bulletin";
+	private static final String user_name = "actor";
+	private static final String[] roles = new String[] { "" };
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {

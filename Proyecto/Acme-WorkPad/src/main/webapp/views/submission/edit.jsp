@@ -26,7 +26,7 @@
 
 	<form:hidden path="groupId" />
 	<form:hidden path="assignmentId" />
-		
+	<form:hidden path="tryNumber" />	
 	<acme:textbox code="submission.content" path="content"/>
 	<br />
 	<acme:textbox code="submission.attachments" path="attachments" />

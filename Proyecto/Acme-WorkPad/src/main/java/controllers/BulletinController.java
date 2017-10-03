@@ -1,14 +1,4 @@
-/*
- * AdministratorController.java
- * 
- * Copyright (C) 2017 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the
- * TDG Licence, a copy of which you may download from
- * http://www.tdg-seville.info/License.html
- */
-
-package controllers.actor;
+package controllers;
 
 import java.util.Date;
 
@@ -23,35 +13,26 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import services.BulletinService;
 import services.SubjectService;
-import controllers.AbstractController;
 import domain.Bulletin;
 import domain.Subject;
 import forms.BulletinForm;
 
 @Controller
-@RequestMapping("/actor/bulletin")
-public class ActorBulletinController extends AbstractController {
-
-	// Constructors -----------------------------------------------------------
-
-	public ActorBulletinController() {
-		super();
-	}
+@RequestMapping("/bulletin")
+public class BulletinController {
 
 	@Autowired
 	private BulletinService bulletinService;
-	@Autowired
+	@Autowired 
 	private SubjectService subjectService;
 
-	// Creation --------------------------------------------
-
-	@RequestMapping(value = "/create", method = RequestMethod.GET, params = "subjectId")
-	public ModelAndView create(@RequestParam int subjectId) {
+	@RequestMapping(value = "/actor/create", method = RequestMethod.GET, params = "q")
+	public ModelAndView create(@RequestParam int q) {
 		ModelAndView result;
 		BulletinForm bulletinForm;
 		
 		bulletinForm = new BulletinForm();
-		bulletinForm.setSubjectId(subjectId);
+		bulletinForm.setSubjectId(q);
 		bulletinForm.setPostedDate(new Date());
 		result = this.createEditModelAndView(bulletinForm);
 		return result;
@@ -59,7 +40,7 @@ public class ActorBulletinController extends AbstractController {
 
 	// Editar
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(BulletinForm bulletinForm, BindingResult binding,
 			RedirectAttributes redirectAttrs) {
 		ModelAndView result;
@@ -100,10 +81,43 @@ public class ActorBulletinController extends AbstractController {
 			String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("actor/bulletin/edit");
+		result = new ModelAndView("bulletin/actor/edit");
 		result.addObject("bulletinForm", bulletinForm);
 		result.addObject("message", message);
-		result.addObject("requestParam", "actor/bulletin/edit.do");
+		result.addObject("requestParam", "bulletin/actor/edit.do");
+
+		return result;
+	}
+
+	protected ModelAndView createNewModelAndView(Bulletin bulletin, String message) {
+		ModelAndView result;
+		result = new ModelAndView("bulletin/create");
+		result.addObject("bulletin", bulletin);
+		result.addObject("message", message);
+		return result;
+	}
+	
+	@RequestMapping(value = "/actor/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam Integer q) {
+		ModelAndView result;
+
+		result = new ModelAndView("bulletin/list");
+		result.addObject("id",q);
+		result.addObject("bulletin", bulletinService.findBySubject(q));
+
+		return result;
+	}
+
+	
+
+	
+
+
+	protected ModelAndView createEditModelAndView(Bulletin bulletin, String message) {
+		ModelAndView result = new ModelAndView("bulletin/edit");
+
+		result.addObject("bulletin", bulletin);
+		result.addObject("message", message);
 
 		return result;
 	}

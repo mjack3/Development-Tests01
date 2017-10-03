@@ -94,23 +94,22 @@ public class SubmissionService {
 				if (aux < s.getTryNumber())
 					aux = s.getTryNumber();
 			}
-			form.setTryNumber(aux);
+			form.setTryNumber(aux+1);
 		}
 
 		return form;
 
 	}
+
 	// Supporting Services ------------------------------------------
-		@Autowired(required = false)
-		private Validator validator;
+	@Autowired(required = false)
+	private Validator validator;
 
 	public Submission reconstruct(SubmissionForm form, BindingResult binding) {
 		Submission submission = new Submission();
 		String[] array = form.getAttachments().split(",");
 		List<String> str = new ArrayList<String>(Arrays.asList(array));
-		
-		 
-		
+
 		submission.setAttachments(str);
 		submission.setContent(form.getContent());
 		submission.setGrade(form.getGrade());
@@ -119,19 +118,16 @@ public class SubmissionService {
 		Assignment assignment = this.assignmentService.findOne(form
 				.getAssignmentId());
 		this.validator.validate(submission, binding);
-		if(!binding.hasErrors()){
+		if (!binding.hasErrors()) {
 			Submission saved = this.save(submission);
 			group.getSubmission().add(saved);
 			assignment.getSubmission().add(saved);
 			this.groupService.save(group);
 			this.assignmentService.save(assignment);
 			return saved;
-		}else{
+		} else {
 			return submission;
 		}
-		
-		
-		
 
 	}
 

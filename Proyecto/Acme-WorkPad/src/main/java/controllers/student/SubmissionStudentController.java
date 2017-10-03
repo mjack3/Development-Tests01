@@ -43,29 +43,38 @@ public class SubmissionStudentController extends AbstractController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET, params = "assignmentId")
 	public ModelAndView create(@RequestParam int assignmentId) {
+
 		ModelAndView result;
-		SubmissionForm submissionForm = submissionService.create(assignmentId);
-		
-		result = this.createEditModelAndView(submissionForm);
+		try {
+			SubmissionForm submissionForm = submissionService
+					.create(assignmentId);
+
+			result = this.createEditModelAndView(submissionForm);
+		} catch (Throwable oops) {
+			result = new ModelAndView(
+					"redirect:/assignment/student/list.do?studentId="
+							+ studentService.checkPrincipal().getId());
+		}
+
 		return result;
 	}
 
 	// Editar
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(SubmissionForm submissionForm, BindingResult binding,
-			RedirectAttributes redirectAttrs) {
+	public ModelAndView save(SubmissionForm submissionForm,
+			BindingResult binding, RedirectAttributes redirectAttrs) {
 		ModelAndView result;
-		
 
 		try {
 			this.submissionService.reconstruct(submissionForm, binding);
-			
+
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(submissionForm);
-			else {				
+			else {
 				result = new ModelAndView(
-						"redirect:/assignment/student/list.do?studentId=" + studentService.checkPrincipal().getId());
+						"redirect:/assignment/student/list.do?studentId="
+								+ studentService.checkPrincipal().getId());
 				redirectAttrs.addFlashAttribute("message", "actor.commit.ok");
 			}
 		} catch (Throwable oops) {
@@ -86,8 +95,8 @@ public class SubmissionStudentController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(SubmissionForm submissionForm,
-			String message) {
+	protected ModelAndView createEditModelAndView(
+			SubmissionForm submissionForm, String message) {
 		ModelAndView result;
 
 		result = new ModelAndView("submission/student/edit");
