@@ -19,8 +19,9 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 	
-	<acme:list editUrl="activity/teacher/edit.do"  requestURI="${requestURI }" list="${activities }">
-	
+	<acme:list editUrl="activity/teacher/edit.do" deleteUrl="activity/teacher/delete.do"  requestURI="${requestURI }" list="${activities }">
 	
 	
 	</acme:list>
+	<br />
+	<a class="btn btn-primary" href="activity/teacher/create.do?subjectId=${subjectId }"> <spring:message code="activity.create" /> </a>

@@ -1,5 +1,5 @@
 
-package domain;
+package forms;
 
 import java.util.Date;
 
@@ -15,15 +15,18 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import domain.DomainEntity;
+
 @Entity
 @Access(AccessType.PROPERTY)
-public class Activity extends DomainEntity {
+public class ActivityForm extends DomainEntity {
 
 	private String	title;
 	private String	description;
 	private String	link;
 	private Date	startDate;
 	private Date	endDate;
+	private Integer	subjectId;
 
 
 	//Getters
@@ -38,7 +41,7 @@ public class Activity extends DomainEntity {
 	}
 
 	@NotNull
-	@URL(message = "must be a valid URL")
+	@URL
 	public String getLink() {
 		return this.link;
 	}
@@ -77,6 +80,15 @@ public class Activity extends DomainEntity {
 
 	public void setEndDate(final Date endDate) {
 		this.endDate = endDate;
+	}
+
+	@NotNull
+	public Integer getSubjectId() {
+		return this.subjectId;
+	}
+
+	public void setSubjectId(final Integer subjectId) {
+		this.subjectId = subjectId;
 	}
 
 }

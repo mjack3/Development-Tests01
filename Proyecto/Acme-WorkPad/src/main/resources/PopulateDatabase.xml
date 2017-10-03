@@ -1544,56 +1544,56 @@
 		<property name="title" value="Homeworks" />
 		<property name="description" value="Work in Home" />
 		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2017 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2017" />
 	</bean>
 	
 	<bean id="activity2" class="domain.Activity">
 		<property name="title" value="Homeworks" />
 		<property name="description" value="Work in Home" />
 		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2018 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2018" />
 	</bean>
 	
 	<bean id="activity3" class="domain.Activity">
 		<property name="title" value="Exams" />
 		<property name="description" value="Controls Checks" />
 		<property name="link" value="https://es.wikipedia.org/wiki/Examen_(evaluación_estudiantil)" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2017 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2017" />
 	</bean>
 	
 	<bean id="activity4" class="domain.Activity">
 		<property name="title" value="Exams" />
 		<property name="description" value="Controls Checks" />
 		<property name="link" value="https://es.wikipedia.org/wiki/Examen_(evaluación_estudiantil)" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2017 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2017" />
 	</bean>
 	
 	<bean id="activity5" class="domain.Activity">
 		<property name="title" value="Exams" />
 		<property name="description" value="Controls Checks" />
 		<property name="link" value="https://es.wikipedia.org/wiki/Examen_(evaluación_estudiantil)" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2017 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2017" />
 	</bean>
 	
 	<bean id="activity6" class="domain.Activity">
 		<property name="title" value="Homeworks" />
 		<property name="description" value="Work in Home" />
 		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2018 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2018" />
 	</bean>
 	
 	<bean id="activity7" class="domain.Activity">
 		<property name="title" value="Homeworks" />
 		<property name="description" value="Work in Home" />
 		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="20/10/2018 23:00:00" />
+		<property name="startDate" value="20/09/2017" />
+		<property name="endDate" value="20/10/2018" />
 	</bean>
 	
 	<bean id="assignment1" class="domain.Assignment">

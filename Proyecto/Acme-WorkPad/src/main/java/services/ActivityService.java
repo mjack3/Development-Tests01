@@ -13,6 +13,7 @@ import repositories.ActivityRepository;
 import domain.Activity;
 import domain.Subject;
 import domain.Teacher;
+import forms.ActivityForm;
 
 @Transactional
 @Service
@@ -145,6 +146,33 @@ public class ActivityService {
 		Assert.isTrue(this.repository.exists(q));
 
 		return this.repository.findOneByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), q);
+	}
+
+	public Activity create() {
+		// TODO Auto-generated method stub
+		final Activity activity = new Activity();
+
+		return activity;
+	}
+
+	public void save(final Activity activity) {
+		// TODO Auto-generated method stub
+		if (activity.getId() != 0)
+			this.update(activity);
+		else {
+
+		}
+	}
+
+	public Activity reconstruct(final ActivityForm activityForm) {
+		// TODO Auto-generated method stub
+		final Activity activity = new Activity();
+		activity.setTitle(activityForm.getTitle());
+		activity.setDescription(activityForm.getDescription());
+		activity.setStartDate(activityForm.getStartDate());
+		activity.setEndDate(activityForm.getEndDate());
+		activity.setLink(activityForm.getLink());
+		return activity;
 	}
 
 }

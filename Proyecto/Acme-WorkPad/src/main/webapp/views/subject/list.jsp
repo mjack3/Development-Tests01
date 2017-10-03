@@ -24,7 +24,6 @@
 
 
 <div> 
-	<jstl:out value="${requestSearch }" />
 	<form method="GET" action="${requestSearch }">
 	<input type="radio" name="sw" value="sin"> <spring:message code="subject.withoutSeats" /> <br>
   	<input checked="checked" type="radio" name="sw" value="con"> <spring:message code="subject.withSeats" /> <br>
