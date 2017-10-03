@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import domain.Category;
 import repositories.CategoryRepository;
@@ -24,7 +25,12 @@ public class CategoryService {
 	}
 
 	public List<Category> findAll() {
-		return categoryRepository.findAll();
+		return this.categoryRepository.findAll();
+	}
+
+	public Category findOne(final Integer categoryId) {
+		Assert.notNull(categoryId);
+		return this.categoryRepository.findOne(categoryId);
 	}
 
 }

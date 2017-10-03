@@ -69,7 +69,7 @@ public class SubjectAdministratorController extends AbstractController {
 		ModelAndView result;
 		result = new ModelAndView("subject/edit");
 		result.addObject("subject", this.subjectService.findOne(q));
-		List<Category> categories = categoryService.findAll();
+		final List<Category> categories = this.categoryService.findAll();
 		System.err.println("----------------------------------");
 		System.err.println(categories);
 		System.err.println("----------------------------------");
@@ -83,15 +83,11 @@ public class SubjectAdministratorController extends AbstractController {
 		ModelAndView result;
 
 		if (binding.hasErrors()) {
-			result = createEditModelAndView(subject, null);
-			for (ObjectError e : binding.getAllErrors()) {
-				System.out.println(e.toString());
-			}
-		}
-
-		else {
 			result = this.createEditModelAndView(subject, null);
-		}
+			for (final ObjectError e : binding.getAllErrors())
+				System.out.println(e.toString());
+		} else
+			result = this.createEditModelAndView(subject, null);
 		try {
 			this.subjectService.save(subject);
 			result = new ModelAndView("redirect:/subject/administrator/list.do");

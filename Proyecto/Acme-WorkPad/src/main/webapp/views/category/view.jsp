@@ -18,3 +18,12 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
+
+<security:authorize access="hasRole('ADMINISTRATOR')">
+
+	<acme:acme_view entity="${category}" skip_fields="categoryChildren" >
+	 <tr>
+  		<td><spring:message code="category.categoryChildren"/></td>
+  	<td>
+	</acme:acme_view>
+</security:authorize>

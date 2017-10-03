@@ -94,6 +94,9 @@
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/list.do"/>
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/edit.do"/>
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/delete.do"/>
+	   
+	   	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/category/view.do"/>
+	   
 <!-- FIN reme -->
 		<security:intercept-url access="permitAll" pattern="/favicon.ico"/> 
 		<security:intercept-url access="permitAll" pattern="/images/**"/> 
