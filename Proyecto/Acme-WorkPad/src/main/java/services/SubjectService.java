@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.SubjectRepository;
+import security.LoginService;
 import domain.Activity;
 import domain.Assignment;
 import domain.BibliographyRecord;
@@ -19,8 +21,6 @@ import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
-import repositories.SubjectRepository;
-import security.LoginService;
 
 @Transactional
 @Service
@@ -197,6 +197,12 @@ public class SubjectService {
 	public Collection<Subject> findSubjectsByWordWithSeatsByPrincipal(final String keyword) {
 		Assert.isTrue(LoginService.isAnyAuthenticated());
 		return this.repository.findSubjectsByWordWithSeats(keyword, LoginService.getPrincipal().getId());
+	}
+
+	public Subject findOneByAssignment(int assignmentId) {
+		Assert.notNull(assignmentId);
+		
+		return this.repository.findOneByAssignment(assignmentId);
 	}
 
 }

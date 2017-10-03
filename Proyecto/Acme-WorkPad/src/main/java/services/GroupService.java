@@ -125,4 +125,15 @@ public class GroupService {
 		return this.groupRepository.save(arg0);
 	}
 
+	public Group findGroupBySubjectAndStudent(int id, int id2) {
+		Assert.notNull(id);
+		Assert.notNull(id2);
+		return this.groupRepository.findGroupBySubjectAndStudent(id,id2);
+	}
+
+	public Group save(Group group) {
+		return this.groupRepository.save(group);
+		
+	}
+
 }

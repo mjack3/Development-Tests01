@@ -63,5 +63,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 
 	@Query("select distinct s from Subject s join s.students students where s.title like concat('%', ?1, '%') and s.seats > s.students.size and (s.administrator.userAccount.id=?2 or s.teacher.userAccount.id=?2 or students.userAccount.id=?2)")
 	Collection<Subject> findSubjectsByWordWithSeats(String keyword, int id);
+	@Query("select s from Subject s join s.assigments a where a.id=?1")
+	Subject findOneByAssignment(int assignmentId);
 
 }
