@@ -1,13 +1,8 @@
 
-package domain;
+package forms;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -16,16 +11,16 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
-@Access(AccessType.PROPERTY)
-public class Assignment extends DomainEntity {
+import domain.DomainEntity;
 
-	private String				title;
-	private String				description;
-	private String				link;
-	private Date				startDate;
-	private Date				endDate;
-	private List<Submission>	submission;
+public class AssignmentForm extends DomainEntity {
+
+	private String	title;
+	private String	description;
+	private String	link;
+	private Date	startDate;
+	private Date	endDate;
+	private Integer	subjectId;
 
 
 	//Getters
@@ -59,12 +54,6 @@ public class Assignment extends DomainEntity {
 		return this.endDate;
 	}
 
-	@NotNull
-	@OneToMany
-	public List<Submission> getSubmission() {
-		return this.submission;
-	}
-
 	//Setters
 	public void setTitle(final String title) {
 		this.title = title;
@@ -86,8 +75,13 @@ public class Assignment extends DomainEntity {
 		this.endDate = endDate;
 	}
 
-	public void setSubmission(final List<Submission> submission) {
-		this.submission = submission;
+	@NotNull
+	public Integer getSubjectId() {
+		return this.subjectId;
+	}
+
+	public void setSubjectId(final Integer subjectId) {
+		this.subjectId = subjectId;
 	}
 
 }
