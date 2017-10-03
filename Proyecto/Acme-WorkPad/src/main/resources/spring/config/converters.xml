@@ -36,7 +36,7 @@
 		
 
 		<bean class="converters.BibliographyRecordToStringConverter" />
-		<bean class="converters.UserAccountToStringConverter" />
+		 <bean class="converters.UserAccountToStringConverter" />
 
 		
 
@@ -50,13 +50,12 @@
 		<bean class="converters.StringToAuthorityConverter" />
 
 		<bean class="converters.StringToBibliographyRecordConverter" />
-		<bean class="converters.StringToUserAccountConverter" />
+	<bean class="converters.StringToUserAccountConverter" />
 		
 							<!-- FIN ADRI -->
 							
 		<bean class="converters.SubmissionToStringConverter"/>
 		<bean class="converters.SubjectToStringConverter" />
-		<bean class="converters.StringToActivityConverter" />
 							
 		<bean class="converters.SubjectToStringConverter" /> 
 		<bean class="converters.SubjectToStringConverter" /> 
@@ -67,8 +66,8 @@
 		
 		
 		<!-- MIGUEL -->
-		<bean class="converters.ActivityToStringConverter" />
-		<bean class="converters.StringToActivityConverter" />
+		<bean class="converters.ActivityRecordToStringConverter" />
+		<bean class="converters.StringToActivityRecordConverter" />
 		<!--  -->
 		
 		
@@ -81,7 +80,9 @@
   		<!-- REME -->
   		
   		<bean class="converters.CategoryToStringConverter" />  
+  		<bean class="converters.ActivityToStringConverter" /> 
   		<bean class="converters.StringToCategoryConverter" />
+  		<bean class="converters.StringToActivityConverter" />
   		
   		 <bean class="converters.BulletinToStringConverter" />  
   		<bean class="converters.StringToBulletinConverter" />

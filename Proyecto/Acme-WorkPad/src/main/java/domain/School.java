@@ -38,7 +38,6 @@ public class School extends DomainEntity {
 		return subjects;
 	}
 
-
 	//Setters
 
 	public void setName(String name) {
@@ -52,6 +51,5 @@ public class School extends DomainEntity {
 	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
 	}
-
 
 }

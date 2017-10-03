@@ -99,7 +99,6 @@ public class Subject extends DomainEntity {
 		return this.category;
 	}
 
-	@NotNull
 	@ManyToOne(optional = false)
 	public Administrator getAdministrator() {
 		return this.administrator;

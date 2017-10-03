@@ -144,7 +144,7 @@ public class TeacherService {
 	public Teacher save(Teacher actor) {
 
 		Assert.notNull(actor);
-		
+
 		Md5PasswordEncoder enc = new Md5PasswordEncoder();
 		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
 
@@ -289,5 +289,9 @@ public class TeacherService {
 		// TODO Auto-generated method stub
 		final Teacher teacher = this.checkPrincipal();
 		Assert.isTrue(teacher.getSubjects().contains(subject));
+	}
+
+	public List<Teacher> findAll() {
+		return repository.findAll();
 	}
 }

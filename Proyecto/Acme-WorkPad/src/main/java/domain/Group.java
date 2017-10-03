@@ -80,5 +80,4 @@ public class Group extends DomainEntity {
 		this.submission = submission;
 	}
 
-
 }

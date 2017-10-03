@@ -4,9 +4,9 @@ package repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import domain.BibliographyRecord;
+import domain.School;
 
 @Repository
-public interface BibliographyRecordRepository extends JpaRepository<BibliographyRecord, Integer> {
+public interface SchoolRepository extends JpaRepository<School, Integer> {
 
 }
