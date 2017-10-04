@@ -6,6 +6,7 @@
  * The use of this project is hereby constrained to the conditions of the 
  * TDG Licence, a copy of which you may download from 
  * http://www.tdg-seville.info/License.html
+
  --%>
 
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
@@ -19,10 +20,7 @@
 
 
 
+<acme:acme_view entity="${teacher}" skip_fields="actor,userAccount,seminars,bibliographiesRecords,subjects,folders,activitiesRecords,socialIdentities" >
 
-	<acme:acme_view entity="${category}" skip_fields="categoryChildren" >
-	 <tr>
-  		<td><spring:message code="category.categoryChildren"/></td>
-  	<td>
-	</acme:acme_view>
+</acme:acme_view>
 
