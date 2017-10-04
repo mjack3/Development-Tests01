@@ -20,7 +20,11 @@
 
 
 
-<acme:acme_view entity="${teacher}" skip_fields="actor,userAccount,seminars,bibliographiesRecords,subjects,folders,activitiesRecords,socialIdentities" >
+<acme:acme_view entity="${teacher}" skip_fields="seminars,bibliographiesRecords,subjects"  >
+
+	 <tr>
+  		<td><spring:message code="teacher.name"/></td>
+  	<td>
 
 </acme:acme_view>
 

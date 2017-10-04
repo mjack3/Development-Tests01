@@ -22,6 +22,10 @@
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url access="permitAll" pattern="/"/> 
 
+<!-- reme -->
+	   <security:intercept-url access="permitAll" pattern="/category/view.do"/>  
+	   	<security:intercept-url access="permitAll" pattern="/teacher/view.do"/>
+<!-- FIN reme -->
 
 		<!-- MIGUEL -->
 		
@@ -97,9 +101,7 @@
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/edit.do"/>
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/delete.do"/>
 	   
-	   <security:intercept-url access="permitAll" pattern="/category/view.do"/>
-	   	   
-	   	<security:intercept-url access="permitAll" pattern="/teacher/view.do"/>
+
 	   
 <!-- FIN reme -->
 		<security:intercept-url access="permitAll" pattern="/favicon.ico"/> 
