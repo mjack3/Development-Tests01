@@ -14,7 +14,7 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<img src="images/logo.png" alt="Acme-WorkPad Co., Inc." />
+	<img src="${image}" alt="${image}" /> 
 </div>
 
 <div style="width: 60%">
@@ -82,7 +82,10 @@
       
       <security:authorize access="hasRole('ADMINISTRATOR')">
       	<li><a href="teacher/administrator/create.do"><spring:message code="master.page.teacher.create" /></a></li>
+      	<li><a href="school/administrator/edit.do"><spring:message code="master.page.school.edit" /></a></li>
       </security:authorize>
+      
+      
       
       <security:authorize access="hasRole('TEACHER')">
        <li><a href="teacher/edit.do"><spring:message code="master.page.actor.edit" /></a></li>

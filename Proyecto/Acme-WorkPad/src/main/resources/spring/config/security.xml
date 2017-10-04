@@ -78,6 +78,8 @@
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/view.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/move.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/moveTo.do"/>
+         <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/edit.do"/>
+        <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/save.do"/>
 		
         <security:intercept-url access="permitAll" pattern="/welcome/cookies.do"/>
 		<security:intercept-url access="permitAll" pattern="/welcome/lopd.do"/>
@@ -132,6 +134,8 @@
 
 		<security:logout invalidate-session="true" logout-success-url="/"/>
 	
+    <!--There are the school urls by 'JuanCarlos'--><security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/create.do"/>
+      
     </security:http>
 
 </beans>

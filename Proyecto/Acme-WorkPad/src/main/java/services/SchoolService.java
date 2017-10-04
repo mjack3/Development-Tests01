@@ -23,7 +23,7 @@ public class SchoolService {
 		super();
 	}
 
-	public <S extends School> S save(S entity) {
+	public School save(School entity) {
 		return schoolRepository.save(entity);
 	}
 

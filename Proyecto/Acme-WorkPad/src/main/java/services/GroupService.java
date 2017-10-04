@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import repositories.GroupRepository;
-import security.LoginService;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
+import repositories.GroupRepository;
+import security.LoginService;
 
 @Service
 @Transactional
@@ -25,13 +25,13 @@ public class GroupService {
 	private GroupRepository	groupRepository;
 
 	@Autowired
-	private LoginService			loginService;
+	private LoginService	loginService;
 
 	@Autowired
-	private StudentService			studentService;
+	private StudentService	studentService;
 
 	@Autowired
-	private SubjectService			subjectService;
+	private SubjectService	subjectService;
 
 
 	public GroupService() {
@@ -63,25 +63,26 @@ public class GroupService {
 			aux.setStartDate(entity.getStartDate());
 			aux.setEndDate(entity.getEndDate());
 			aux.setSubmission(entity.getSubmission());
-			
+
 			final List<Group> groups = a.getGroups();
 
 			groups.add(aux);
 			a.setGroups(groups);
 
 			this.studentService.save(a);
-			
+
 			Subject subject = subjectService.findOne(subjectId);
-			
+
 			final List<Group> groupsSubject = subject.getGroups();
 			groupsSubject.add(aux);
 			subject.setGroups(groupsSubject);
-			
+
 			this.subjectService.save(subject);
-			
+
 			return this.groupRepository.save(aux);
 
 		} else {
+			entity.setSubmission(new ArrayList<Submission>());
 			aux = this.groupRepository.save(entity);
 			final List<Group> groups = a.getGroups();
 
@@ -89,15 +90,15 @@ public class GroupService {
 			a.setGroups(groups);
 
 			this.studentService.save(a);
-			
+
 			Subject subject = subjectService.findOne(subjectId);
-			
+
 			final List<Group> groupsSubject = subject.getGroups();
 			groupsSubject.add(aux);
 			subject.setGroups(groupsSubject);
-			
+
 			this.subjectService.save(subject);
-			
+
 			return aux;
 		}
 
@@ -128,12 +129,12 @@ public class GroupService {
 	public Group findGroupBySubjectAndStudent(int id, int id2) {
 		Assert.notNull(id);
 		Assert.notNull(id2);
-		return this.groupRepository.findGroupBySubjectAndStudent(id,id2);
+		return this.groupRepository.findGroupBySubjectAndStudent(id, id2);
 	}
 
 	public Group save(Group group) {
 		return this.groupRepository.save(group);
-		
+
 	}
 
 }
