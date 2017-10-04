@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -26,16 +27,19 @@ import forms.SubmissionForm;
 public class SubmissionService {
 
 	@Autowired
-	private SubmissionRepository repository;
+	private SubmissionRepository	repository;
 
 	@Autowired
-	private StudentService studentService;
+	private StudentService			studentService;
 	@Autowired
-	private AssignmentService assignmentService;
+	private AssignmentService		assignmentService;
 	@Autowired
-	private SubjectService subjectService;
+	private SubjectService			subjectService;
 	@Autowired
-	private GroupService groupService;
+	private GroupService			groupService;
+	@Autowired
+	private TeacherService			teacherService;
+
 
 	public SubmissionService() {
 		super();
@@ -48,12 +52,14 @@ public class SubmissionService {
 		return saved;
 	}
 
+
 	/*
 	 * KARLI
 	 */
 
 	@Autowired
-	private SubmissionRepository submissionRepository;
+	private SubmissionRepository	submissionRepository;
+
 
 	public boolean exists(final Integer id) {
 		return this.submissionRepository.exists(id);
@@ -71,64 +77,90 @@ public class SubmissionService {
 		return this.submissionRepository.save(arg0);
 	}
 
-	public SubmissionForm create(int assignmentId) {
-		Student student = this.studentService.checkPrincipal();
+	public SubmissionForm create(final int assignmentId) {
+		final Student student = this.studentService.checkPrincipal();
 		Assert.notNull(student);
-		Assignment assignment = this.assignmentService.findOne(assignmentId);
+		final Assignment assignment = this.assignmentService.findOne(assignmentId);
 		Assert.notNull(assignment);
-		Subject subject = this.subjectService.findOneByAssignment(assignmentId);
-		Group group = this.groupService.findGroupBySubjectAndStudent(
-				subject.getId(), student.getId());
-		SubmissionForm form = new SubmissionForm();
+		final Subject subject = this.subjectService.findOneByAssignment(assignmentId);
+		final Group group = this.groupService.findGroupBySubjectAndStudent(subject.getId(), student.getId());
+		final SubmissionForm form = new SubmissionForm();
 		form.setGroupId(group.getId());
 		form.setAssignmentId(assignmentId);
 
-		Collection<Submission> submissions = this.submissionRepository
-				.findSubmissionsByGroupAndAssignment(assignmentId,
-						group.getId());
+		final Collection<Submission> submissions = this.submissionRepository.findSubmissionsByGroupAndAssignment(assignmentId, group.getId());
 		if (submissions.isEmpty())
 			form.setTryNumber(1);
 		else {
 			int aux = 0;
-			for (Submission s : submissions) {
+			for (final Submission s : submissions)
 				if (aux < s.getTryNumber())
 					aux = s.getTryNumber();
-			}
-			form.setTryNumber(aux+1);
+			form.setTryNumber(aux + 1);
 		}
 
 		return form;
 
 	}
 
+
 	// Supporting Services ------------------------------------------
 	@Autowired(required = false)
-	private Validator validator;
+	private Validator	validator;
 
-	public Submission reconstruct(SubmissionForm form, BindingResult binding) {
-		Submission submission = new Submission();
-		String[] array = form.getAttachments().split(",");
-		List<String> str = new ArrayList<String>(Arrays.asList(array));
+
+	public Submission reconstruct(final SubmissionForm form, final BindingResult binding) {
+		final Submission submission = new Submission();
+		final String[] array = form.getAttachments().split(",");
+		final List<String> str = new ArrayList<String>(Arrays.asList(array));
 
 		submission.setAttachments(str);
 		submission.setContent(form.getContent());
 		submission.setGrade(form.getGrade());
 		submission.setTryNumber(form.getTryNumber());
-		Group group = this.groupService.findOne(form.getGroupId());
-		Assignment assignment = this.assignmentService.findOne(form
-				.getAssignmentId());
+		final Group group = this.groupService.findOne(form.getGroupId());
+		final Assignment assignment = this.assignmentService.findOne(form.getAssignmentId());
 		this.validator.validate(submission, binding);
 		if (!binding.hasErrors()) {
-			Submission saved = this.save(submission);
+			final Submission saved = this.save(submission);
 			group.getSubmission().add(saved);
 			assignment.getSubmission().add(saved);
 			this.groupService.save(group);
 			this.assignmentService.save(assignment);
 			return saved;
-		} else {
+		} else
 			return submission;
-		}
 
+	}
+
+	/**
+	 * Devuelve un submission del profesor logueado
+	 * 
+	 * @param submissionId
+	 * @return
+	 */
+	public Submission findOnePrincipal(final int submissionId) {
+		// TODO Auto-generated method stub
+		Assert.notNull(submissionId);
+		return this.repository.findOneTeacherIdSubmissionId(this.teacherService.checkPrincipal().getId(), submissionId);
+	}
+
+	/**
+	 * funciona solo para valorar
+	 * 
+	 * @param submission
+	 * @param bindingResult
+	 * @return
+	 */
+
+	public Submission reconstruct(final Submission submission, final BindingResult bindingResult) {
+		// TODO Auto-generated method stub
+		final Submission resul = this.findOnePrincipal(submission.getId());
+
+		resul.setMark(submission.getGrade() * 0.1);
+		resul.setGrade(submission.getGrade());
+		this.validator.validate(resul, bindingResult);
+		return resul;
 	}
 
 }

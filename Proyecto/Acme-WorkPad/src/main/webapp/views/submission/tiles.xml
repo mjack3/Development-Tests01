@@ -25,5 +25,13 @@
 		<put-attribute name="title" value="Edit submission" />
 		<put-attribute name="body" value="/views/submission/edit.jsp" />
 	</definition>
+	<definition name="submission/list" extends="master.page">	
+		<put-attribute name="title" value="Submissions list" />
+		<put-attribute name="body" value="/views/submission/list.jsp" />
+	</definition>
+	<definition name="submission/grade" extends="master.page">	
+		<put-attribute name="title" value="Grade submission" />
+		<put-attribute name="body" value="/views/submission/grade.jsp" />
+	</definition>
 	
 </tiles-definitions>

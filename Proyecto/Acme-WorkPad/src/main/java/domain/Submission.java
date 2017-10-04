@@ -21,53 +21,54 @@ public class Submission extends DomainEntity {
 	private Integer			grade;
 	private Integer			tryNumber;
 	private Double			mark;
-	
-	
+
+
 	//Getters
 
 	@NotNull
-	@Range(min=1)
+	@Range(min = 1)
 	public Integer getTryNumber() {
-		return tryNumber;
+		return this.tryNumber;
 	}
 
 	public Double getMark() {
-		return mark;
+		return this.mark;
 	}
 
 	@NotBlank
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	@NotNull
 	@ElementCollection(targetClass = String.class)
 	public List<String> getAttachments() {
-		return attachments;
+		return this.attachments;
 	}
 
+	@Range(min = 0, max = 100)
 	public Integer getGrade() {
-		return grade;
+		return this.grade;
 	}
 
 	//Setters
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
 
-	public void setAttachments(List<String> attachments) {
+	public void setAttachments(final List<String> attachments) {
 		this.attachments = attachments;
 	}
 
-	public void setGrade(Integer grade) {
+	public void setGrade(final Integer grade) {
 		this.grade = grade;
 	}
-	
-	public void setTryNumber(Integer tryNumber) {
+
+	public void setTryNumber(final Integer tryNumber) {
 		this.tryNumber = tryNumber;
 	}
 
-	public void setMark(Double mark) {
+	public void setMark(final Double mark) {
 		this.mark = mark;
 	}
 
