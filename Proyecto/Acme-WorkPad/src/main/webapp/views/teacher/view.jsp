@@ -20,11 +20,30 @@
 
 
 
-<acme:acme_view entity="${teacher}" skip_fields="seminars,bibliographiesRecords,subjects"  >
+<acme:acme_view entity="${teacher}" skip_fields="name,surname,email,phone,postalAddress,seminars,bibliographiesRecords,subjects"  >
 
-	 <tr>
-  		<td><spring:message code="teacher.name"/></td>
-  	<td>
+ <tr>
+	<td> <b><spring:message code="teacher.name"/></b> <jstl:out value="${teacher.name}"/> </td>
+<td>
+
+ <tr>
+	<td> <b><spring:message code="teacher.surname"/></b> <jstl:out value="${teacher.surname}"/> </td>
+<td>
+
+ <tr>
+	<td> <b><spring:message code="teacher.email"/></b> <jstl:out value="${teacher.email}"/> </td>
+<td>
+
+ <tr>
+	<td> <b><spring:message code="teacher.phone"/></b> <jstl:out value="${teacher.phone}"/> </td>
+<td>
+
+ <tr>
+	<td> <b><spring:message code="teacher.postalAddress"/></b> <jstl:out value="${teacher.postalAddress}"/> </td>
+<td>
 
 </acme:acme_view>
+
+
+
 
