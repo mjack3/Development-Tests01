@@ -37,7 +37,17 @@
   
 <!-- LIST DE KARLI -->
 
-<acme:list entityUrl="{bulletins:bulletin/actor/list.do,teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, groups:group/student/list.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator,activities,assigments" pagesize="6">
+<acme:list entityUrl="{teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, students:student/list.do, category:category/view.do, assigments:assignment/list.do}" list="${subject}" variable="e"  requestURI="${requestURI}" hidden_fields="administrator,activities,assigments,bulletins,groups" pagesize="6">
+
+
+<security:authorize access="isAuthenticated()">
+
+<a href="bulletin/actor/list.do"> <spring:message code="subject.bulletins" /> </a>
+
+<a href="group/student/list.do"> <spring:message code="subject.groups" /> </a>
+
+</security:authorize>
+
 
 <security:authorize access="hasRole('STUDENT')">
 <jstl:if test="${e.seats>0 and !subjectByStudent.contains(e)}">
