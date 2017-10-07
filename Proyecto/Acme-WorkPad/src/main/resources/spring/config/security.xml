@@ -30,8 +30,12 @@
 		<!-- MIGUEL -->
 		
 		<security:intercept-url access="permitAll" pattern="/**/search.do"/>
-		<security:intercept-url access="hasRole('TEACHER')" pattern="/**/teacher/**"/>
-
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/subject/teacher/**"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/activity/teacher/**"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/submission/teacher/**"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/assignment/teacher/**"/>
+	
+		
 		<!-- ADRI -->
 		
 		<security:intercept-url access="isAnonymous()" pattern="/student/create.do"/>
