@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Student;
-import domain.Subject;
 import security.LoginService;
-import services.AdministratorService;
 import services.StudentService;
 import services.SubjectService;
 import services.TeacherService;
+import domain.Student;
+import domain.Subject;
 
 @Controller
 @RequestMapping("/subject")
@@ -34,8 +33,6 @@ public class SubjectController extends AbstractController {
 	StudentService					studentService;
 	@Autowired
 	private TeacherService			teacherService;
-	@Autowired
-	private AdministratorService	administratorService;
 
 
 	public SubjectController() {

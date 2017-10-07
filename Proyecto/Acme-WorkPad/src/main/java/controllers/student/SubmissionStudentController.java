@@ -75,14 +75,14 @@ public class SubmissionStudentController extends AbstractController {
 				result = new ModelAndView(
 						"redirect:/assignment/student/list.do?studentId="
 								+ studentService.checkPrincipal().getId());
-				redirectAttrs.addFlashAttribute("message", "actor.commit.ok");
 			}
 		} catch (Throwable oops) {
+			if(oops.getMessage()=="error.attachment.format")result = this.createEditModelAndView(submissionForm,"submission.attachment.format.error");
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(submissionForm);
 			else
 				result = this.createEditModelAndView(submissionForm,
-						"actor.commit.error");
+						"submission.commit.error");
 		}
 		return result;
 	}

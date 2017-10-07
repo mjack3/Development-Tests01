@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 
 import repositories.AssignmentRepository;
 import domain.Assignment;
+import domain.Student;
 import domain.Subject;
 import domain.Submission;
 import forms.AssignmentForm;
@@ -27,6 +28,8 @@ public class AssignmentService {
 	private TeacherService			teacherService;
 	@Autowired
 	private SubjectService			subjectService;
+	@Autowired
+	private StudentService studentService;
 
 
 	public AssignmentService() {
@@ -123,4 +126,14 @@ public class AssignmentService {
 
 		return saved;
 	}
+	
+	
+	public Collection<Assignment> findAllByPrincipalStudent() {
+		Student student  = studentService.checkPrincipal();
+		Assert.notNull(student);
+		
+		
+		return this.repository.findAllByPrincipalStudent(student.getId());
+	}
+
 }

@@ -58,6 +58,8 @@
 					<security:authorize access="hasRole('STUDENT')">
 					<li><a href="subject/student/list.do"><spring:message
           	code="master.page.student.subject" /></a></li>
+          	<li><a href="assignment/student/list.do"><spring:message
+          	code="master.page.student.assignment" /></a></li>
 				
       
           <li><a href="student/edit.do"><spring:message code="master.page.actor.edit" /></a></li>

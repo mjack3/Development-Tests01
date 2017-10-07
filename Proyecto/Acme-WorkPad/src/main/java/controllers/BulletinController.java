@@ -63,7 +63,7 @@ public class BulletinController {
 				result = this.createEditModelAndView(bulletinForm);
 			else
 				result = this.createEditModelAndView(bulletinForm,
-						"actor.commit.error");
+						"bulletin.commit.error");
 		}
 		return result;
 	}
