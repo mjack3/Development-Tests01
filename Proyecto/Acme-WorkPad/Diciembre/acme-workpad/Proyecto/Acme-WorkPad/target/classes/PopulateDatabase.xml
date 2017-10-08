@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+ * PopulateDatabase.xml
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+	
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMINISTRATOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="teacher1" />
+		<property name="password" value="41c8949aa55b8cb5dbec662f34b62df3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="TEACHER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="teacher2" />
+		<property name="password" value="ccffb0bb993eeb79059b31e1611ec353" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="TEACHER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="student1" />
+		<property name="password" value="5e5545d38a68148a2d5bd5ec9a89e327" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="STUDENT" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="student2" />
+		<property name="password" value="213ee683360d88249109c2f92789dbc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="STUDENT" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Other domain beans come here -->	
+	
+	<bean id="actor1" class="domain.Administrator">
+		<property name="name" value="Pablo" />
+		<property name="surname" value="Emilio Escobar" />
+		<property name="email" value="pes@gamil.com" />
+		<property name="phone" value="+34 (26) 687975536" />
+		<property name="postalAddress" value="calle falsedad nº 95" />
+		<property name="userAccount" ref="userAccount1" />
+		<property name="folders">
+			<list>
+				<ref bean="folderInbox1"/>
+				<ref bean="folderOutbox1"/>
+				<ref bean="folderSpambox1"/>
+				<ref bean="folderTrashbox1"/>
+			</list>
+		</property>
+		<property name="activitiesRecords">
+			<list>
+				<ref bean="activityRecord1"/>
+			</list>
+		</property>
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity1"/>
+			</list>
+		</property>
+		<property name="schools">
+			<list>
+				<ref bean="school1"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="folderInbox1" class="domain.Folder">
+		<property name="folderName" value="Inbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderOutbox1" class="domain.Folder">
+		<property name="folderName" value="Outbox" />
+		<property name="messages">
+			<list>
+				<ref bean="mailmessage1"/>
+				<ref bean="mailmessage2"/>
+				<ref bean="mailmessage3"/>
+				<ref bean="mailmessage4"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderSpambox1" class="domain.Folder">
+		<property name="folderName" value="Spambox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderTrashbox1" class="domain.Folder">
+		<property name="folderName" value="Trashbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="actor2" class="domain.Teacher">
+		<property name="name" value="Emilia" />
+		<property name="surname" value="Sanchez Escobar" />
+		<property name="email" value="ese@gamil.com" />
+		<property name="phone" value="+34 (28) 697975996" />
+		<property name="postalAddress" value="calle mentira nº 2" />
+		<property name="userAccount" ref="userAccount2" />
+		<property name="folders">
+			<list>
+				<ref bean="folderInbox2"/>
+				<ref bean="folderOutbox2"/>
+				<ref bean="folderSpambox2"/>
+				<ref bean="folderTrashbox2"/>
+			</list>
+		</property>
+		<property name="activitiesRecords">
+			<list>
+				<ref bean="activityRecord2"/>
+			</list>
+		</property>
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity2"/>
+			</list>
+		</property>
+		<property name="bibliographiesRecords">
+			<list>
+			</list>
+		</property>
+		<property name="seminars">
+			<list>
+				<ref bean="seminar2"/>
+			</list>
+		</property>
+		<property name="subjects">
+			<list>
+				<ref bean="subject1"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="folderInbox2" class="domain.Folder">
+		<property name="folderName" value="Inbox" />
+		<property name="messages">
+			<list>
+				<ref bean="mailmessage1"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderOutbox2" class="domain.Folder">
+		<property name="folderName" value="Outbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderSpambox2" class="domain.Folder">
+		<property name="folderName" value="Spambox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderTrashbox2" class="domain.Folder">
+		<property name="folderName" value="Trashbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="actor3" class="domain.Student">
+		<property name="name" value="Angela" />
+		<property name="surname" value="Mortal Español" />
+		<property name="email" value="ese@gamil.com" />
+		<property name="phone" value="+34 (55) 667665966" />
+		<property name="postalAddress" value="calle ocurrencia nº 69" />
+		<property name="userAccount" ref="userAccount3" />
+		<property name="folders">
+			<list>
+				<ref bean="folderInbox3"/>
+				<ref bean="folderOutbox3"/>
+				<ref bean="folderSpambox3"/>
+				<ref bean="folderTrashbox3"/>
+			</list>
+		</property>
+		<property name="activitiesRecords">
+			<list>
+				<ref bean="activityRecord3"/>
+			</list>
+		</property>
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity3"/>
+			</list>
+		</property>
+		<property name="seminars">
+			<list>
+				<ref bean="seminar1"/>
+			</list>
+		</property>
+		<property name="groups">
+			<list>
+				<ref bean="group2"/>
+				<ref bean="group4"/>
+			</list>
+		</property>
+		
+		<property name="subjects">
+			<list>
+				<ref bean="subject2"/>
+				<ref bean="subject1"/>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="folderInbox3" class="domain.Folder">
+		<property name="folderName" value="Inbox" />
+		<property name="messages">
+			<list>
+				<ref bean="mailmessage2"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderOutbox3" class="domain.Folder">
+		<property name="folderName" value="Outbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderSpambox3" class="domain.Folder">
+		<property name="folderName" value="Spambox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderTrashbox3" class="domain.Folder">
+		<property name="folderName" value="Trashbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="actor4" class="domain.Teacher">
+		<property name="name" value="Angel" />
+		<property name="surname" value="Mortales Españoles" />
+		<property name="email" value="ame@gamil.com" />
+		<property name="phone" value="+38 (99) 667665966" />
+		<property name="postalAddress" value="calle ocurrencias nº 96" />
+		<property name="userAccount" ref="userAccount4" />
+		<property name="folders">
+			<list>
+				<ref bean="folderInbox4"/>
+				<ref bean="folderOutbox4"/>
+				<ref bean="folderSpambox4"/>
+				<ref bean="folderTrashbox4"/>
+			</list>
+		</property>
+		<property name="activitiesRecords">
+			<list>
+				<ref bean="activityRecord4"/>
+			</list>
+		</property>
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity4"/>
+			</list>
+		</property>
+		<property name="bibliographiesRecords">
+			<list>
+			</list>
+		</property>
+		<property name="seminars">
+			<list>
+				<ref bean="seminar1"/>
+			</list>
+		</property>
+		<property name="subjects">
+			<list>
+				<ref bean="subject2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="folderInbox4" class="domain.Folder">
+		<property name="folderName" value="Inbox" />
+		<property name="messages">
+			<list>
+				<ref bean="mailmessage3"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderOutbox4" class="domain.Folder">
+		<property name="folderName" value="Outbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderSpambox4" class="domain.Folder">
+		<property name="folderName" value="Spambox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderTrashbox4" class="domain.Folder">
+		<property name="folderName" value="Trashbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="actor5" class="domain.Student">
+		<property name="name" value="Pablo Jesus" />
+		<property name="surname" value="Escobar Aguilera" />
+		<property name="email" value="pjea@gamil.com" />
+		<property name="phone" value="+99 (99) 654765966" />
+		<property name="postalAddress" value="calle falsiencia nº 1" />
+		<property name="userAccount" ref="userAccount5" />
+		<property name="folders">
+			<list>
+				<ref bean="folderInbox5"/>
+				<ref bean="folderOutbox5"/>
+				<ref bean="folderSpambox5"/>
+				<ref bean="folderTrashbox5"/>
+			</list>
+		</property>
+		<property name="activitiesRecords">
+			<list>
+				<ref bean="activityRecord5"/>
+			</list>
+		</property>
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity5"/>
+			</list>
+		</property>
+		<property name="seminars">
+			<list>
+				<ref bean="seminar2"/>
+			</list>
+		</property>
+		<property name="groups">
+			<list>
+				<ref bean="group1"/>
+				<ref bean="group3"/>
+			</list>
+		</property>
+		
+		<property name="subjects">
+			<list>
+				<ref bean="subject2"/>
+				
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="folderInbox5" class="domain.Folder">
+		<property name="folderName" value="Inbox" />
+		<property name="messages">
+			<list>
+				<ref bean="mailmessage4"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderOutbox5" class="domain.Folder">
+		<property name="folderName" value="Outbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderSpambox5" class="domain.Folder">
+		<property name="folderName" value="Spambox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="folderTrashbox5" class="domain.Folder">
+		<property name="folderName" value="Trashbox" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="mailmessage1" class="domain.MailMessage">
+		<property name="sent" value="20/09/2017 12:55:22" />
+		<property name="subject" value="Bienvenida" />
+		<property name="body" value="Bienvenido a Acme-WorkPad" />
+		<property name="priority" ref="LOW" />
+		<property name="sender" ref="actor1" />
+		<property name="recipient" ref="actor2" />
+	</bean>
+	
+	<bean id="mailmessage2" class="domain.MailMessage">
+		<property name="sent" value="20/09/2017 12:55:22" />
+		<property name="subject" value="Bienvenida" />
+		<property name="body" value="Bienvenido a Acme-WorkPad" />
+		<property name="priority" ref="LOW" />
+		<property name="sender" ref="actor1" />
+		<property name="recipient" ref="actor3" />
+	</bean>
+	
+	<bean id="mailmessage3" class="domain.MailMessage">
+		<property name="sent" value="20/09/2017 12:55:22" />
+		<property name="subject" value="Bienvenida" />
+		<property name="body" value="Bienvenido a Acme-WorkPad" />
+		<property name="priority" ref="LOW" />
+		<property name="sender" ref="actor1" />
+		<property name="recipient" ref="actor4" />
+	</bean>
+	
+	<bean id="mailmessage4" class="domain.MailMessage">
+		<property name="sent" value="20/09/2017 12:55:22" />
+		<property name="subject" value="Bienvenida" />
+		<property name="body" value="Bienvenido a Acme-WorkPad" />
+		<property name="priority" ref="LOW" />
+		<property name="sender" ref="actor1" />
+		<property name="recipient" ref="actor5" />
+	</bean>
+	
+	<bean id="school1" class="domain.School">
+		<property name="name" value="Acme School" />
+		<property name="banner" value="http://www.ghsd75.ca/images/template/s-acme.png" />
+		<property name="subjects">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="school2" class="domain.School">
+		<property name="name" value="School of Rock" />
+		<property name="banner" value="https://pbs.twimg.com/profile_images/894706658462507008/hW5Uc-Fp.jpg" />
+		<property name="subjects">
+			<list>
+				<ref bean="subject1"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="school3" class="domain.School">
+		<property name="name" value="School of Pop" />
+		<property name="banner" value="https://www.edmdroid.com/wp-content/uploads/2017/06/school-of-pop-zouk.jpg" />
+		<property name="subjects">
+			<list>
+				<ref bean="subject2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="subject1" class="domain.Subject">
+		<property name="name" value="Matematicas" />
+		<property name="ticker" value="AA-12345" />
+		<property name="syllabus" value="Matematicas syllabus" />
+		<property name="seats" value="20" />
+		<property name="bulletins">
+			<list>
+				<ref bean="bulletin1"/>
+				<ref bean="bulletin2"/>
+			</list>
+		</property>
+		<property name="activities">
+			<list>
+				<ref bean="activity2"/>
+			</list>
+		</property>
+		<property name="assigments">
+			<list>
+				<ref bean="assignment2"/>
+			</list>
+		</property>
+		<property name="groups">
+			<list>
+				<ref bean="group3"/>
+				<ref bean="group4"/>
+			</list>
+		</property>
+		<property name="bibliographiesRecords">
+			<list>
+				<ref bean="bibliographyRecord1"/>
+			</list>
+		</property>
+		<property name="teacher" ref="actor2" />
+		<property name="category" ref="category1" />
+		<property name="administator" ref="actor1" />
+		
+		<property name="students">
+			<list>
+				<ref bean="actor3"/>
+				<ref bean="actor5"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="subject2" class="domain.Subject">
+		<property name="name" value="Lenguaje" />
+		<property name="ticker" value="BB-11111" />
+		<property name="syllabus" value="Lenguaje syllabus" />
+		<property name="seats" value="20" />
+		<property name="bulletins">
+			<list>
+				<ref bean="bulletin3"/>
+			</list>
+		</property>
+		<property name="activities">
+			<list>
+				<ref bean="activity1"/>
+				<ref bean="activity3"/>
+			</list>
+		</property>
+		<property name="assigments">
+			<list>
+				<ref bean="assignment1"/>
+			</list>
+		</property>
+		<property name="groups">
+			<list>
+				<ref bean="group1"/>
+				<ref bean="group2"/>
+			</list>
+		</property>
+		<property name="bibliographiesRecords">
+			<list>
+				<ref bean="bibliographyRecord2"/>
+			</list>
+		</property>
+		<property name="teacher" ref="actor2" />
+		<property name="category" ref="category2" />
+		<property name="administator" ref="actor1" />
+			<property name="students">
+			<list>
+				<ref bean="actor3"/>
+				
+			</list>
+			</property>
+		
+	</bean>
+	
+	<bean id="category1" class="domain.Category">
+		<property name="name" value="ACTIVITY" />
+		<property name="categoryChildren">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="category2" class="domain.Category">
+		<property name="name" value="SECOND CATEGORY" />
+		<property name="categoryChildren">
+			<list>
+				<ref bean="category3"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="category3" class="domain.Category">
+	<property name="categoryFather" ref="category2" />
+		<property name="name" value="THIRD CATEGORY" />
+		<property name="categoryChildren">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="LOW" class="domain.Priority">
+		<property name="value" value="LOW" />
+	</bean>
+	
+	<bean id="bulletin1" class="domain.Bulletin">
+		<property name="title" value="bulletin one" />
+		<property name="text" value="Text of bulletin one" />
+		<property name="postedDate" value="20/09/2017 15:00:02" />
+	</bean>
+	
+	<bean id="bulletin2" class="domain.Bulletin">
+		<property name="title" value="bulletin two" />
+		<property name="text" value="Text of bulletin two" />
+		<property name="postedDate" value="10/09/2017 15:00:02" />
+	</bean>
+	
+	<bean id="bulletin3" class="domain.Bulletin">
+		<property name="title" value="bulletin three" />
+		<property name="text" value="Text of bulletin three" />
+		<property name="postedDate" value="15/09/2017 17:00:02" />
+	</bean>
+	
+	<bean id="activity1" class="domain.Activity">
+		<property name="title" value="Homeworks" />
+		<property name="description" value="Work in Home" />
+		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="20/10/2017 23:00:00" />
+	</bean>
+	
+	<bean id="activity2" class="domain.Activity">
+		<property name="title" value="Homeworks" />
+		<property name="description" value="Work in Home" />
+		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="20/10/2018 23:00:00" />
+	</bean>
+	
+	<bean id="activity3" class="domain.Activity">
+		<property name="title" value="Exams" />
+		<property name="description" value="Controls Checks" />
+		<property name="link" value="https://es.wikipedia.org/wiki/Examen_(evaluación_estudiantil)" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="20/10/2017 23:00:00" />
+	</bean>
+	
+	<bean id="assignment1" class="domain.Assignment">
+		<property name="title" value="Entrega 01" />
+		<property name="description" value="Entrega de trabajos iniciales" />
+		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="20/10/2017 23:00:00" />
+		<property name="submission">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="assignment2" class="domain.Assignment">
+		<property name="title" value="Entrega 01" />
+		<property name="description" value="Entrega de trabajos iniciales" />
+		<property name="link" value="https://en.wikipedia.org/wiki/Homework" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="20/10/2018 23:00:00" />
+		<property name="submission">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="group1" class="domain.GroupSubject">
+		<property name="name" value="Group 01" />
+		<property name="description" value="Grupo 01 para trabajos iniciales" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="25/10/2017 23:00:00" />
+		<property name="students">
+			<list>
+				<ref bean="actor5"/>
+			</list>
+		</property>
+		<property name="submission">
+			<list>
+				<ref bean="submission2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="group2" class="domain.GroupSubject">
+		<property name="name" value="Group 02" />
+		<property name="description" value="Grupo 02 para trabajos iniciales" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="25/10/2017 23:00:00" />
+		<property name="students">
+			<list>
+				<ref bean="actor3"/>
+			</list>
+		</property>
+		<property name="submission">
+			<list>
+				<ref bean="submission1"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="group3" class="domain.GroupSubject">
+		<property name="name" value="Group 01" />
+		<property name="description" value="Grupo 01 para trabajos iniciales" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="25/10/2017 23:00:00" />
+		<property name="students">
+			<list>
+				<ref bean="actor5"/>
+			</list>
+		</property>
+		<property name="submission">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="group4" class="domain.GroupSubject">
+		<property name="name" value="Group 02" />
+		<property name="description" value="Grupo 02 para trabajos iniciales" />
+		<property name="startDate" value="20/09/2017 12:00:00" />
+		<property name="endDate" value="25/10/2017 23:00:00" />
+		<property name="students">
+			<list>
+				<ref bean="actor3"/>
+			</list>
+		</property>
+		<property name="submission">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="submission1" class="domain.Submission">
+		<property name="content" value="Contenido sub01" />
+		<property name="grade" value="5" />
+		<property name="attachments">
+			<value>https://es.wikipedia.org/wiki/Examen_(evaluación_estudiantil)</value>
+		</property>
+	</bean>
+	
+	<bean id="submission2" class="domain.Submission">
+		<property name="content" value="Contenido sub02" />
+		<property name="grade" value="8" />
+		<property name="attachments">
+			<value>https://es.wikipedia.org/wiki/Examen_(evaluación_estudiantil)</value>
+		</property>
+	</bean>
+	
+	<bean id="activityRecord1" class="domain.ActivityRecord">
+		<property name="description" value="Record1" />
+		<property name="writtenDate" value="20/09/2017 12:00:00" />
+		<property name="attachment">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="activityRecord2" class="domain.ActivityRecord">
+		<property name="description" value="Record2" />
+		<property name="writtenDate" value="20/09/2017 12:00:00" />
+		<property name="attachment">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="activityRecord3" class="domain.ActivityRecord">
+		<property name="description" value="Record3" />
+		<property name="writtenDate" value="20/09/2017 12:00:00" />
+		<property name="attachment">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="activityRecord4" class="domain.ActivityRecord">
+		<property name="description" value="Record4" />
+		<property name="writtenDate" value="20/09/2017 12:00:00" />
+		<property name="attachment">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="activityRecord5" class="domain.ActivityRecord">
+		<property name="description" value="Record5" />
+		<property name="writtenDate" value="20/09/2017 12:00:00" />
+		<property name="attachment">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="socialIdentity1" class="domain.SocialIdentity">
+		<property name="nick" value="pavo1" />
+		<property name="socialName" value="Twitter" />
+		<property name="link" value="https://twitter.com"/>
+		<property name="photo" value=""/>
+	</bean>
+	
+	<bean id="socialIdentity2" class="domain.SocialIdentity">
+		<property name="nick" value="misterioso" />
+		<property name="socialName" value="Twitter" />
+		<property name="link" value="https://twitter.com"/>
+		<property name="photo" value=""/>
+	</bean>
+	
+	<bean id="socialIdentity3" class="domain.SocialIdentity">
+		<property name="nick" value="usuarioPerfect" />
+		<property name="socialName" value="Facebook" />
+		<property name="link" value="https://www.facebook.com"/>
+		<property name="photo" value=""/>
+	</bean>
+	
+	<bean id="socialIdentity4" class="domain.SocialIdentity">
+		<property name="nick" value="usuarioBloqueado" />
+		<property name="socialName" value="Facebook" />
+		<property name="link" value="https://www.facebook.com"/>
+		<property name="photo" value=""/>
+	</bean>
+	
+	<bean id="socialIdentity5" class="domain.SocialIdentity">
+		<property name="nick" value="usuarioInterior" />
+		<property name="socialName" value="Facebook" />
+		<property name="link" value="https://www.facebook.com"/>
+		<property name="photo" value=""/>
+	</bean>
+	
+	<bean id="seminar1" class="domain.Seminar">
+		<property name="title" value="Seminario Introductorio" />
+		<property name="summary" value="Seminario para introducir al alumnado en el entorno" />
+		<property name="organisedDate" value="12/12/2018"/>
+		<property name="duration" value="2"/>
+		<property name="hall" value="Hall 5"/>
+		<property name="seats" value="20"/>
+	</bean>
+	
+	<bean id="seminar2" class="domain.Seminar">
+		<property name="title" value="Seminario Introductorio" />
+		<property name="summary" value="Seminario para introducir al alumnado en el entorno" />
+		<property name="organisedDate" value="12/12/2018"/>
+		<property name="duration" value="2"/>
+		<property name="hall" value="Hall 8"/>
+		<property name="seats" value="20"/>
+	</bean>
+	
+	<bean id="bibliographyRecord1" class="domain.BibliographyRecord">
+		<property name="title" value="Biblio1" />
+		<property name="authors" value="Jonh Constantine y Juan Palomo" />
+		<property name="locator" value="9789504200857"/>
+	</bean>
+	
+	<bean id="bibliographyRecord2" class="domain.BibliographyRecord">
+		<property name="title" value="Biblio2" />
+		<property name="authors" value="Jonh Constantine y Juan Palomo" />
+		<property name="locator" value="0189504200859"/>
+	</bean>
+	
+</beans>

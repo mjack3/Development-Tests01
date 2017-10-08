@@ -1,0 +1,13 @@
+.acme-body {
+	margin: 20px;
+}
+
+.pagebanner, .pagelinks {
+	background: none;
+	border: none;
+}
+
+.displaytag {
+	background: red;
+}
+

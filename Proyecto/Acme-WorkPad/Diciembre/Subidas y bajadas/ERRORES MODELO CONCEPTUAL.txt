@@ -1,0 +1,16 @@
+***********************************************************************
+**********************ERRORES******************************************
+***********************************************************************
+
+Err1 - Teacher debe tener una relacion 1 a 0..1 con asignaturas
+Err2 - La asociación entre Group y Studen debe ser mediante una clase asociación
+Err3 - Revisar la navegabilidad de los mensajes
+
+
+***********************************************************************
+********************ASPECTOS A CONSIDERAR******************************
+***********************************************************************
+
+1-Un alumno podría no estar en más de un grupo
+2-La relación entre submision y Assignment, podria ser unidireccionalmente hacia Assignement (de modo que desde Assignement
+	se podría ver una collection de entregas).

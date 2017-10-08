@@ -1,0 +1,65 @@
+18- pattern telefono
+21- actores no autenticados no se les permite ver los boletines, las
+actividades, las tareas o los grupos en una asignatura.
+20. El sistema debe configurarse de modo que se puede desplegar una variedad de escuelas. Debe ser muy fácil de personalizar el sistema con el nombre y el banner de la escuela a la que va a ser desplegado.
+ Por defecto, se debe configurar con una escuela llamada “Escuela Acme”, cuya disponible en http://www.ghsd75.ca/images/template/s-acme.png de bandera.(estudiar esto)
+21. actores no autenticados no se les permite ver los boletines, las actividades, las tareas o los grupos en una asignatura.(Ocultarlos)
+
+10.3- navegar a sus profesores( a sus materiales)
+pendiente: Navegar por la lista de maestros y navegar a las materias que enseñan.(no esta hecha)
+
+10.4Buscar asignaturas que contengan una palabra clave en su título o descripción; 
+el actor debe ser capaz de elegir si él o ella desea que el sistema muestre asignaturas para los que no hay plazas disponibles.(hay que probar si no hay plaza)
+
+11.1 falta que los teachers puedan ver sus asignaturas
+
+11.2 Editar sus datos personales( el admin le hace falta su enlace para editar)
+11.3 Publicar boletines con respecto a cualquier tema.(falta y no va el list)(esta hecho pero no esta invocado by jose)
+
+11.4  intercambiar mensajes con otros actores del sistema.(mensaje no se ve a quien se lo envia, poner un error en enviar)
+
+12.1 Gestionar las actividades involucradas en una asignatura que él o ella enseña. Esto incluye listar, crear, editar y eliminar(falla el list y se supone que esta by miguel)
+
+12.2. Gestionar las tareas involucradas en una asignatura que él o ella enseña, que incluyelistar, crear, editar y eliminar.
+ También pueden calificar las presentaciones que los grupos de estudiantes han hecho en relación con una tarea. 
+(Tenga en cuenta que la marca de la tarea debe ser calculada de forma automática).(Tambien deberia de estar creo que el 12.1 y 12.2 ha desaparecido el invocar las tiles xd)
+
+13.1 Inscribirse en una asignatura siempre y cuando tenga plazas disponibles.(Probar si hay 0 plazas).
+13.2. Crear un nuevo grupo de estudiantes en cualquiera de las asignaturas en la que él o ella esté inscrito.(arreglar el error de la fecha (Miguel lo tiene areglado )
+y que tenga al lado un boton de crear assigment.
+
+13.3. Unirse a un grupo existente en una asignatura en la que él o ella esté inscrito, 
+siempre y cuando él o ella no se haya unido a otros grupos en esa asignatura 
+y la fecha actual se encuentra dentro del período de tiempo en el que se le permite unirse al grupo.(no esta)
+
+13.4  Presentar una entrega a una tarea tantas veces como él o ella quiera, siempre 
+y cuando la tarea esté activa, es decir, la fecha actual se encuentra entre sus fechas de inicio y fin.(deberia de estar pero no esta invocado)
+
+14.1. Gestionar una asignatura, lo que incluye listar, visualizar,
+ editar y eliminar la misma. Note que sólo el administrador de registre una asignatura puede editarla o borrarla.(no se deberia de borrar 
+cualquiera asignatura ni editarla, no se muestra su activity y si pones un ticker igual a otro no sale el error y ademas sale el activity vacio)
+
+14.2 El registro de un maestro para el sistema para que él o ella pueda acceder y utilizar el sistema.(no esta la vista o no tiene el permiso)
+
+14.3 Asociar un profesor con las asignaturas que él o ella tiene que enseñar(no esta)
+
+Arreglar los create
+mirar que si se entra mas de una vez no va
+mirar bien los enlaces que no esta invocado que habra mas de uno
+mirar si algunas cosas son hackeable
+
+
+
+07/10/2017
+mirar lo del pattern 
+mirar lo de la lista subject
+
+
+
+
+
+
+
+
+
+
