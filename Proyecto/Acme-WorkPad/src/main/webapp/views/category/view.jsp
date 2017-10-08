@@ -23,6 +23,9 @@
 	<acme:acme_view entity="${category}" skip_fields="categoryChildren" >
 	 <tr>
   		<td><spring:message code="category.categoryChildren"/></td>
-  	<td>
+  		<jstl:forEach var="a" items="${category.categoryChildren}">
+  			<td><jstl:out value="${a.name}" /></td>
+  		</jstl:forEach>
+  	<tr>
 	</acme:acme_view>
 

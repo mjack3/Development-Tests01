@@ -69,6 +69,9 @@
 		
 		<security:intercept-url pattern="/subject/listTeacher.do" access="permitAll()" /> 
 		
+		<security:intercept-url pattern="/subject/administrator/associateTeacher.do" access="hasRole('ADMINISTRATOR')" /> 
+		<security:intercept-url pattern="/subject/administrator/saveAssociate.do" access="hasRole('ADMINISTRATOR')" /> 
+		
 		<!-- FIN ADRI -->
 
 

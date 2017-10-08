@@ -95,7 +95,7 @@ public class SubjectService {
 		return this.repository.subjectsByStudents(id);
 	}
 
-	public Subject save(final Subject entity) {
+	public Subject save(Subject entity) {
 		Assert.notNull(entity);
 
 		Subject aux = new Subject();

@@ -15,13 +15,8 @@
 <acme:acme_form hiddenFields="id,version,userAccount,administrator,bulletins,teacher,bibliographiesRecords,activities,groups,students,assigments"
 type="edit" entity="${subject}"  url="subject/administrator/edit.do" numberSteps="0.25" cancel="welcome/index.do" >
 <div class="form-group" style="width: 55%;">
-		<label for="label"><spring:message code="subject.category" /> </label> <select
-			name="category">
-			<jstl:forEach var="s" items="${categories}">
-				<option value="${s.id}">${s.name}</option>
-			</jstl:forEach>
-		</select>
-	</div>
+		<acme:select items="${categories}" itemLabel="name" code="subject.category" path="category"/>
+</div>
 
 </acme:acme_form>
 

@@ -88,6 +88,8 @@
 					code='acme.delete' /></a></td>
 		<td><a href="subject/administrator/edit.do?q=${e.id}"> <spring:message
 					code='acme.edit' /></a></td>
+		<td><a href="subject/administrator/associateTeacher.do?q=${e.id}"> <spring:message
+					code='subject.associate' /></a></td>
 		</jstl:if>
 	</acme:list>
 

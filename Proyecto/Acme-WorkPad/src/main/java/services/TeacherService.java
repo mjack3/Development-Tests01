@@ -294,4 +294,10 @@ public class TeacherService {
 	public List<Teacher> findAll() {
 		return repository.findAll();
 	}
+	
+	public Teacher findOne(int teacherID) {
+		Assert.notNull(teacherID);
+		Assert.isTrue(repository.exists(teacherID));
+		return repository.findOne(teacherID);
+	}
 }
