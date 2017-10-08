@@ -16,7 +16,6 @@ import domain.Assignment;
 import domain.BibliographyRecord;
 import domain.Bulletin;
 import domain.Group;
-import domain.Student;
 import domain.Subject;
 import domain.Teacher;
 import repositories.SubjectRepository;
@@ -27,14 +26,13 @@ import security.LoginService;
 public class SubjectService {
 
 	@Autowired
-	private SubjectRepository			repository;
-
+	private SubjectRepository	repository;
 
 	@Autowired
-	private TeacherService				teacherService;
-	
+	private StudentService		studentService;
 
-
+	@Autowired
+	private TeacherService		teacherService;
 
 
 	public SubjectService() {
@@ -139,15 +137,15 @@ public class SubjectService {
 		return this.repository.save(arg0);
 	}
 
-	public void delete(Subject subject) {
+	public void delete(final Subject subject) {
 		Assert.notNull(subject);
-		
+
 		subject.setActivities(new ArrayList<Activity>());
 		subject.setAssigments(new ArrayList<Assignment>());
 		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
 		subject.setBulletins(new ArrayList<Bulletin>());
 		subject.setGroups(new ArrayList<Group>());
-		subject.setStudents(new ArrayList<Student>());
+		//subject.setStudents(new ArrayList<Student>());
 
 		this.repository.delete(subject);
 	}
@@ -194,9 +192,9 @@ public class SubjectService {
 		return this.repository.findSubjectsByWordWithSeats(keyword, LoginService.getPrincipal().getId());
 	}
 
-	public Subject findOneByAssignment(int assignmentId) {
+	public Subject findOneByAssignment(final int assignmentId) {
 		Assert.notNull(assignmentId);
-		
+
 		return this.repository.findOneByAssignment(assignmentId);
 	}
 
