@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,9 +27,21 @@ public class Group extends DomainEntity {
 	private Date				startDate;
 	private Date				endDate;
 	private List<Submission>	submission;
+	private List<Student>		students;
 
+
+
+
+	
 
 	//Getters
+	
+	@NotNull
+	@ManyToMany(mappedBy="groups")
+	public List<Student> getStudents() {
+		return students;
+	}
+	
 	@NotBlank
 	public String getName() {
 		return name;
@@ -78,6 +91,10 @@ public class Group extends DomainEntity {
 
 	public void setSubmission(List<Submission> submission) {
 		this.submission = submission;
+	}
+	
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 }

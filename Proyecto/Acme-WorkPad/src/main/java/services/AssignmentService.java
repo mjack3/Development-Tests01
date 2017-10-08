@@ -29,7 +29,9 @@ public class AssignmentService {
 	@Autowired
 	private SubjectService			subjectService;
 	@Autowired
-	private StudentService studentService;
+	private StudentService 			studentService;
+	@Autowired
+	private GroupService 			groupService;
 
 
 	public AssignmentService() {
@@ -37,6 +39,8 @@ public class AssignmentService {
 	}
 
 	// Simple CRUDs methods ------------------------------
+
+
 
 	/**
 	 * Guarda en la BD un assignment
@@ -134,6 +138,12 @@ public class AssignmentService {
 		
 		
 		return this.repository.findAllByPrincipalStudent(student.getId());
+	}
+	
+	public Collection<Submission> findAllByGroupId(int id) {
+		Assert.notNull(id);
+		Assert.isTrue(groupService.exists(id));
+		return repository.findAllByGroupId(id);
 	}
 
 }

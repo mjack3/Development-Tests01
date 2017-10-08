@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import services.StudentService;
 import services.SubmissionService;
 import controllers.AbstractController;
+import domain.Group;
 import forms.SubmissionForm;
 
 @Controller
@@ -58,6 +59,18 @@ public class SubmissionStudentController extends AbstractController {
 
 		return result;
 	}
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam Group q) {
+
+		ModelAndView result;
+		
+		result = new ModelAndView("submission/list");
+		result.addObject("submissions", q.getSubmission());
+
+		return result;
+	}
+
 
 	// Editar
 

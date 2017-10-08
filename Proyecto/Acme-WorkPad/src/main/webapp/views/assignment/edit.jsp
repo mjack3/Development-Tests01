@@ -32,6 +32,6 @@
 	<acme:textbox2 code="assignment.link" path="link"/>
 
 <acme:submit name="save" code="assignment.save"/>
-<acme:cancel url="assignment/teacher/list.do?subjectId=${entity.subjectId }" code="assignment.cancel"/>
+<input onclick="window.history.back()" type="button" class="btn btn-warning" value="<spring:message code="assignment.cancel" />">
 
 </form:form>

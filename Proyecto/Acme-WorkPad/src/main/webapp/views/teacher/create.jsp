@@ -16,7 +16,6 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
-
 <acme:acme_form skip_fields="userAccount" hiddenFields="seminars,bibliographiesRecords,subjects,folders,activitiesRecords,socialIdentities" another_mapped_classes="domain.Actor" type="create" entity="${teacher}" url="teacher/administrator/save.do" cancel="welcome/index.do">
 	<acme:acme_input entity="${teacher.userAccount}" name="userAccount.username" field="username"/>
 	<acme:acme_input entity="${teacher.userAccount}" name="userAccount.password" field="password" typeIn="password"/>

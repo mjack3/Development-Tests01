@@ -38,7 +38,7 @@
 		
 	<acme:submit name="save" code="submission.save" />
 	
-	<acme:cancel url="/welcome/index.do" code="submission.cancel" />
+	<input onclick="window.history.back()" type="button" class="btn btn-warning" value="<spring:message code="submission.cancel" />">
 		
 
 </form:form>

@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.SubjectRepository;
-import security.LoginService;
 import domain.Activity;
 import domain.Assignment;
 import domain.BibliographyRecord;
@@ -21,6 +19,8 @@ import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
+import repositories.SubjectRepository;
+import security.LoginService;
 
 @Transactional
 @Service
@@ -29,11 +29,11 @@ public class SubjectService {
 	@Autowired
 	private SubjectRepository			repository;
 
-	@Autowired
-	private StudentService				studentService;
 
 	@Autowired
 	private TeacherService				teacherService;
+	
+
 
 
 
@@ -139,20 +139,15 @@ public class SubjectService {
 		return this.repository.save(arg0);
 	}
 
-	public void delete(final Subject subject) {
+	public void delete(Subject subject) {
 		Assert.notNull(subject);
-
-		for (final Student s : subject.getStudents())
-			this.studentService.delete(s);
-
+		
 		subject.setActivities(new ArrayList<Activity>());
+		subject.setAssigments(new ArrayList<Assignment>());
+		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
 		subject.setBulletins(new ArrayList<Bulletin>());
 		subject.setGroups(new ArrayList<Group>());
-
 		subject.setStudents(new ArrayList<Student>());
-		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
-
-		subject.setAssigments(new ArrayList<Assignment>());
 
 		this.repository.delete(subject);
 	}

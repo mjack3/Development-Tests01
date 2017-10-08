@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
+import domain.Teacher;
 import security.LoginService;
 import services.GroupService;
 import services.SubjectService;
@@ -84,14 +85,30 @@ public class GroupController {
 		ModelAndView result;
 
 		result = new ModelAndView("group/list");
-		final Student student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+		Student student = null;
+		Teacher teacher = null;
+		if(LoginService.hasRole("STUDENT")) {
+			student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+		}
+		if(LoginService.hasRole("TEACHER")) {
+			teacher = (Teacher) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+		}
+		
 		result.addObject("group", subjectservice.findOne(q).getGroups());
 		List<Subject> subjects = new ArrayList<Subject>();
 		subjectscond = false;
 
-		for (Subject e : student.getSubjects()) {
-			subjects.add(e);
+		if(student !=null) {
+			for (Subject e : student.getSubjects()) {
+				subjects.add(e);
+			}
 		}
+		if(teacher!=null) {
+			for (Subject e : teacher.getSubjects()) {
+				subjects.add(e);
+			}
+		}
+		
 		if (subjects.contains(subjectservice.findOne(q))) {
 			subjectscond = true;
 		}
@@ -102,5 +119,6 @@ public class GroupController {
 
 		return result;
 	}
+	
 
 }

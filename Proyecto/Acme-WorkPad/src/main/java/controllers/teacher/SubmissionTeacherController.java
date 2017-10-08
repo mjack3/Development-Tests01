@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import controllers.AbstractController;
+import domain.Submission;
 import services.AssignmentService;
 import services.SubmissionService;
-import controllers.AbstractController;
-import domain.Assignment;
-import domain.Submission;
 
 @RequestMapping("/submission/teacher")
 @Controller
@@ -34,9 +33,8 @@ public class SubmissionTeacherController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int q) {
 		final ModelAndView resul = new ModelAndView("submission/list");
-		final Assignment assignment = this.assignmentService.findOnePrinicpal(q);
 
-		final Collection<Submission> submissions = assignment.getSubmission();
+		final Collection<Submission> submissions = assignmentService.findAllByGroupId(q);
 		resul.addObject("submissions", submissions);
 		resul.addObject("requestURI", "submission/teacher/list.do");
 

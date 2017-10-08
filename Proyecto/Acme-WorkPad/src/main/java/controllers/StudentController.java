@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +21,8 @@ public class StudentController {
 
 	@Autowired
 	private StudentService	studentService;
-
-
+	
+	private Student toSave;
 
 	public StudentController() {
 		super();
@@ -50,8 +53,15 @@ public class StudentController {
 			result = createNewModelAndView(student, null);
 		} else {
 			try {
-				studentService.save(student);
-				result = new ModelAndView("redirect:/welcome/index.do");
+				Pattern pattern = Pattern.compile("^\\+([0-9][0-9]{0,2}) (\\([0-9][0-9][0-9]{0,3}\\)) ([a-zA-Z0-9 -]{4,})$");
+			    Matcher matcher = pattern.matcher(student.getPhone());
+				if(!matcher.matches()) {
+					result = new ModelAndView("student/confirm");
+					toSave = student;
+				}else {
+					studentService.save(student);
+					result = new ModelAndView("redirect:/welcome/index.do");
+				}			
 			} catch (Throwable th) {
 				th.printStackTrace();
 				result = createNewModelAndView(student, "student.commit.error");
@@ -68,14 +78,49 @@ public class StudentController {
 			result = createEditModelAndView(student, null);
 		} else {
 			try {
+				Pattern pattern = Pattern.compile("^\\+([0-9][0-9]{0,2}) (\\([0-9][0-9][0-9]{0,3}\\)) ([a-zA-Z0-9 -]{4,})$");
+			    Matcher matcher = pattern.matcher(student.getPhone());
+				if(!matcher.matches()) {
+					result = new ModelAndView("student/confirm");
+					toSave = student;
+				}else {
 				studentService.update(student);
 				result = new ModelAndView("redirect:/welcome/index.do");
+				}
 			} catch (Throwable th) {
 				th.printStackTrace();
 				result = createEditModelAndView(student, "student.commit.error");
 		}
 		
 	}
+	return result;
+}
+	
+	@RequestMapping(value="/saveConfirm", method=RequestMethod.POST)
+	public ModelAndView saveConfirm() {
+		ModelAndView result;
+			try {
+				studentService.save(toSave);
+				result = new ModelAndView("redirect:/welcome/index.do");
+			} catch (Throwable th) {
+				th.printStackTrace();
+				result = createNewModelAndView(toSave, "student.commit.error");
+		}
+		
+	return result;
+}
+	
+	@RequestMapping(value="/saveConfirmEdit", method=RequestMethod.POST)
+	public ModelAndView saveConfirmEdit() {
+		ModelAndView result;
+			try {
+				studentService.update(toSave);
+				result = new ModelAndView("redirect:/welcome/index.do");
+			} catch (Throwable th) {
+				th.printStackTrace();
+				result = createNewModelAndView(toSave, "student.commit.error");
+		}
+		
 	return result;
 }
 

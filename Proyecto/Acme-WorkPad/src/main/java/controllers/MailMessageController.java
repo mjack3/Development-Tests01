@@ -43,14 +43,20 @@ public class MailMessageController {
 
 	@RequestMapping(value = "/actor/save", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveCreate(@RequestParam String subject, @RequestParam String body, @RequestParam String priority, @RequestParam String mail) {
-
-		try {
-			mailmessageService.send(subject, body, priority, mail);
-		} catch (Exception e) {
-			return create(e.getMessage());
+		ModelAndView result;
+		if(subject == null || subject == "" || body == null || body == "" ) {
+			result = createNewModelAndView(mailmessageService.create(), "commit.error");
+		}else {
+			try {
+				mailmessageService.send(subject, body, priority, mail);
+				result = new ModelAndView("redirect:/folder/actor/list.do");
+			} catch (Exception e) {
+				return create(e.getMessage());
+			}
 		}
+		
 
-		return new ModelAndView("redirect:/folder/actor/list.do");
+		return result;
 	}
 
 	protected ModelAndView createNewModelAndView(MailMessage mailmessage, String message) {

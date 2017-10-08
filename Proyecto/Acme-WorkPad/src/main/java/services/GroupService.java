@@ -38,6 +38,11 @@ public class GroupService {
 		super();
 	}
 
+	public void delete(Group entity) {
+		Assert.notNull(entity);
+		groupRepository.delete(entity);
+	}
+
 	public Group create() {
 		final Group groupSubject = new Group();
 		groupSubject.setName(new String());

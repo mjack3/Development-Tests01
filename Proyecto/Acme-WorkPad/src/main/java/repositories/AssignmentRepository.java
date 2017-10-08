@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Assignment;
+import domain.Submission;
 
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
@@ -34,5 +35,8 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
 	
 	@Query("select a from Student s join s.subjects su join su.assigments a where s.id=?1")
 	Collection<Assignment> findAllByPrincipalStudent(int id);
+	
+	@Query("select c.submission from Group c where c.id=?1")
+	Collection<Submission> findAllByGroupId(int id);
 
 }

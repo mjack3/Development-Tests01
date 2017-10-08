@@ -18,6 +18,13 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<security:authorize access="hasRole('TEACHER')">
 	<acme:list hidden_fields="grade" variable="e" requestURI="${$requestURI }" list="${submissions }">
 	<a href="submission/teacher/grade.do?submissionId=${e.id }"> <spring:message code="submission.grade" /> </a>
-	</acme:list>
+	</acme:list>	
+</security:authorize>
+
+<security:authorize access="hasRole('STUDENT')">
+	<acme:list hidden_fields="grade" variable="e" requestURI="${$requestURI }" list="${submissions }">
+	</acme:list>	
+</security:authorize>

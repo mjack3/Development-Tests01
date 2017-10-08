@@ -5,15 +5,15 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<security:authorize access="hasRole('STUDENT')">
-<acme:list  list="${group}" hidden_fields="students" requestURI="group/student/list.do" entityUrl="{submission:submission/student/list.do}"  pagesize="6">
-</acme:list>
-</security:authorize>
 
-<security:authorize access="hasRole('TEACHER')">
-<acme:list  list="${group}" hidden_fields="students" requestURI="group/student/list.do" entityUrl="{submission:submission/teacher/list.do}"  pagesize="6">
-</acme:list>
-</security:authorize>
+<acme:list list="${teachers}" requestURI="teacher/list.do" 
+hidden_fields="seminars,bibliographiesRecords,userAccount,folders,activitiesRecords,socialIdentities" 
+pagesize="6"
+entityUrl="{subjects: subject/listTeacher.do}"
+></acme:list>
+
+
 

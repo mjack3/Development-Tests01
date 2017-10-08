@@ -35,22 +35,39 @@
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/activity/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/submission/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/assignment/teacher/**"/>
-	
-		
 		<!-- ADRI -->
 		
+		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/myList.do"/>
+		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/list.do"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/seminar/teacher/create.do"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/seminar/teacher/delete.do"/>
 		<security:intercept-url access="isAnonymous()" pattern="/student/create.do"/>
 		<security:intercept-url access="isAnonymous()" pattern="/student/save.do"/> 
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/student/saveEdit.do"/> 
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/student/edit.do"/> 
+		<security:intercept-url access="isAnonymous()" pattern="/student/confirm.do"/> 
+		<security:intercept-url access="isAnonymous()" pattern="/student/saveConfirm.do"/>
+		<security:intercept-url access="hasRole('STUDENT')" pattern="/student/saveConfirmEdit.do"/>  
 		
-		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/teacher/administrator/create.do"/>
+		<security:intercept-url pattern="/teacher/administrator/create.do" access="hasRole('ADMINISTRATOR')"/>
 		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/teacher/administrator/save.do"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/teacher/saveEdit.do"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/teacher/edit.do"/> 
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/submission/student/edit.do"/>
+		<security:intercept-url access="hasRole('STUDENT')" pattern="/submission/student/list.do"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/submission/student/create.do"/>
-		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/dashboard.do"/>  
+		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/dashboard.do"/> 
+		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/teacher/saveConfirm.do"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/teacher/saveConfirmEdit.do"/>  
+		
+		<security:intercept-url pattern="/seminar/student/list.do" access="hasRole('STUDENT')" /> 
+		<security:intercept-url pattern="/seminar/teacher/list.do" access="hasRole('TEACHER')" /> 
+		<security:intercept-url pattern="/seminar/teacher/edit.do" access="hasRole('TEACHER')" /> 
+		<security:intercept-url pattern="/seminar/teacher/save.do" access="hasRole('TEACHER')" /> 
+		
+		<security:intercept-url pattern="/teacher/list.do" access="permitAll()" /> 
+		
+		<security:intercept-url pattern="/subject/listTeacher.do" access="permitAll()" /> 
 		
 		<!-- FIN ADRI -->
 

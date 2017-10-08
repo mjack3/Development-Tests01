@@ -871,7 +871,7 @@
 		</property>
 		<property name="groups">
 			<list>
-				<ref bean="group7"/>
+				<ref bean="group6"/>
 			</list>
 		</property>
 		<property name="subjects">
@@ -1296,7 +1296,6 @@
 			<list>
 				<ref bean="group4"/>
 				<ref bean="group5"/>
-				<ref bean="group6"/>
 			</list>
 		</property>
 		<property name="bibliographiesRecords">
@@ -1379,7 +1378,7 @@
 		</property>
 		<property name="groups">
 			<list>
-				<ref bean="group7"/>
+				<ref bean="group6"/>
 			</list>
 		</property>
 		<property name="bibliographiesRecords">
@@ -1671,6 +1670,12 @@
 				<ref bean="submission1"/>
 			</list>
 		</property>
+		<property name="students">
+			<list>
+				<ref bean="actor3"/>
+				<ref bean="actor5"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="group2" class="domain.Group">
@@ -1681,6 +1686,11 @@
 		<property name="submission">
 			<list>
 				<ref bean="submission2"/>				
+			</list>
+		</property>
+			<property name="students">
+			<list>
+				<ref bean="actor6"/>
 			</list>
 		</property>
 	</bean>
@@ -1695,6 +1705,11 @@
 				<ref bean="submission3"/>
 			</list>
 		</property>
+			<property name="students">
+			<list>
+				<ref bean="actor7"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="group4" class="domain.Group">
@@ -1705,6 +1720,11 @@
 		<property name="submission">
 			<list>
 				<ref bean="submission4"/>
+			</list>
+		</property>
+			<property name="students">
+			<list>
+				<ref bean="actor8"/>
 			</list>
 		</property>
 	</bean>
@@ -1718,6 +1738,12 @@
 			<list>
 			</list>
 		</property>
+			<property name="students">
+			<list>
+				<ref bean="actor9"/>
+				<ref bean="actor10"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="group6" class="domain.Group">
@@ -1727,18 +1753,12 @@
 		<property name="endDate" value="25/10/2017 23:00:00" />
 		<property name="submission">
 			<list>
+				<ref bean="submission5"/>
 			</list>
 		</property>
-	</bean>
-	
-	<bean id="group7" class="domain.Group">
-		<property name="name" value="Group7" />
-		<property name="description" value="Grupo7 para trabajos iniciales" />
-		<property name="startDate" value="20/09/2017 12:00:00" />
-		<property name="endDate" value="25/10/2017 23:00:00" />
-		<property name="submission">
+			<property name="students">
 			<list>
-				<ref bean="submission5"/>
+				<ref bean="actor12"/>
 			</list>
 		</property>
 	</bean>

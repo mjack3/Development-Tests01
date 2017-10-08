@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Teacher;
 import security.LoginService;
 import services.StudentService;
 import services.SubjectService;
@@ -56,6 +57,8 @@ public class SubjectController extends AbstractController {
 
 		if (LoginService.hasRole("TEACHER"))
 			view.addObject("principal", this.teacherService.checkPrincipal());
+		if(LoginService.hasRole("STUDENT"))
+			view.addObject("subjectByStudent", this.studentService.checkPrincipal().getSubjects());
 		view.addObject("subject", subject);
 		view.addObject("requestURI", "subject/search.do");
 
@@ -79,6 +82,8 @@ public class SubjectController extends AbstractController {
 		view.addObject("requestURI", "subject/authenticated/search.do");
 		if (LoginService.hasRole("TEACHER"))
 			view.addObject("principal", this.teacherService.checkPrincipal());
+		if(LoginService.hasRole("STUDENT"))
+			view.addObject("subjectByStudent", this.studentService.checkPrincipal().getSubjects());
 
 		return view;
 	}
@@ -104,6 +109,18 @@ public class SubjectController extends AbstractController {
 				subjectByStudent.add(sub);
 			result.addObject("subjectByStudent", subjectByStudent);
 		}
+
+		result.addObject("requestSearch", "subject/authenticated/search.do");
+		return result;
+	}
+	
+	@RequestMapping(value = "/listTeacher", method = RequestMethod.GET)
+	public ModelAndView listSubjectByTeacher(@RequestParam Teacher q) {
+		ModelAndView result;
+
+		result = new ModelAndView("subject/list");
+		result.addObject("requestURI", "/subject/listTeacher.do");
+		result.addObject("subject", q.getSubjects());
 
 		result.addObject("requestSearch", "subject/authenticated/search.do");
 		return result;

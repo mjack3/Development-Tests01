@@ -58,6 +58,7 @@ public class SubjectAdministratorController extends AbstractController {
 
 		result.addObject("subject", subjectByAdministrator);
 		result.addObject("requestSearch", "subject/authenticated/search.do");
+		result.addObject("MySubjects", 1);
 
 		return result;
 	}
@@ -99,7 +100,7 @@ public class SubjectAdministratorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(final HttpServletRequest request, @RequestParam final Subject q) {
+	public ModelAndView delete(@RequestParam Subject q) {
 		ModelAndView result;
 
 		try {

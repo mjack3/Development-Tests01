@@ -45,6 +45,11 @@ public class BulletinService {
 		return result;
 	}
 
+	public void delete(Bulletin entity) {
+		Assert.notNull(entity);
+		bulletinRepository.delete(entity);
+	}
+
 	public Bulletin findOne(final Integer bulletinId) {
 		Bulletin result;
 

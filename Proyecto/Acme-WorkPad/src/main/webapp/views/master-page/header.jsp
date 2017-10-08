@@ -63,6 +63,8 @@
 				
       
           <li><a href="student/edit.do"><spring:message code="master.page.actor.edit" /></a></li>
+          <li><a href="seminar/student/list.do"><spring:message code="master.page.seminar.student.list" /></a></li>
+          <li><a href="seminar/student/myList.do"><spring:message code="master.page.seminar.student.myList" /></a></li>
        
       </security:authorize>
 
@@ -70,7 +72,7 @@
 	<li><a href="subject/list.do"><spring:message
           			code="master.page.subject" /></a></li>
 					
-       
+      <li><a href="teacher/list.do"><spring:message code="master.page.teacher.list" /></a></li>
        
       </security:authorize>
 
@@ -79,6 +81,7 @@
        <li><a href="subject/teacher/list.do"><spring:message
           code="master.page.teacher.subject" /></a></li>
        
+       <li><a href="seminar/teacher/list.do"><spring:message code="master.page.seminar.teacher.list" /></a></li>
       </security:authorize>
 
       

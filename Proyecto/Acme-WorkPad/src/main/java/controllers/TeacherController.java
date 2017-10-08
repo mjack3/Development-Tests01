@@ -1,6 +1,9 @@
 
 package controllers;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class TeacherController {
 
 	@Autowired
 	private TeacherService teacherService;
+	
+	private Teacher toSave;
 
 
 	public TeacherController() {
@@ -61,8 +66,15 @@ public class TeacherController {
 			result = this.createNewModelAndView(teacher, null);
 		else
 			try {
+				Pattern pattern = Pattern.compile("^\\+([0-9][0-9]{0,2}) (\\([0-9][0-9][0-9]{0,3}\\)) ([a-zA-Z0-9 -]{4,})$");
+			    Matcher matcher = pattern.matcher(teacher.getPhone());
+				if(!matcher.matches()) {
+					result = new ModelAndView("teacher/confirm");
+					toSave = teacher;
+				}else {
 				this.teacherService.save(teacher);
 				result = new ModelAndView("redirect:/welcome/index.do");
+				}
 			} catch (final Throwable th) {
 				th.printStackTrace();
 				result = this.createNewModelAndView(teacher, "student.commit.error");
@@ -76,14 +88,60 @@ public class TeacherController {
 			result = this.createEditModelAndView(teacher, null);
 		else
 			try {
+				Pattern pattern = Pattern.compile("^\\+([0-9][0-9]{0,2}) (\\([0-9][0-9][0-9]{0,3}\\)) ([a-zA-Z0-9 -]{4,})$");
+			    Matcher matcher = pattern.matcher(teacher.getPhone());
+				if(!matcher.matches()) {
+					result = new ModelAndView("teacher/confirm");
+					toSave = teacher;
+				}else {
 				this.teacherService.update(teacher);
 				result = new ModelAndView("redirect:/welcome/index.do");
+				}
 			} catch (final Throwable th) {
 				th.printStackTrace();
 				result = this.createEditModelAndView(teacher, "student.commit.error");
 			}
 		return result;
 	}
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result;
+		
+
+		result = new ModelAndView("teacher/list");
+		result.addObject("teachers", teacherService.findAll());
+
+		return result;
+	}
+	
+	@RequestMapping(value="/saveConfirm", method=RequestMethod.POST)
+	public ModelAndView saveConfirm() {
+		ModelAndView result;
+			try {
+				teacherService.save(toSave);
+				result = new ModelAndView("redirect:/welcome/index.do");
+			} catch (Throwable th) {
+				th.printStackTrace();
+				result = createNewModelAndView(toSave, "teacher.commit.error");
+		}
+		
+	return result;
+}
+	
+	@RequestMapping(value="/saveConfirmEdit", method=RequestMethod.POST)
+	public ModelAndView saveConfirmEdit() {
+		ModelAndView result;
+			try {
+				teacherService.update(toSave);
+				result = new ModelAndView("redirect:/welcome/index.do");
+			} catch (Throwable th) {
+				th.printStackTrace();
+				result = createNewModelAndView(toSave, "teacher.commit.error");
+		}
+		
+	return result;
+}
 
 	protected ModelAndView createNewModelAndView(final Teacher teacher, final String message) {
 		ModelAndView result;

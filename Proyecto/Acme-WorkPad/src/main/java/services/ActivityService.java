@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -9,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.ActivityRepository;
 import domain.Activity;
 import domain.Subject;
 import domain.Teacher;
 import forms.ActivityForm;
+import repositories.ActivityRepository;
 
 @Transactional
 @Service
@@ -26,6 +27,8 @@ public class ActivityService {
 	private SubjectService		subjectService;
 	@Autowired
 	private TeacherService		teacherService;
+	@Autowired
+	private AdministratorService administratorService;
 
 
 	public ActivityService() {
@@ -83,6 +86,24 @@ public class ActivityService {
 
 		final Subject subject = this.subjectService.findSubjectByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), activity.getId());
 
+		subject.getActivities().remove(activity);
+		this.subjectService.update(subject);
+		this.repository.delete(activity);
+
+	}
+	
+	public void deleteAdmin(final Activity activity) {
+		Assert.notNull(activity);
+		Assert.isTrue(this.repository.exists(activity.getId()));
+		List<Subject> sub = administratorService.checkPrincipal().getSubjects();
+		Subject subject =null ;
+		for(Subject s: sub) {
+			if(s.getActivities().contains(activity)) {
+				subject = s;
+				break;
+			}
+		}
+		
 		subject.getActivities().remove(activity);
 		this.subjectService.update(subject);
 		this.repository.delete(activity);

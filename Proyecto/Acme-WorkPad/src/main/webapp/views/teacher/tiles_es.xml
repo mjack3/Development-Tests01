@@ -26,9 +26,19 @@
 		<put-attribute name="body" value="/views/teacher/edit.jsp" />
 	</definition>
 	
-		<definition name="teacher/view" extends="master.page">	
+	<definition name="teacher/view" extends="master.page">	
 		<put-attribute name="title" value="Profesor" />
 		<put-attribute name="body" value="/views/teacher/view.jsp" />
+	</definition>
+	
+	<definition name="teacher/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de profesores" />
+		<put-attribute name="body" value="/views/teacher/list.jsp" />
+	</definition>
+	
+	<definition name="teacher/confirm" extends="master.page">	
+		<put-attribute name="title" value="Confirmacion" />
+		<put-attribute name="body" value="/views/teacher/confirm.jsp" />
 	</definition>
 	
 </tiles-definitions>

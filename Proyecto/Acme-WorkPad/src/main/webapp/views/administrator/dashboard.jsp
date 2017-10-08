@@ -57,4 +57,28 @@
 			<td> <spring:message code="administrator.dashboard.seven" />  </td>
 			<td> ${dashboard.get(6)[0]} , ${dashboard.get(6)[1]} , ${dashboard.get(6)[2]}</td>
 		</tr>
+		<tr>
+			<td> <spring:message code="administrator.dashboard.ocho" />  </td>
+			<td> ${dashboard.get(7)[0]} , ${dashboard.get(7)[1]} , ${dashboard.get(7)[2]}</td>
+		</tr>
+		<tr>
+			<td> <spring:message code="administrator.dashboard.nine" />  </td>
+			<td> 
+			<jstl:forEach var="a" items="${dashboard.get(8)}">
+					${a.name} <br/>
+			</jstl:forEach>
+			</td>
+		</tr>
+		<tr>
+			<td> <spring:message code="administrator.dashboard.ten" />  </td>
+			<td> ${dashboard.get(9)[0]} , ${dashboard.get(9)[1]} , ${dashboard.get(9)[2]}</td>
+		</tr>
+		<tr>
+			<td> <spring:message code="administrator.dashboard.eleven" />  </td>
+			<td> 
+			<jstl:forEach var="a" items="${dashboard.get(10)}">
+					${a.name} <br/>
+			</jstl:forEach>
+			</td>
+		</tr>
 </table>

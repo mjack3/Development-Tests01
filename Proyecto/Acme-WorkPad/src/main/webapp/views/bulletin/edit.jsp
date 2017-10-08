@@ -31,7 +31,7 @@
 	<br />
 	
 	
-	<acme:textbox code="bulletin.text" path="text" />
+	<acme:textarea code="bulletin.text" path="text" />
 	<br />
 	
 	
