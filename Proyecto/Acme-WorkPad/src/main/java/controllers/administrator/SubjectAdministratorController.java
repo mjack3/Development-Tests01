@@ -91,7 +91,9 @@ public class SubjectAdministratorController extends AbstractController {
 			result = this.createEditModelAndView(subject, null);
 		try {
 			this.subjectService.save(subject);
+			final List<Category> categories = this.categoryService.findAll();
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
+			result.addObject("categories", categories);
 		} catch (final Throwable th) {
 			th.printStackTrace();
 			result = this.createEditModelAndView(subject, "subject.commit.error");
@@ -104,8 +106,10 @@ public class SubjectAdministratorController extends AbstractController {
 		ModelAndView result;
 
 		try {
+			final List<Category> categories = this.categoryService.findAll();
 			this.subjectService.delete(q);
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
+			result.addObject("categories", categories);
 		} catch (final Throwable th) {
 			th.printStackTrace();
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
