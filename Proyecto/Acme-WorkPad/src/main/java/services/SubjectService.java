@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import domain.Activity;
+import domain.Administrator;
 import domain.Assignment;
 import domain.BibliographyRecord;
 import domain.Bulletin;
 import domain.Group;
+import domain.School;
+import domain.Student;
 import domain.Subject;
 import domain.Teacher;
 import repositories.SubjectRepository;
@@ -33,6 +36,12 @@ public class SubjectService {
 
 	@Autowired
 	private TeacherService		teacherService;
+
+	@Autowired
+	private SchoolService 		schoolService;
+
+	@Autowired
+	private AdministratorService administratorService;
 
 
 	public SubjectService() {
@@ -141,13 +150,54 @@ public class SubjectService {
 		Assert.notNull(subject);
 
 		subject.setActivities(new ArrayList<Activity>());
-		subject.setAssigments(new ArrayList<Assignment>());
-		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
 		subject.setBulletins(new ArrayList<Bulletin>());
-		subject.setGroups(new ArrayList<Group>());
-		//subject.setStudents(new ArrayList<Student>());
 
-		this.repository.delete(subject);
+		subject.setGroups(new ArrayList<Group>());
+		List<Student> students = subject.getStudents();
+		for (Student s : students) {
+			s.getSubjects().remove(subject);
+			studentService.save(s);
+		}
+		subject.setGroups(new ArrayList<Group>());
+
+		subject.setStudents(new ArrayList<Student>());
+
+		subject.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
+
+		subject.setAssigments(new ArrayList<Assignment>());
+
+		List<School> schools = schoolService.findAll();
+
+		for (School c : schools) {
+			if (c.getSubjects().contains(subject)) {
+				c.getSubjects().remove(subject);
+				schoolService.save(c);
+
+			}
+		}
+
+		List<Teacher> teachers = teacherService.findAll();
+
+		for (Teacher tea : teachers) {
+			if (tea.getSubjects().contains(subject)) {
+				tea.getSubjects().remove(subject);
+				teacherService.save(tea);
+
+			}
+		}
+
+		List<Administrator> admins = administratorService.findAll();
+
+		for (Administrator ad : admins) {
+			if (ad.getSubjects().contains(subject)) {
+				ad.getSubjects().remove(subject);
+				administratorService.save(ad);
+
+			}
+		}
+
+		repository.delete(subject);
+
 	}
 
 	/**

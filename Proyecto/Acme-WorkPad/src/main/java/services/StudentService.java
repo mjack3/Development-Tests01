@@ -112,6 +112,10 @@ public class StudentService {
 		return this.repository.save(actor);
 	}
 
+	public List<Student> findAll() {
+		return repository.findAll();
+	}
+
 	/**
 	 * Crea un nuevo estudiante
 	 *
