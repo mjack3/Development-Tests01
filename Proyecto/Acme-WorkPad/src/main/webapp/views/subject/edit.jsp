@@ -12,8 +12,7 @@
 <security:authorize access="hasRole('ADMINISTRATOR')">
 
 
-<acme:acme_form hiddenFields="id,version,userAccount,administrator,bulletins,teacher,bibliographiesRecords,activities,groups,students,assigments"
-type="edit" entity="${subject}"  url="subject/administrator/edit.do" numberSteps="0.25" cancel="welcome/index.do" >
+<acme:acme_form skip_fields="category" type="edit" entity="${subject}"  url="subject/administrator/edit.do" numberSteps="0.25" cancel="welcome/index.do" >
 <div class="form-group" style="width: 55%;">
 		<acme:select items="${categories}" itemLabel="name" code="subject.category" path="category"/>
 </div>
