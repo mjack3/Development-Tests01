@@ -2,6 +2,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import domain.Subject;
 import domain.Teacher;
 import security.LoginService;
 import services.GroupService;
+import services.StudentService;
 import services.SubjectService;
 
 @Controller
@@ -33,6 +35,8 @@ public class GroupController {
 	LoginService			loginservice;
 	@Autowired
 	private SubjectService	subjectservice;
+	@Autowired
+	private StudentService	studentService;
 
 	private Integer			subjectId		= null;
 	private Boolean			subjectscond	= false;
@@ -83,32 +87,86 @@ public class GroupController {
 	@RequestMapping(value = "/student/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam Integer q) {
 		ModelAndView result;
+		Date today = new Date();
 
 		result = new ModelAndView("group/list");
+		result.addObject("requestURL", "/group/student/list");
 		Student student = null;
 		Teacher teacher = null;
-		if(LoginService.hasRole("STUDENT")) {
+		if (LoginService.hasRole("STUDENT")) {
 			student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+
+			System.out.println("-------------------- lista general-----------------");
+			boolean isgroup = false;
+			for (Group g : grouptService.findAll()) {
+
+				System.out.println(!student.getGroups().contains(g));
+				isgroup = false;
+				if (!grouptService.studentByGroups(student.getId()).contains(g) && student.getSubjects().contains((subjectservice.findOne(q)))) {
+
+					System.out.println(subjectservice.subjectsByStudents(student.getId()).contains(subjectservice.findOne(q)));
+					System.out.println(!student.getGroups().contains(g));
+
+					isgroup = true;
+
+				} else {
+					isgroup = false;
+					break;
+				}
+			}
+			result.addObject("isgroup", isgroup);
+			System.out.println("-------------------- /lista general-----------------");
+
 		}
-		if(LoginService.hasRole("TEACHER")) {
+
+		if (LoginService.hasRole("TEACHER"))
+
+		{
 			teacher = (Teacher) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+
 		}
-		
+
 		result.addObject("group", subjectservice.findOne(q).getGroups());
 		List<Subject> subjects = new ArrayList<Subject>();
 		subjectscond = false;
 
-		if(student !=null) {
+		if (student != null) {
+
 			for (Subject e : student.getSubjects()) {
 				subjects.add(e);
 			}
+			boolean isgroup = false;
+
+			System.out.println("--------------------mi lista -----------------");
+			for (Group g : grouptService.findAll()) {
+				isgroup = false;
+				System.out.println(subjects.contains(subjectservice.findOne(q)));
+				for (Student t : subjectservice.findOne(q).getStudents()) {
+					System.out.println(t.getName());
+				}
+
+				if (student.getSubjects().contains((subjectservice.findOne(q)))) {
+					System.out.println(subjects.contains(subjectservice.findOne(q)));
+					System.out.println(!student.getGroups().contains(g));
+					isgroup = true;
+				}
+				if (grouptService.studentByGroups(student.getId()).contains(g)) {
+					isgroup = false;
+					break;
+				}
+
+			}
+			result.addObject("isgroup", isgroup);
+			System.out.println("--------------------/mi lista -----------------");
+
+			result.addObject("today", today);
 		}
-		if(teacher!=null) {
+		if (teacher != null) {
 			for (Subject e : teacher.getSubjects()) {
 				subjects.add(e);
 			}
 		}
-		
+
 		if (subjects.contains(subjectservice.findOne(q))) {
 			subjectscond = true;
 		}
@@ -119,6 +177,40 @@ public class GroupController {
 
 		return result;
 	}
-	
+
+	//Para Suscribirse
+	@RequestMapping(value = "/student/subscribe", method = RequestMethod.GET)
+	public ModelAndView subscribe(@RequestParam final Group q) {
+		ModelAndView result;
+		Date today = new Date();
+
+		final Student student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+
+		q.getStudents().add(student);
+		this.grouptService.save(q);
+		final List<Group> groups = student.getGroups();
+		groups.add(q);
+		student.setGroups(groups);
+
+		this.studentService.update(student);
+
+		result = new ModelAndView("redirect:/group/student/mylist.do");
+		return result;
+	}
+
+	@RequestMapping(value = "/student/mylist", method = RequestMethod.GET)
+	public ModelAndView myList() {
+		ModelAndView result;
+
+		result = new ModelAndView("group/list");
+		result.addObject("requestURL", "/group/student/mylist");
+		Student student = null;
+
+		student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+
+		result.addObject("group", student.getGroups());
+
+		return result;
+	}
 
 }

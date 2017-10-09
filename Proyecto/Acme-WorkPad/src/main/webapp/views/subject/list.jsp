@@ -110,7 +110,7 @@
 						code="subject.activities" /></td>
 			</a>
 			<td>
-		<a href="assignment/teacher/list.do?subjectId=${e.id }"> <spring:message
+		<a href="assignment/teacher/list.do?subjectId=${e.id}"> <spring:message
 					code="subject.assigments" />
 			</td>
 			</a>

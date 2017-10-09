@@ -12,10 +12,6 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.StudentRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 import domain.ActivityRecord;
 import domain.Folder;
 import domain.Group;
@@ -24,6 +20,10 @@ import domain.Seminar;
 import domain.SocialIdentity;
 import domain.Student;
 import domain.Subject;
+import repositories.StudentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 
 @Transactional
 @Service
@@ -104,12 +104,12 @@ public class StudentService {
 	 * @return estudiante actualizado
 	 */
 
-	public Student update(final Student actor) {
+	public Student update(Student actor) {
 
 		Assert.notNull(actor);
-		Assert.isTrue(this.repository.exists(actor.getId()));
+		Assert.isTrue(repository.exists(actor.getId()));
 
-		return this.repository.save(actor);
+		return repository.save(actor);
 	}
 
 	public List<Student> findAll() {

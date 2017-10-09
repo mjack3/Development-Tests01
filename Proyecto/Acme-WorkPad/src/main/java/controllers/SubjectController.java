@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Student;
+import domain.Subject;
 import domain.Teacher;
 import security.LoginService;
 import services.StudentService;
 import services.SubjectService;
 import services.TeacherService;
-import domain.Student;
-import domain.Subject;
 
 @Controller
 @RequestMapping("/subject")
 public class SubjectController extends AbstractController {
 
 	@Autowired
-	SubjectService					subjectService;
+	SubjectService			subjectService;
 
 	@Autowired
-	LoginService					loginService;
+	LoginService			loginService;
 
 	@Autowired
-	StudentService					studentService;
+	StudentService			studentService;
 	@Autowired
-	private TeacherService			teacherService;
+	private TeacherService	teacherService;
 
 
 	public SubjectController() {
@@ -57,7 +57,7 @@ public class SubjectController extends AbstractController {
 
 		if (LoginService.hasRole("TEACHER"))
 			view.addObject("principal", this.teacherService.checkPrincipal());
-		if(LoginService.hasRole("STUDENT"))
+		if (LoginService.hasRole("STUDENT"))
 			view.addObject("subjectByStudent", this.studentService.checkPrincipal().getSubjects());
 		view.addObject("subject", subject);
 		view.addObject("requestURI", "subject/search.do");
@@ -82,7 +82,7 @@ public class SubjectController extends AbstractController {
 		view.addObject("requestURI", "subject/authenticated/search.do");
 		if (LoginService.hasRole("TEACHER"))
 			view.addObject("principal", this.teacherService.checkPrincipal());
-		if(LoginService.hasRole("STUDENT"))
+		if (LoginService.hasRole("STUDENT"))
 			view.addObject("subjectByStudent", this.studentService.checkPrincipal().getSubjects());
 
 		return view;
@@ -113,7 +113,7 @@ public class SubjectController extends AbstractController {
 		result.addObject("requestSearch", "subject/authenticated/search.do");
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/listTeacher", method = RequestMethod.GET)
 	public ModelAndView listSubjectByTeacher(@RequestParam Teacher q) {
 		ModelAndView result;
@@ -165,7 +165,13 @@ public class SubjectController extends AbstractController {
 			subjects.add(q);
 			student.setSubjects(subjects);
 
-			this.studentService.save(student);
+			this.studentService.update(student);
+			for (Subject s : student.getSubjects()) {
+				System.out.println("titulo de la asignatura:" + s.getTitle());
+			}
+			for (Student s : q.getStudents()) {
+				System.out.println("nombre del estudiante: " + s.getName());
+			}
 
 		}
 		result = new ModelAndView("redirect:/subject/student/list.do");

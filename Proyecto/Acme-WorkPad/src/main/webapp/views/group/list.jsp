@@ -8,7 +8,14 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasRole('STUDENT')">
-<acme:list  list="${group}" hidden_fields="students" requestURI="group/student/list.do" entityUrl="{submission:submission/student/list.do}"  pagesize="6">
+<acme:list  list="${group}"  hidden_fields="students" requestURI="${requestURL}" entityUrl="{submission:submission/student/list.do}" variable="e" pagesize="6">
+
+<td><jstl:if
+				test="${isgroup==false and today.before(e.endDate)}">
+				<a href="group/student/subscribe.do?q=${e.id}"> <spring:message
+						code='group.registerSubject' /></a>
+			</jstl:if></td>
+		<td>
 </acme:list>
 </security:authorize>
 

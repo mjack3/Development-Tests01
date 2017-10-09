@@ -60,7 +60,7 @@
 		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/teacher/saveConfirm.do"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/teacher/saveConfirmEdit.do"/>  
 		
-		<security:intercept-url pattern="/seminar/student/list.do" access="hasRole('STUDENT')" /> 
+	
 		<security:intercept-url pattern="/seminar/teacher/list.do" access="hasRole('TEACHER')" /> 
 		<security:intercept-url pattern="/seminar/teacher/edit.do" access="hasRole('TEACHER')" /> 
 		<security:intercept-url pattern="/seminar/teacher/save.do" access="hasRole('TEACHER')" /> 
@@ -109,6 +109,9 @@
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/moveTo.do"/>
          <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/edit.do"/>
         <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/save.do"/>
+         <security:intercept-url access="hasRole('STUDENT')" pattern="/group/student/subscribe.do"/>
+          <security:intercept-url access="hasRole('STUDENT')" pattern="/group/student/mylist.do"/>
+       
 		
         <security:intercept-url access="permitAll" pattern="/welcome/cookies.do"/>
 		<security:intercept-url access="permitAll" pattern="/welcome/lopd.do"/>

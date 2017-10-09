@@ -74,7 +74,7 @@ public class GroupService {
 			groups.add(aux);
 			a.setGroups(groups);
 
-			this.studentService.save(a);
+			this.studentService.update(a);
 
 			Subject subject = subjectService.findOne(subjectId);
 
@@ -140,6 +140,10 @@ public class GroupService {
 	public Group save(Group group) {
 		return this.groupRepository.save(group);
 
+	}
+
+	public List<Group> studentByGroups(int q) {
+		return groupRepository.studentByGroups(q);
 	}
 
 }
