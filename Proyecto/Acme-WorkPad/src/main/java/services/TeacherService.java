@@ -13,6 +13,10 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.TeacherRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Activity;
 import domain.ActivityRecord;
 import domain.Assignment;
@@ -24,10 +28,6 @@ import domain.SocialIdentity;
 import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
-import repositories.TeacherRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Transactional
 @Service
@@ -63,14 +63,22 @@ public class TeacherService {
 	 * @return profesor creado
 	 */
 
+	public Teacher listTeacherBySubject(final Integer idSubject) {
+
+		Assert.notNull(idSubject);
+		final Subject subject = this.subjectService.findOne(idSubject);
+		Assert.notNull(subject);
+		return subject.getTeacher();
+	}
+
 	public Teacher create() {
 
-		Teacher res = new Teacher();
+		final Teacher res = new Teacher();
 
 		res.setActivitiesRecords(new ArrayList<ActivityRecord>());
 		res.setBibliographiesRecords(new ArrayList<BibliographyRecord>());
 		res.setEmail("");
-		res.setFolders(createFolders());
+		res.setFolders(this.createFolders());
 		res.setName("");
 		res.setPhone("");
 		res.setPostalAddress("");
@@ -78,12 +86,12 @@ public class TeacherService {
 		res.setSocialIdentities(new ArrayList<SocialIdentity>());
 		res.setSubjects(new ArrayList<Subject>());
 		res.setSurname("");
-		UserAccount account = new UserAccount();
-		Authority auth = new Authority();
+		final UserAccount account = new UserAccount();
+		final Authority auth = new Authority();
 		auth.setAuthority("TEACHER");
 		account.setAuthorities(Arrays.asList(auth));
 		res.setUserAccount(account);
-		res.setFolders(folderService.save(folderService.createDefaultFolders()));
+		res.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 
 		return res;
 	}
@@ -94,21 +102,21 @@ public class TeacherService {
 	 * @return Carpetas creadas
 	 */
 	private List<Folder> createFolders() {
-		List<Folder> res = new ArrayList<Folder>();
+		final List<Folder> res = new ArrayList<Folder>();
 
-		Folder inbox = new Folder();
+		final Folder inbox = new Folder();
 		inbox.setFolderName("inbox");
 		inbox.setMessages(new ArrayList<MailMessage>());
 
-		Folder outbox = new Folder();
+		final Folder outbox = new Folder();
 		outbox.setFolderName("outbox");
 		outbox.setMessages(new ArrayList<MailMessage>());
 
-		Folder trashbox = new Folder();
+		final Folder trashbox = new Folder();
 		trashbox.setFolderName("trashbox");
 		trashbox.setMessages(new ArrayList<MailMessage>());
 
-		Folder spambox = new Folder();
+		final Folder spambox = new Folder();
 		spambox.setFolderName("spambox");
 		spambox.setMessages(new ArrayList<MailMessage>());
 
@@ -125,12 +133,12 @@ public class TeacherService {
 	 * @return profesor actualizado
 	 */
 
-	public Teacher update(Teacher actor) {
+	public Teacher update(final Teacher actor) {
 
 		Assert.notNull(actor);
-		Assert.isTrue(repository.exists(actor.getId()));
+		Assert.isTrue(this.repository.exists(actor.getId()));
 
-		return repository.save(actor);
+		return this.repository.save(actor);
 	}
 
 	/**
@@ -141,14 +149,14 @@ public class TeacherService {
 	 * @return profesor creado
 	 */
 
-	public Teacher save(Teacher actor) {
+	public Teacher save(final Teacher actor) {
 
 		Assert.notNull(actor);
 
-		Md5PasswordEncoder enc = new Md5PasswordEncoder();
+		final Md5PasswordEncoder enc = new Md5PasswordEncoder();
 		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
 
-		return repository.save(actor);
+		return this.repository.save(actor);
 	}
 
 	// Others methods ----------------------------------------
@@ -292,12 +300,21 @@ public class TeacherService {
 	}
 
 	public List<Teacher> findAll() {
-		return repository.findAll();
+		return this.repository.findAll();
 	}
-	
-	public Teacher findOne(int teacherID) {
+
+	public Teacher findOne(final int teacherID) {
 		Assert.notNull(teacherID);
-		Assert.isTrue(repository.exists(teacherID));
-		return repository.findOne(teacherID);
+		Assert.isTrue(this.repository.exists(teacherID));
+		return this.repository.findOne(teacherID);
+	}
+
+	public Collection<Subject> listSubjectsByTeacher(final Integer idTeacher) {
+		// TODO Auto-generated method stub
+		Assert.notNull(idTeacher);
+		Assert.isTrue(this.repository.exists(idTeacher));
+		final Teacher teacher = this.repository.findOne(idTeacher);
+		return teacher.getSubjects();
+
 	}
 }
