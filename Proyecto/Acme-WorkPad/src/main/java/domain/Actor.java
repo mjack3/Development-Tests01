@@ -34,89 +34,92 @@ public class Actor extends DomainEntity {
 
 	//Getters
 	@NotBlank
+	@NotNull
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@NotBlank
+	@NotNull
 	public String getSurname() {
-		return surname;
+		return this.surname;
 	}
 
 	@Email
+	@NotNull
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	@NotNull
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 
 	@NotNull
 	public String getPostalAddress() {
-		return postalAddress;
+		return this.postalAddress;
 	}
 
 	@NotNull
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	public UserAccount getUserAccount() {
-		return userAccount;
+		return this.userAccount;
 	}
 
 	@NotNull
 	@OneToMany
 	public List<Folder> getFolders() {
-		return folders;
+		return this.folders;
 	}
 
 	@NotNull
 	@OneToMany
 	public List<ActivityRecord> getActivitiesRecords() {
-		return activitiesRecords;
+		return this.activitiesRecords;
 	}
 
 	@NotNull
 	@OneToMany
 	public List<SocialIdentity> getSocialIdentities() {
-		return socialIdentities;
+		return this.socialIdentities;
 	}
 
 	//Setters
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setSurname(String surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
-	public void setPhone(String phone) {
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
 
-	public void setPostalAddress(String postalAddress) {
+	public void setPostalAddress(final String postalAddress) {
 		this.postalAddress = postalAddress;
 	}
 
-	public void setUserAccount(UserAccount userAccount) {
+	public void setUserAccount(final UserAccount userAccount) {
 		this.userAccount = userAccount;
 	}
 
-	public void setFolders(List<Folder> folders) {
+	public void setFolders(final List<Folder> folders) {
 		this.folders = folders;
 	}
 
-	public void setActivitiesRecords(List<ActivityRecord> activitiesRecords) {
+	public void setActivitiesRecords(final List<ActivityRecord> activitiesRecords) {
 		this.activitiesRecords = activitiesRecords;
 	}
 
-	public void setSocialIdentities(List<SocialIdentity> socialIdentities) {
+	public void setSocialIdentities(final List<SocialIdentity> socialIdentities) {
 		this.socialIdentities = socialIdentities;
 	}
 
