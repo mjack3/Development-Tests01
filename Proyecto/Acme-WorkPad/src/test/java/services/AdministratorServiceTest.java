@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utilities.AbstractTest;
+import domain.Administrator;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -19,7 +20,12 @@ import utilities.AbstractTest;
 public class AdministratorServiceTest extends AbstractTest {
 
 	@Autowired
-	private TeacherService	teacherService;
+	private TeacherService			teacherService;
+
+	@Autowired
+	SubjectService					subjectService;
+	@Autowired
+	private AdministratorService	administratorService;
 
 
 	@Test
@@ -110,6 +116,57 @@ public class AdministratorServiceTest extends AbstractTest {
 			caught = oops.getClass();
 		}
 		this.checkExceptions(expected, caught);
+	}
+
+	//	RF 11.2
+
+	@Test
+	public void driverEditPersonalData() {
+		final Object testingData1[][] = {
+			// Admin cambia sus datos
+			{
+				"admin", 705, "nuevoNombre", "nuevos apellidos", null
+			},
+
+			// Admin edita a otro actor 
+			{
+				"admin", 711, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+			},
+			//	No logueado edita a admin
+			{
+				null, 705, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+			},
+			//	No logueado edita a admin que no existe
+			{
+				null, 000, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData1.length; i++)
+			this.EditPersonalData((String) testingData1[i][0], (Integer) testingData1[i][1], (String) testingData1[i][2], (String) testingData1[i][3], (Class<?>) testingData1[i][4]);
+
+	}
+
+	private void EditPersonalData(final String username, final Integer idAdmin, final String name, final String surname, final Class<?> expected) {
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			final Administrator admin = this.administratorService.findOne(idAdmin);
+			admin.setName(name);
+			admin.setSurname(surname);
+			this.administratorService.editInfo(admin);
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+
 	}
 
 }

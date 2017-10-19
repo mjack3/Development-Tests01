@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import utilities.AbstractTest;
+import domain.Student;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -20,7 +21,11 @@ public class StudentServiceTest extends AbstractTest {
 
 	@Autowired
 	private TeacherService	teacherService;
+	@Autowired
+	StudentService			studentService;
 
+
+	// RF 11.3
 
 	@Test
 	public void driverListTeacherBySubject() {
@@ -76,6 +81,9 @@ public class StudentServiceTest extends AbstractTest {
 			this.ListSubjectByTeacherTest((String) testingData1[i][0], (Integer) testingData1[i][1], (Class<?>) testingData1[i][2]);
 
 	}
+
+	//	RF 10.3
+
 	protected void ListTeacherBySubjectTest(final String username, final Integer idSubject, final Class<?> expected) {
 		// TODO Auto-generated method stub
 		Class<?> caught;
@@ -95,6 +103,8 @@ public class StudentServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 
+	//	RF 10.2
+
 	protected void ListSubjectByTeacherTest(final String username, final Integer idTeacher, final Class<?> expected) {
 		// TODO Auto-generated method stub
 		Class<?> caught;
@@ -112,6 +122,67 @@ public class StudentServiceTest extends AbstractTest {
 			caught = oops.getClass();
 		}
 		this.checkExceptions(expected, caught);
+	}
+
+	//	RF 11.2
+
+	@Test
+	public void driverEditPersonalData() {
+		final Object testingData1[][] = {
+			// Estudiante cambia sus datos
+			{
+				"student1", 715, "nuevoNombre", "nuevos apellidos", null
+			},
+
+			// Estudiante edita a otro estudiante
+			{
+				"student1", 711, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+			},
+			//	No logueado edita a estudiante
+			{
+				null, 714, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+			},
+			//	No logueado edita a estudiante que no existe
+			{
+				null, 000, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+			},
+
+			//	Estudiante pone otro campo diferente vacio
+			{
+				"student1", 714, "nuevonombre", "", IllegalArgumentException.class
+			},
+			//	Estudiante pone varios campos vacios
+			{
+				"student1", 714, "", "", IllegalArgumentException.class
+			},
+
+		};
+
+		for (int i = 0; i < testingData1.length; i++)
+			this.EditPersonalData((String) testingData1[i][0], (Integer) testingData1[i][1], (String) testingData1[i][2], (String) testingData1[i][3], (Class<?>) testingData1[i][4]);
+
+	}
+
+	private void EditPersonalData(final String username, final Integer idStudent, final String name, final String surname, final Class<?> expected) {
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			final Student student = this.studentService.findOne(idStudent);
+			student.setName(name);
+			student.setSurname(surname);
+			this.studentService.editInfo(student);
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+
 	}
 
 }
