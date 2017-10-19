@@ -48,6 +48,9 @@ public class TeacherService {
 	@Autowired
 	private FolderService		folderService;
 
+	@Autowired
+	LoginService				loginService;
+
 
 	public TeacherService() {
 		super();
@@ -281,12 +284,13 @@ public class TeacherService {
 
 	public Teacher checkPrincipal() {
 		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		Assert.isTrue(LoginService.hasRole("TEACHER"));
 		final UserAccount account = LoginService.getPrincipal();
 		Assert.isTrue(account.getAuthorities().iterator().next().getAuthority().equals("TEACHER"));
 
 		return this.repository.getPrincipal(account.getId());
 	}
-
 	/**
 	 * Comprueba que a asignatura es impartida por el profesor
 	 * 

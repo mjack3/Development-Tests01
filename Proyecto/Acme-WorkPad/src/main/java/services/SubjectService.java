@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.SubjectRepository;
+import security.LoginService;
 import domain.Activity;
 import domain.Administrator;
 import domain.Assignment;
@@ -21,27 +23,27 @@ import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
-import repositories.SubjectRepository;
-import security.LoginService;
 
 @Transactional
 @Service
 public class SubjectService {
 
 	@Autowired
-	private SubjectRepository	repository;
+	private LoginService			loginService;
+	@Autowired
+	private SubjectRepository		repository;
 
 	@Autowired
-	private StudentService		studentService;
+	private StudentService			studentService;
 
 	@Autowired
-	private TeacherService		teacherService;
+	private TeacherService			teacherService;
 
 	@Autowired
-	private SchoolService 		schoolService;
+	private SchoolService			schoolService;
 
 	@Autowired
-	private AdministratorService administratorService;
+	private AdministratorService	administratorService;
 
 
 	public SubjectService() {
@@ -64,7 +66,7 @@ public class SubjectService {
 
 	/**
 	 * Actualiza la información de una asignatura
-	 *
+	 * 
 	 * @param subject
 	 */
 
@@ -76,7 +78,7 @@ public class SubjectService {
 
 	/**
 	 * Devuelve la asignatura asociada a un profesor y a una actividad
-	 *
+	 * 
 	 * @param id
 	 * @param id2
 	 * @return
@@ -104,7 +106,7 @@ public class SubjectService {
 		return this.repository.subjectsByStudents(id);
 	}
 
-	public Subject save(Subject entity) {
+	public Subject save(final Subject entity) {
 		Assert.notNull(entity);
 
 		Subject aux = new Subject();
@@ -153,10 +155,10 @@ public class SubjectService {
 		subject.setBulletins(new ArrayList<Bulletin>());
 
 		subject.setGroups(new ArrayList<Group>());
-		List<Student> students = subject.getStudents();
-		for (Student s : students) {
+		final List<Student> students = subject.getStudents();
+		for (final Student s : students) {
 			s.getSubjects().remove(subject);
-			studentService.save(s);
+			this.studentService.save(s);
 		}
 		subject.setGroups(new ArrayList<Group>());
 
@@ -166,43 +168,40 @@ public class SubjectService {
 
 		subject.setAssigments(new ArrayList<Assignment>());
 
-		List<School> schools = schoolService.findAll();
+		final List<School> schools = this.schoolService.findAll();
 
-		for (School c : schools) {
+		for (final School c : schools)
 			if (c.getSubjects().contains(subject)) {
 				c.getSubjects().remove(subject);
-				schoolService.save(c);
+				this.schoolService.save(c);
 
 			}
-		}
 
-		List<Teacher> teachers = teacherService.findAll();
+		final List<Teacher> teachers = this.teacherService.findAll();
 
-		for (Teacher tea : teachers) {
+		for (final Teacher tea : teachers)
 			if (tea.getSubjects().contains(subject)) {
 				tea.getSubjects().remove(subject);
-				teacherService.save(tea);
+				this.teacherService.save(tea);
 
 			}
-		}
 
-		List<Administrator> admins = administratorService.findAll();
+		final List<Administrator> admins = this.administratorService.findAll();
 
-		for (Administrator ad : admins) {
+		for (final Administrator ad : admins)
 			if (ad.getSubjects().contains(subject)) {
 				ad.getSubjects().remove(subject);
-				administratorService.save(ad);
+				this.administratorService.save(ad);
 
 			}
-		}
 
-		repository.delete(subject);
+		this.repository.delete(subject);
 
 	}
 
 	/**
 	 * Devuelve una asignatura que el profesor logueado imparte
-	 *
+	 * 
 	 * @param subjectId
 	 * @return
 	 */
@@ -220,7 +219,7 @@ public class SubjectService {
 
 	/**
 	 * Devuelve asignaturas impartidas por el profesor
-	 *
+	 * 
 	 * @param checkPrincipal
 	 * @return
 	 */

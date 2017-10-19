@@ -10,25 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.ActivityRepository;
+import security.LoginService;
 import domain.Activity;
 import domain.Subject;
 import domain.Teacher;
 import forms.ActivityForm;
-import repositories.ActivityRepository;
 
 @Transactional
 @Service
 public class ActivityService {
 
 	@Autowired
-	private ActivityRepository	repository;
+	private ActivityRepository		repository;
 
 	@Autowired
-	private SubjectService		subjectService;
+	private SubjectService			subjectService;
 	@Autowired
-	private TeacherService		teacherService;
+	private TeacherService			teacherService;
 	@Autowired
-	private AdministratorService administratorService;
+	private AdministratorService	administratorService;
 
 
 	public ActivityService() {
@@ -91,19 +92,18 @@ public class ActivityService {
 		this.repository.delete(activity);
 
 	}
-	
+
 	public void deleteAdmin(final Activity activity) {
 		Assert.notNull(activity);
 		Assert.isTrue(this.repository.exists(activity.getId()));
-		List<Subject> sub = administratorService.checkPrincipal().getSubjects();
-		Subject subject =null ;
-		for(Subject s: sub) {
-			if(s.getActivities().contains(activity)) {
+		final List<Subject> sub = this.administratorService.checkPrincipal().getSubjects();
+		Subject subject = null;
+		for (final Subject s : sub)
+			if (s.getActivities().contains(activity)) {
 				subject = s;
 				break;
 			}
-		}
-		
+
 		subject.getActivities().remove(activity);
 		this.subjectService.update(subject);
 		this.repository.delete(activity);
@@ -194,6 +194,14 @@ public class ActivityService {
 		activity.setEndDate(activityForm.getEndDate());
 		activity.setLink(activityForm.getLink());
 		return activity;
+	}
+
+	public Collection<Activity> findAllBySubjectPrincipal(final Integer idSubject) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.hasRole("TEACHER"));
+		final Subject subject = this.subjectService.findOnePrincipal(idSubject);
+
+		return subject.getActivities();
 	}
 
 }
