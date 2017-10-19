@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.BulletinRepository;
+import security.LoginService;
 import domain.Bulletin;
 import domain.Subject;
 import forms.BulletinForm;
@@ -20,14 +22,15 @@ public class BulletinService {
 
 	// Managed repository ------------------------------------------
 	@Autowired
-	private BulletinRepository bulletinRepository;
+	private BulletinRepository	bulletinRepository;
 
 	// Supporting Services ------------------------------------------
 	@Autowired(required = false)
-	private Validator validator;
+	private Validator			validator;
 
 	@Autowired
-	private SubjectService subjectService;
+	private SubjectService		subjectService;
+
 
 	// Constructors -------------------------------------------------
 	public BulletinService() {
@@ -45,9 +48,9 @@ public class BulletinService {
 		return result;
 	}
 
-	public void delete(Bulletin entity) {
+	public void delete(final Bulletin entity) {
 		Assert.notNull(entity);
-		bulletinRepository.delete(entity);
+		this.bulletinRepository.delete(entity);
 	}
 
 	public Bulletin findOne(final Integer bulletinId) {
@@ -71,38 +74,44 @@ public class BulletinService {
 
 	public Bulletin save(final Bulletin bulletin) {
 
-		Bulletin result = this.bulletinRepository.save(bulletin);
+		final Bulletin result = this.bulletinRepository.save(bulletin);
 
 		return result;
 	}
 
-	public Bulletin saveInSubject(final Bulletin bulletin, int subjectId) {
+	public Bulletin saveInSubject(final Bulletin bulletin, final int subjectId) {
 		Assert.notNull(bulletin);
 		Assert.notNull(subjectId);
-		Subject subject = subjectService.findOne(subjectId);
+		final Subject subject = this.subjectService.findOne(subjectId);
 		Assert.notNull(subject);
-		
-		Bulletin result = this.bulletinRepository.save(bulletin);
+
+		final Bulletin result = this.bulletinRepository.save(bulletin);
 		subject.getBulletins().add(result);
-		subjectService.save(subject);
+		this.subjectService.save(subject);
 		return result;
 	}
 
-	public Bulletin reconstruct(BulletinForm bulletinForm, BindingResult binding) {
-		
-		Bulletin bulletin = this.create();
+	public Bulletin reconstruct(final BulletinForm bulletinForm, final BindingResult binding) {
+
+		final Bulletin bulletin = this.create();
 		bulletin.setPostedDate(bulletinForm.getPostedDate());
 		bulletin.setText(bulletinForm.getText());
 		bulletin.setTitle(bulletinForm.getTitle());
-		
+
 		this.validator.validate(bulletin, binding);
-		
+
 		return bulletin;
 	}
 
-	public Collection<Bulletin> findBySubject(Integer q) {
+	public Collection<Bulletin> findBySubject(final Integer q) {
 		return this.bulletinRepository.findBySubject(q);
 
+	}
+
+	public Bulletin saveInSubject2(final Bulletin bulletin, final Integer subjectId) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		return this.saveInSubject(bulletin, subjectId);
 	}
 
 }

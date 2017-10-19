@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import domain.ActivityRecord;
-import domain.Administrator;
-import domain.SocialIdentity;
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.ActivityRecord;
+import domain.Administrator;
+import domain.SocialIdentity;
 
 @Transactional
 @Service
@@ -38,7 +38,7 @@ public class AdministratorService {
 
 	/**
 	 * Actualiza un administrador existente
-	 *
+	 * 
 	 * @param actor
 	 *            administrador a actualizar
 	 * @return administrador actualizado
@@ -55,7 +55,7 @@ public class AdministratorService {
 
 	/**
 	 * Crea un nuevo administrador
-	 *
+	 * 
 	 * @param actor
 	 *            administrador a crear
 	 * @return administrador creado
@@ -71,7 +71,7 @@ public class AdministratorService {
 
 	public Administrator create() {
 
-		Administrator administrator = new Administrator();
+		final Administrator administrator = new Administrator();
 		administrator.setName(new String());
 		administrator.setSurname(new String());
 		administrator.setEmail(new String());
@@ -79,11 +79,11 @@ public class AdministratorService {
 		administrator.setPostalAddress(new String());
 		administrator.setSocialIdentities(new ArrayList<SocialIdentity>());
 		administrator.setActivitiesRecords(new ArrayList<ActivityRecord>());
-		administrator.setFolders(folderService.save(folderService.createDefaultFolders()));
+		administrator.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 
-		Authority a = new Authority();
+		final Authority a = new Authority();
 		a.setAuthority(Authority.ADMINISTRATOR);
-		UserAccount account = new UserAccount();
+		final UserAccount account = new UserAccount();
 		account.setAuthorities(Arrays.asList(a));
 		administrator.setUserAccount(account);
 
@@ -91,18 +91,18 @@ public class AdministratorService {
 
 	}
 
-	public Administrator save(Administrator actor) {
+	public Administrator save(final Administrator actor) {
 
 		Assert.notNull(actor);
 
-		return repository.save(actor);
+		return this.repository.save(actor);
 	}
 
 	//Other Methods
 
 	/**
 	 * Comprueba que el logueado es administrador
-	 *
+	 * 
 	 * @return administrador logueado
 	 */
 
@@ -124,27 +124,48 @@ public class AdministratorService {
 		return this.repository.findAll();
 	}
 
-
 	public List<Object> getDashboard() {
-		List<Object> res = new ArrayList<Object>();
+		final List<Object> res = new ArrayList<Object>();
 
-		res.add(repository.teacherMoreSubjects());
-		res.add(repository.teacherMinSubjects());
-		res.add(repository.teacherAverageSubjects());
-		res.add(repository.teacherMinMaxAvgSubjects());
-		res.add(repository.minMaxAvgSeatsOfSubjects());
-		res.add(repository.minMaxAvgStudentsOfSubjects());
-		res.add(repository.minMaxAvgAssigmentsOfSubjects());
-		res.add(repository.minMaxAvgActivityRecordOfActor());
-		res.add(repository.avgActivityRecordOfActor());
-		res.add(repository.minMaxAvgSeminarsOTeacher());
-		res.add(repository.avgSeminarsOTeacher());
-		
+		res.add(this.repository.teacherMoreSubjects());
+		res.add(this.repository.teacherMinSubjects());
+		res.add(this.repository.teacherAverageSubjects());
+		res.add(this.repository.teacherMinMaxAvgSubjects());
+		res.add(this.repository.minMaxAvgSeatsOfSubjects());
+		res.add(this.repository.minMaxAvgStudentsOfSubjects());
+		res.add(this.repository.minMaxAvgAssigmentsOfSubjects());
+		res.add(this.repository.minMaxAvgActivityRecordOfActor());
+		res.add(this.repository.avgActivityRecordOfActor());
+		res.add(this.repository.minMaxAvgSeminarsOTeacher());
+		res.add(this.repository.avgSeminarsOTeacher());
+
 		return res;
 	}
 
 	public List<String> allActorName() {
-		return repository.allActorName();
+		return this.repository.allActorName();
+	}
+
+	public Administrator findOne(final Integer idAdmin) {
+		// TODO Auto-generated method stub
+		Assert.notNull(idAdmin);
+		Assert.isTrue((this.repository.exists(idAdmin)));
+
+		return this.repository.findOne(idAdmin);
+	}
+
+
+	@Autowired
+	LoginService	loginService;
+
+
+	public void editInfo(final Administrator admin) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.hasRole("ADMINISTRATOR"));
+		Assert.isTrue(LoginService.getPrincipal().getId() == admin.getUserAccount().getId());
+
+		this.save(admin);
+
 	}
 
 }
