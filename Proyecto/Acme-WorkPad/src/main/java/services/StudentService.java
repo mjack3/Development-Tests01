@@ -12,6 +12,10 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.StudentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.ActivityRecord;
 import domain.Folder;
 import domain.Group;
@@ -20,10 +24,6 @@ import domain.Seminar;
 import domain.SocialIdentity;
 import domain.Student;
 import domain.Subject;
-import repositories.StudentRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Transactional
 @Service
@@ -69,7 +69,7 @@ public class StudentService {
 
 	/**
 	 * Crea las carpetas por defecto del correo
-	 *
+	 * 
 	 * @return Carpetas creadas
 	 */
 	private List<Folder> createFolders() {
@@ -98,47 +98,49 @@ public class StudentService {
 
 	/**
 	 * Actualiza un estudiante existente
-	 *
+	 * 
 	 * @param actor
 	 *            Estudiante a actualizar
 	 * @return estudiante actualizado
 	 */
 
-	public Student update(Student actor) {
+	public Student update(final Student actor) {
 
 		Assert.notNull(actor);
-		Assert.isTrue(repository.exists(actor.getId()));
+		Assert.isTrue(this.repository.exists(actor.getId()));
 
-		return repository.save(actor);
+		return this.repository.save(actor);
 	}
 
 	public List<Student> findAll() {
-		return repository.findAll();
+		return this.repository.findAll();
 	}
 
 	/**
 	 * Crea un nuevo estudiante
-	 *
+	 * 
 	 * @param actor
 	 *            Estudiante a crear
 	 * @return estudiante creado
 	 */
 
-	public Student save(final Student actor) {
+	public Student save(final Student student) {
 
-		Assert.notNull(actor);
+		Assert.notNull(student);
 
 		final Md5PasswordEncoder enc = new Md5PasswordEncoder();
-		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
+		student.getUserAccount().setPassword(enc.encodePassword(student.getUserAccount().getPassword(), null));
 
-		return this.repository.save(actor);
+		final Student saved = this.repository.save(student);
+
+		return saved;
 	}
 
 	//Other Methods
 
 	/**
 	 * Comprueba que el logueado es profesor
-	 *
+	 * 
 	 * @return profesor logueado
 	 */
 
@@ -160,6 +162,21 @@ public class StudentService {
 		Assert.notNull(student);
 
 		this.repository.delete(student);
+	}
+
+	public Student findOne(final Integer idStudent) {
+		// TODO Auto-generated method stub
+		Assert.notNull(idStudent);
+		Assert.isTrue(this.repository.exists(idStudent));
+		return this.repository.findOne(idStudent);
+	}
+
+	public void editInfo(final Student student) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.hasRole("STUDENT"));
+		Assert.isTrue(LoginService.getPrincipal().getId() == student.getUserAccount().getId());
+
+		this.save(student);
 	}
 
 }

@@ -317,4 +317,11 @@ public class TeacherService {
 		return teacher.getSubjects();
 
 	}
+
+	public void editInfo(final Teacher teacher) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.hasRole("TEACHER"));
+		Assert.isTrue(LoginService.getPrincipal().getId() == teacher.getUserAccount().getId());
+		this.update(teacher);
+	}
 }
