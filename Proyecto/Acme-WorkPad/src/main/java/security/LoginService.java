@@ -30,7 +30,7 @@ public class LoginService implements UserDetailsService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	UserAccountRepository userRepository;
+	UserAccountRepository	userRepository;
 
 
 	// Business methods -------------------------------------------------------
@@ -140,6 +140,6 @@ public class LoginService implements UserDetailsService {
 	}
 
 	public Actor selectSelf() {
-		return userRepository.findActorByUsernameId(LoginService.getPrincipal().getId());
+		return this.userRepository.findActorByUsernameId(LoginService.getPrincipal().getId());
 	}
 }

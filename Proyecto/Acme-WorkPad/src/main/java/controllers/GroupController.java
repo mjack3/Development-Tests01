@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Group;
-import domain.Student;
-import domain.Subject;
-import domain.Teacher;
 import security.LoginService;
 import services.GroupService;
 import services.StudentService;
 import services.SubjectService;
+import domain.Group;
+import domain.Student;
+import domain.Subject;
+import domain.Teacher;
 
 @Controller
 @RequestMapping("/group")
@@ -46,37 +46,34 @@ public class GroupController {
 	public ModelAndView create() {
 		ModelAndView result;
 
-		if (subjectscond) {
-			result = createNewModelAndView(grouptService.create(), null);
-		} else {
+		if (this.subjectscond)
+			result = this.createNewModelAndView(this.grouptService.create(), null);
+		else
 			result = new ModelAndView("redirect:/welcome/index.do");
-		}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@Valid Group groupsubject, BindingResult binding) {
+	public ModelAndView saveCreate(@Valid final Group groupsubject, final BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
-			for (ObjectError e : binding.getAllErrors()) {
+			for (final ObjectError e : binding.getAllErrors())
 				System.out.println(e.toString());
-			}
-			result = createNewModelAndView(groupsubject, null);
-		} else {
+			result = this.createNewModelAndView(groupsubject, null);
+		} else
 			try {
 
-				grouptService.save(groupsubject, subjectId);
-				result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
-			} catch (Throwable th) {
+				this.grouptService.save(groupsubject, this.subjectId);
+				result = new ModelAndView("redirect:/group/student/list.do?q=" + this.subjectId);
+			} catch (final Throwable th) {
 				th.printStackTrace();
-				result = createNewModelAndView(groupsubject, "acme.error.message");
+				result = this.createNewModelAndView(groupsubject, "acme.error.message");
 			}
-		}
 		return result;
 	}
 
-	protected ModelAndView createNewModelAndView(Group groupsubject, String message) {
+	protected ModelAndView createNewModelAndView(final Group groupsubject, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("group/create");
 		result.addObject("group", groupsubject);
@@ -85,9 +82,9 @@ public class GroupController {
 	}
 
 	@RequestMapping(value = "/student/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam Integer q) {
+	public ModelAndView list(@RequestParam final Integer q) {
 		ModelAndView result;
-		Date today = new Date();
+		final Date today = new Date();
 
 		result = new ModelAndView("group/list");
 		result.addObject("requestURL", "/group/student/list");
@@ -98,13 +95,13 @@ public class GroupController {
 
 			System.out.println("-------------------- lista general-----------------");
 			boolean isgroup = false;
-			for (Group g : grouptService.findAll()) {
+			for (final Group g : this.grouptService.findAll()) {
 
 				System.out.println(!student.getGroups().contains(g));
 				isgroup = false;
-				if (!grouptService.studentByGroups(student.getId()).contains(g) && student.getSubjects().contains((subjectservice.findOne(q)))) {
+				if (!this.grouptService.studentByGroups(student.getId()).contains(g) && student.getSubjects().contains((this.subjectservice.findOne(q)))) {
 
-					System.out.println(subjectservice.subjectsByStudents(student.getId()).contains(subjectservice.findOne(q)));
+					System.out.println(this.subjectservice.subjectsByStudents(student.getId()).contains(this.subjectservice.findOne(q)));
 					System.out.println(!student.getGroups().contains(g));
 
 					isgroup = true;
@@ -120,37 +117,31 @@ public class GroupController {
 		}
 
 		if (LoginService.hasRole("TEACHER"))
-
-		{
 			teacher = (Teacher) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
 
-		}
-
-		result.addObject("group", subjectservice.findOne(q).getGroups());
-		List<Subject> subjects = new ArrayList<Subject>();
-		subjectscond = false;
+		result.addObject("group", this.subjectservice.findOne(q).getGroups());
+		final List<Subject> subjects = new ArrayList<Subject>();
+		this.subjectscond = false;
 
 		if (student != null) {
 
-			for (Subject e : student.getSubjects()) {
+			for (final Subject e : student.getSubjects())
 				subjects.add(e);
-			}
 			boolean isgroup = false;
 
 			System.out.println("--------------------mi lista -----------------");
-			for (Group g : grouptService.findAll()) {
+			for (final Group g : this.grouptService.findAll()) {
 				isgroup = false;
-				System.out.println(subjects.contains(subjectservice.findOne(q)));
-				for (Student t : subjectservice.findOne(q).getStudents()) {
+				System.out.println(subjects.contains(this.subjectservice.findOne(q)));
+				for (final Student t : this.subjectservice.findOne(q).getStudents())
 					System.out.println(t.getName());
-				}
 
-				if (student.getSubjects().contains((subjectservice.findOne(q)))) {
-					System.out.println(subjects.contains(subjectservice.findOne(q)));
+				if (student.getSubjects().contains((this.subjectservice.findOne(q)))) {
+					System.out.println(subjects.contains(this.subjectservice.findOne(q)));
 					System.out.println(!student.getGroups().contains(g));
 					isgroup = true;
 				}
-				if (grouptService.studentByGroups(student.getId()).contains(g)) {
+				if (this.grouptService.studentByGroups(student.getId()).contains(g)) {
 					isgroup = false;
 					break;
 				}
@@ -161,19 +152,16 @@ public class GroupController {
 
 			result.addObject("today", today);
 		}
-		if (teacher != null) {
-			for (Subject e : teacher.getSubjects()) {
+		if (teacher != null)
+			for (final Subject e : teacher.getSubjects())
 				subjects.add(e);
-			}
-		}
 
-		if (subjects.contains(subjectservice.findOne(q))) {
-			subjectscond = true;
-		}
+		if (subjects.contains(this.subjectservice.findOne(q)))
+			this.subjectscond = true;
 
-		result.addObject("subjectscond", subjectscond);
+		result.addObject("subjectscond", this.subjectscond);
 
-		subjectId = q;
+		this.subjectId = q;
 
 		return result;
 	}
@@ -182,7 +170,7 @@ public class GroupController {
 	@RequestMapping(value = "/student/subscribe", method = RequestMethod.GET)
 	public ModelAndView subscribe(@RequestParam final Group q) {
 		ModelAndView result;
-		Date today = new Date();
+		final Date today = new Date();
 
 		final Student student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
 

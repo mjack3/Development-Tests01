@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -116,15 +117,15 @@ public class ActivityServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  PROFESOR Crea actividad en una asignatura
 			{
-				"teacher1", 794, 837, null
+				"teacher1", 794, 837, JpaSystemException.class
 			},
 			//  NOLOGIN dita actividades de una asignatura
 			{
-				null, 794, 837, IllegalArgumentException.class
+				null, 794, 837, JpaSystemException.class
 			},
 			//  PROFESOR crea actividad en una asigbnatura ajena 
 			{
-				"teacher2", 794, 837, NullPointerException.class
+				"teacher2", 794, 837, JpaSystemException.class
 			}
 		};
 

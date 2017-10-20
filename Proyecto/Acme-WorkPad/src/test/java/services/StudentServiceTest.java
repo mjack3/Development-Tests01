@@ -22,7 +22,9 @@ public class StudentServiceTest extends AbstractTest {
 	@Autowired
 	private TeacherService	teacherService;
 	@Autowired
-	StudentService			studentService;
+	private StudentService	studentService;
+	@Autowired
+	private SubjectService	subjectService;
 
 
 	// RF 11.3
@@ -185,4 +187,46 @@ public class StudentServiceTest extends AbstractTest {
 
 	}
 
+	//	13.1	----------
+
+	@Test
+	public void driverEnrolSubject() {
+		final Object testingData1[][] = {
+			// Estudiante se apunta a una asignatura
+			{
+				"student10", 837, null
+			},
+			// Estudiante se apunta dos veces
+			{
+				"student1", 837, IllegalArgumentException.class
+			},
+			// Estudiante se apunta a una asignatura que no existe
+			{
+				"student10", 000, NullPointerException.class
+			}
+		};
+
+		for (int i = 0; i < testingData1.length; i++)
+			this.driverEnrolSubject((String) testingData1[i][0], (Integer) testingData1[i][1], (Class<?>) testingData1[i][2]);
+
+	}
+
+	protected void driverEnrolSubject(final String username, final Integer idSubject, final Class<?> expected) {
+		// TODO Auto-generated method stub
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			this.studentService.enrolSubject(idSubject);
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
 }

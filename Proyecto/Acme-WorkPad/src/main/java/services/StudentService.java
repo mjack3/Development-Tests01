@@ -35,6 +35,11 @@ public class StudentService {
 	@Autowired
 	private FolderService		folderService;
 
+	@Autowired
+	private LoginService		loginService;
+	@Autowired
+	private SubjectService		subjectService;
+
 
 	public StudentService() {
 		super();
@@ -177,6 +182,18 @@ public class StudentService {
 		Assert.isTrue(LoginService.getPrincipal().getId() == student.getUserAccount().getId());
 
 		this.save(student);
+	}
+
+	public void enrolSubject(final Integer idSubject) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		Assert.isTrue(LoginService.hasRole("STUDENT"));
+
+		final Subject subject = this.subjectService.findOne(idSubject);
+
+		Assert.isTrue(!subject.getStudents().contains(this.checkPrincipal()));
+		subject.getStudents().add(this.checkPrincipal());
+		this.subjectService.update(subject);
 	}
 
 }

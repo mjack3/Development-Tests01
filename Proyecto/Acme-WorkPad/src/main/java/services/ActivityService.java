@@ -198,6 +198,7 @@ public class ActivityService {
 
 	public Collection<Activity> findAllBySubjectPrincipal(final Integer idSubject) {
 		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
 		Assert.isTrue(LoginService.hasRole("TEACHER"));
 		final Subject subject = this.subjectService.findOnePrincipal(idSubject);
 

@@ -210,13 +210,16 @@ public class SubjectService {
 		// TODO Auto-generated method stub
 
 		final Subject subject = this.repository.findOne(subjectId);
-		final Teacher teacher = this.teacherService.checkPrincipal();
 
-		Assert.isTrue(teacher.getSubjects().contains(subject));
-
+		if (LoginService.hasRole("TEACHER")) {
+			final Teacher teacher = this.teacherService.checkPrincipal();
+			Assert.isTrue(teacher.getSubjects().contains(subject));
+		} else if (LoginService.hasRole("STUDENT")) {
+			final Student student = this.studentService.checkPrincipal();
+			Assert.isTrue(student.getSubjects().contains(subject));
+		}
 		return subject;
 	}
-
 	/**
 	 * Devuelve asignaturas impartidas por el profesor
 	 * 
