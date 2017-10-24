@@ -73,4 +73,45 @@ public class GroupServiceTest extends AbstractTest {
 		}
 		this.checkExceptions(expected, caught);
 	}
+
+	@Test
+	public void driverJoinGroup() {
+		final Object testingData1[][] = {
+			//  Estudiante Se une a un grupo de su asignatura
+			{
+				"student10", 806, null
+			},
+			//  Estudiante se une dos veces al grupo
+			{
+				"student1", 806, IllegalArgumentException.class
+			},
+			//  Studiante se une a un grupo que no existe
+			{
+				"student1", 000, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData1.length; i++)
+			this.JoinGroupTest((String) testingData1[i][0], (Integer) testingData1[i][1], (Class<?>) testingData1[i][2]);
+
+	}
+
+	protected void JoinGroupTest(final String username, final Integer id, final Class<?> expected) {
+		// TODO Auto-generated method stub
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			this.groupService.joinGroup(id);
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
 }

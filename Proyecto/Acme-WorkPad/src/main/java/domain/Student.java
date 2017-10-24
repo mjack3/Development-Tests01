@@ -13,40 +13,40 @@ import javax.validation.constraints.NotNull;
 @Access(AccessType.PROPERTY)
 public class Student extends Actor {
 
-	private List<Seminar>		seminars;
-	private List<Group>			groups;
-	private List<Subject>		subjects;
+	private List<Seminar>	seminars;
+	private List<Group>		groups;
+	private List<Subject>	subjects;
 
 
 	//Getters
 	@NotNull
 	@ManyToMany
 	public List<Seminar> getSeminars() {
-		return seminars;
+		return this.seminars;
 	}
 
 	@NotNull
 	@ManyToMany
 	public List<Group> getGroups() {
-		return groups;
+		return this.groups;
 	}
 
 	@NotNull
 	@ManyToMany
 	public List<Subject> getSubjects() {
-		return subjects;
+		return this.subjects;
 	}
 
 	//Setters
-	public void setSeminars(List<Seminar> seminars) {
+	public void setSeminars(final List<Seminar> seminars) {
 		this.seminars = seminars;
 	}
 
-	public void setGroups(List<Group> groups) {
+	public void setGroups(final List<Group> groups) {
 		this.groups = groups;
 	}
 
-	public void setSubjects(List<Subject> subjects) {
+	public void setSubjects(final List<Subject> subjects) {
 		this.subjects = subjects;
 	}
 

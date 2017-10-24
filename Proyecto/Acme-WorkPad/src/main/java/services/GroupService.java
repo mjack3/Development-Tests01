@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.GroupRepository;
+import security.LoginService;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
-import repositories.GroupRepository;
-import security.LoginService;
 
 @Service
 @Transactional
@@ -38,9 +38,9 @@ public class GroupService {
 		super();
 	}
 
-	public void delete(Group entity) {
+	public void delete(final Group entity) {
 		Assert.notNull(entity);
-		groupRepository.delete(entity);
+		this.groupRepository.delete(entity);
 	}
 
 	public Group create() {
@@ -76,7 +76,7 @@ public class GroupService {
 
 			this.studentService.update(a);
 
-			Subject subject = subjectService.findOne(subjectId);
+			final Subject subject = this.subjectService.findOne(subjectId);
 
 			final List<Group> groupsSubject = subject.getGroups();
 			groupsSubject.add(aux);
@@ -96,7 +96,7 @@ public class GroupService {
 
 			this.studentService.save(a);
 
-			Subject subject = subjectService.findOne(subjectId);
+			final Subject subject = this.subjectService.findOne(subjectId);
 
 			final List<Group> groupsSubject = subject.getGroups();
 			groupsSubject.add(aux);
@@ -131,19 +131,31 @@ public class GroupService {
 		return this.groupRepository.save(arg0);
 	}
 
-	public Group findGroupBySubjectAndStudent(int id, int id2) {
+	public Group findGroupBySubjectAndStudent(final int id, final int id2) {
 		Assert.notNull(id);
 		Assert.notNull(id2);
 		return this.groupRepository.findGroupBySubjectAndStudent(id, id2);
 	}
 
-	public Group save(Group group) {
+	public Group save(final Group group) {
 		return this.groupRepository.save(group);
 
 	}
 
-	public List<Group> studentByGroups(int q) {
-		return groupRepository.studentByGroups(q);
+	public List<Group> studentByGroups(final int q) {
+		return this.groupRepository.studentByGroups(q);
+	}
+
+	public void joinGroup(final Integer idGroup) {
+		// TODO Auto-generated method stub
+		Assert.notNull(idGroup);
+		final Student student = this.studentService.checkPrincipal();
+		final Group group = this.groupRepository.findOneNoJoinPrincipal(idGroup, student.getId());
+		Assert.notNull(group);
+		Assert.isTrue(!student.getGroups().contains(group));
+
+		student.getGroups().add(group);
+		this.studentService.update(student);
 	}
 
 }

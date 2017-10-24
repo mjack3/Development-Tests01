@@ -114,12 +114,15 @@ public class SubmissionService {
 		final Submission submission = new Submission();
 		final String[] array = form.getAttachments().split(",");
 		final List<String> str = new ArrayList<String>(Arrays.asList(array));
-		
-		for(String s: str){
-			boolean b = Pattern.matches("(?i)\\b(?:(?:https?|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?)(?::\\d{2,5})?(?:[/?#]\\S*)?\\b", s.trim());
-			Assert.isTrue(b,"error.attachment.format");
+
+		for (final String s : str) {
+			final boolean b = Pattern
+				.matches(
+					"(?i)\\b(?:(?:https?|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?)(?::\\d{2,5})?(?:[/?#]\\S*)?\\b",
+					s.trim());
+			Assert.isTrue(b, "error.attachment.format");
 		}
-		
+
 		submission.setAttachments(str);
 		submission.setContent(form.getContent());
 		submission.setGrade(form.getGrade());
@@ -167,6 +170,18 @@ public class SubmissionService {
 		resul.setGrade(submission.getGrade());
 		this.validator.validate(resul, bindingResult);
 		return resul;
+	}
+
+	public void submissionDerivarable(final Submission submission, final Integer id) {
+		// TODO Auto-generated method stub
+
+		final Assignment assignment = this.assignmentService.findOne(id);
+		Assert.notNull(assignment);
+		final Collection<Assignment> assignments = this.assignmentService.findAllByPrincipalStudent();
+		Assert.isTrue(assignments.contains(assignment));
+		assignment.getSubmission().add(submission);
+		this.assignmentService.save(assignment);
+
 	}
 
 }
