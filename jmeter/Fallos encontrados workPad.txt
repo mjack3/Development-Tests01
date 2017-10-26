@@ -1,0 +1,14 @@
+Requisitos:
+	- mirar en los crear y en los editar los paterns de numero de telefono
+	- 13.2 no funciona el requisito
+	- 13.4 no funciona el requisito
+	- 14.3 no funciona bien xk no eliges al profesor y no lo guarda tampoco, y se carga la base de datos osease los logins
+	- 
+
+Pruebas que faltan:
+	-10.1
+	-13.2
+	-13.4
+	-14.2
+	-14.3
+
