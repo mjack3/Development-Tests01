@@ -5,9 +5,7 @@ Requisitos:
 	- peta al editar la school
 
 Pruebas que faltan:
-	-10.1
 	-13.2
 	-13.4
-	-14.2
 	-14.3
 
