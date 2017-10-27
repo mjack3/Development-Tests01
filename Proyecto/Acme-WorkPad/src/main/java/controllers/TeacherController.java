@@ -22,9 +22,9 @@ import services.TeacherService;
 public class TeacherController {
 
 	@Autowired
-	private TeacherService teacherService;
-	
-	private Teacher toSave;
+	private TeacherService	teacherService;
+
+	private Teacher			toSave;
 
 
 	public TeacherController() {
@@ -66,14 +66,14 @@ public class TeacherController {
 			result = this.createNewModelAndView(teacher, null);
 		else
 			try {
-				Pattern pattern = Pattern.compile("^\\+([0-9][0-9]{0,2}) (\\([0-9][0-9][0-9]{0,3}\\)) ([a-zA-Z0-9 -]{4,})$");
-			    Matcher matcher = pattern.matcher(teacher.getPhone());
-				if(!matcher.matches()) {
+				final Pattern pattern = Pattern.compile("^([+])([0-9]{2})([ ])([(][0-9]{0,3}[)])?([ ])?([0-9]{4,})$");
+				final Matcher matcher = pattern.matcher(teacher.getPhone());
+				if (!matcher.matches()) {
 					result = new ModelAndView("teacher/confirm");
-					toSave = teacher;
-				}else {
-				this.teacherService.save(teacher);
-				result = new ModelAndView("redirect:/welcome/index.do");
+					this.toSave = teacher;
+				} else {
+					this.teacherService.save(teacher);
+					result = new ModelAndView("redirect:/welcome/index.do");
 				}
 			} catch (final Throwable th) {
 				th.printStackTrace();
@@ -88,14 +88,14 @@ public class TeacherController {
 			result = this.createEditModelAndView(teacher, null);
 		else
 			try {
-				Pattern pattern = Pattern.compile("^\\+([0-9][0-9]{0,2}) (\\([0-9][0-9][0-9]{0,3}\\)) ([a-zA-Z0-9 -]{4,})$");
-			    Matcher matcher = pattern.matcher(teacher.getPhone());
-				if(!matcher.matches()) {
+				final Pattern pattern = Pattern.compile("^([+])([0-9]{2})([ ])([(][0-9]{0,3}[)])?([ ])?([0-9]{4,})$");
+				final Matcher matcher = pattern.matcher(teacher.getPhone());
+				if (!matcher.matches()) {
 					result = new ModelAndView("teacher/confirm");
-					toSave = teacher;
-				}else {
-				this.teacherService.update(teacher);
-				result = new ModelAndView("redirect:/welcome/index.do");
+					this.toSave = teacher;
+				} else {
+					this.teacherService.update(teacher);
+					result = new ModelAndView("redirect:/welcome/index.do");
 				}
 			} catch (final Throwable th) {
 				th.printStackTrace();
@@ -103,45 +103,44 @@ public class TeacherController {
 			}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		
 
 		result = new ModelAndView("teacher/list");
-		result.addObject("teachers", teacherService.findAll());
+		result.addObject("teachers", this.teacherService.findAll());
 
 		return result;
 	}
-	
-	@RequestMapping(value="/saveConfirm", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/saveConfirm", method = RequestMethod.POST)
 	public ModelAndView saveConfirm() {
 		ModelAndView result;
-			try {
-				teacherService.save(toSave);
-				result = new ModelAndView("redirect:/welcome/index.do");
-			} catch (Throwable th) {
-				th.printStackTrace();
-				result = createNewModelAndView(toSave, "teacher.commit.error");
+		try {
+			this.teacherService.save(this.toSave);
+			result = new ModelAndView("redirect:/welcome/index.do");
+		} catch (final Throwable th) {
+			th.printStackTrace();
+			result = this.createNewModelAndView(this.toSave, "teacher.commit.error");
 		}
-		
-	return result;
-}
-	
-	@RequestMapping(value="/saveConfirmEdit", method=RequestMethod.POST)
+
+		return result;
+	}
+
+	@RequestMapping(value = "/saveConfirmEdit", method = RequestMethod.POST)
 	public ModelAndView saveConfirmEdit() {
 		ModelAndView result;
-			try {
-				teacherService.update(toSave);
-				result = new ModelAndView("redirect:/welcome/index.do");
-			} catch (Throwable th) {
-				th.printStackTrace();
-				result = createNewModelAndView(toSave, "teacher.commit.error");
+		try {
+			this.teacherService.update(this.toSave);
+			result = new ModelAndView("redirect:/welcome/index.do");
+		} catch (final Throwable th) {
+			th.printStackTrace();
+			result = this.createNewModelAndView(this.toSave, "teacher.commit.error");
 		}
-		
-	return result;
-}
+
+		return result;
+	}
 
 	protected ModelAndView createNewModelAndView(final Teacher teacher, final String message) {
 		ModelAndView result;
