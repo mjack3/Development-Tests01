@@ -151,6 +151,8 @@ public class StudentService {
 
 	public Student checkPrincipal() {
 		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		Assert.isTrue(LoginService.hasRole("STUDENT"));
 		final UserAccount account = LoginService.getPrincipal();
 		Assert.isTrue(account.getAuthorities().iterator().next().getAuthority().equals("STUDENT"));
 

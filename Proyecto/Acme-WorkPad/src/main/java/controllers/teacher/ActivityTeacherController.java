@@ -67,9 +67,12 @@ public class ActivityTeacherController extends AbstractController {
 				 * otras comprobaciones
 				 */
 
-				if ((!activityForm.getEndDate().after(activityForm.getStartDate())) || (activityForm.getStartDate().before(new Date()))) {
+				if (!activityForm.getEndDate().after(activityForm.getStartDate())) {
 					bindingResult.rejectValue("startDate", "activity.date.error", "error");
 					bindingResult.rejectValue("endDate", "activity.date.error", "error");
+					throw new IllegalArgumentException();
+				} else if (!activityForm.getStartDate().after(new Date(System.currentTimeMillis() - 1))) {
+					bindingResult.rejectValue("startDate", "activity.date.error", "error");
 					throw new IllegalArgumentException();
 				}
 
@@ -85,7 +88,6 @@ public class ActivityTeacherController extends AbstractController {
 
 		return resul;
 	}
-
 	private ModelAndView createCreateModelAndView(final ActivityForm activityForm) {
 		// TODO Auto-generated method stub
 		return this.createCreateModelAndView(activityForm, null);

@@ -62,11 +62,18 @@ public class AssigmentTeacherController extends AbstractController {
 				 * más comprobaciones
 				 */
 				final Date now = new Date();
-				if (!assignmentForm.getEndDate().after(assignmentForm.getStartDate()) || assignmentForm.getStartDate().before(now)) {
+
+				if (!assignmentForm.getEndDate().after(assignmentForm.getStartDate())) {
 					bindingResult.rejectValue("startDate", "assignment.date.error", "error");
 					bindingResult.rejectValue("endDate", "assignment.date.error", "error");
 
 					throw new IllegalArgumentException();
+				} else {
+					new Date();
+					if (assignmentForm.getStartDate().before(now)) {
+						bindingResult.rejectValue("startDate", "assignment.date.error", "error");
+						throw new IllegalArgumentException();
+					}
 				}
 
 				Assignment assignment = this.assignmentService.reconstruct(assignmentForm);

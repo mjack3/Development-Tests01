@@ -22,7 +22,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
-
+<%@ page import="org.apache.commons.collections.CollectionUtils" %>
 
 <label><spring:message code="subject.withoutSeats" /> </label>
 <input type="radio" value="without" id="withoutBTN" name="check" onclick="changeWithout(this)">
@@ -64,7 +64,7 @@
 		<td>
 		<jstl:if
 				test="${subjectByStudent.contains(e)}">
-				<a href="group/student/create.do"> <spring:message
+				<a href="group/student/create.do?subjectId=${e.id }"> <spring:message
 							code='subject.createGroup' /></a>
 			</jstl:if>
 		</td>
@@ -207,3 +207,5 @@ function uncheckWith() {
 </script>
 
 
+
+ 

@@ -51,6 +51,9 @@ public class GroupService {
 		groupSubject.setEndDate(new Date());
 		groupSubject.setSubmission(new ArrayList<Submission>());
 
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		Assert.isTrue(LoginService.hasRole("STUDENT"));
+
 		return groupSubject;
 	}
 

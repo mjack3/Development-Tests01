@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Student;
 import services.StudentService;
+import domain.Student;
 
 @Controller
 @RequestMapping("/student")
@@ -78,7 +78,7 @@ public class StudentController {
 			result = this.createEditModelAndView(student, null);
 		else
 			try {
-				final Pattern pattern = Pattern.compile("^([+])([0-9]{2})([ ])([(][0-9]{0,3}[)])?([ ])?([0-9]{4,})$");
+				final Pattern pattern = Pattern.compile("^(([+])([0-9]{2})([ ])([(][0-9]{0,3}[)])?([ ])?([0-9]{4,}))|$");
 				final Matcher matcher = pattern.matcher(student.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("student/confirm");

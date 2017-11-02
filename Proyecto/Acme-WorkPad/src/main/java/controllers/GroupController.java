@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -43,15 +44,23 @@ public class GroupController {
 
 
 	@RequestMapping(value = "/student/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
+	public ModelAndView create(@RequestParam final int subjectId) {
+		ModelAndView resul;
 
-		if (this.subjectscond)
-			result = this.createNewModelAndView(this.grouptService.create(), null);
-		else
-			result = new ModelAndView("redirect:/welcome/index.do");
+		final Student principal = this.studentService.checkPrincipal();
+		final boolean sw;
+		final Subject subject = this.subjectservice.findOne(subjectId);
 
-		return result;
+		sw = CollectionUtils.containsAny(principal.getGroups(), subject.getGroups());
+
+		if (!sw)
+			resul = null;
+		else {
+			resul = new ModelAndView("master.page");
+			resul.addObject("message", "groupAlreadyExist");
+		}
+
+		return resul;
 	}
 
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST, params = "save")
