@@ -1,6 +1,8 @@
 
 package domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -30,70 +33,72 @@ public class Group extends DomainEntity {
 	private List<Student>		students;
 
 
-
-
-	
-
-	//Getters
-	
-	@NotNull
-	@ManyToMany(mappedBy="groups")
-	public List<Student> getStudents() {
-		return students;
+	public Group() {
+		super();
+		this.submission = new ArrayList<Submission>();
+		this.students = new ArrayList<Student>();
 	}
-	
+	//Getters
+
+	@NotNull
+	@ManyToMany(mappedBy = "groups")
+	public List<Student> getStudents() {
+		return this.students;
+	}
+
 	@NotBlank
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@NotBlank
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
+	@Future
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getEndDate() {
-		return endDate;
+		return this.endDate;
 	}
 
 	@NotNull
 	@OneToMany
-	public List<Submission> getSubmission() {
-		return submission;
+	public Collection<Submission> getSubmission() {
+		return this.submission;
 	}
 
 	//Setters
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(final Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(final Date endDate) {
 		this.endDate = endDate;
 	}
 
-	public void setSubmission(List<Submission> submission) {
+	public void setSubmission(final List<Submission> submission) {
 		this.submission = submission;
 	}
-	
-	public void setStudents(List<Student> students) {
+
+	public void setStudents(final List<Student> students) {
 		this.students = students;
 	}
 

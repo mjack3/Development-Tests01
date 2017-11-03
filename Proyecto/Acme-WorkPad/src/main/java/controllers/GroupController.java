@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +55,7 @@ public class GroupController {
 		sw = CollectionUtils.containsAny(principal.getGroups(), subject.getGroups());
 
 		if (!sw)
-			resul = null;
+			resul = this.createNewModelAndView(this.grouptService.create(), subjectId, null);
 		else {
 			resul = new ModelAndView("master.page");
 			resul.addObject("message", "groupAlreadyExist");
@@ -64,29 +65,43 @@ public class GroupController {
 	}
 
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@Valid final Group groupsubject, final BindingResult binding) {
+	public ModelAndView saveCreate(@Valid final Group groupsubject, @RequestParam final int subjectId, final BindingResult binding) {
 		ModelAndView result;
+
 		if (binding.hasErrors()) {
 			for (final ObjectError e : binding.getAllErrors())
 				System.out.println(e.toString());
-			result = this.createNewModelAndView(groupsubject, null);
+			result = this.createNewModelAndView(groupsubject, subjectId, null);
 		} else
 			try {
 
-				this.grouptService.save(groupsubject, this.subjectId);
-				result = new ModelAndView("redirect:/group/student/list.do?q=" + this.subjectId);
+				final Subject subject = this.subjectservice.findOne(subjectId);
+				Assert.isTrue(this.studentService.checkPrincipal().getSubjects().contains(subject));
+
+				if (groupsubject.getStartDate().after(groupsubject.getEndDate())) {
+					binding.rejectValue("endDate", "dateError12", "error");
+					throw new IllegalArgumentException();
+				} else if (groupsubject.getStartDate().before(new Date())) {
+					binding.rejectValue("endDate", "dateError11.dateError11", "people can join with 24h in advance");
+
+					throw new IllegalArgumentException();
+				}
+
+				this.grouptService.save(groupsubject, subjectId);
+				result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
 			} catch (final Throwable th) {
 				th.printStackTrace();
-				result = this.createNewModelAndView(groupsubject, "acme.error.message");
+				result = this.createNewModelAndView(groupsubject, subjectId, "group.commit.error");
 			}
 		return result;
 	}
 
-	protected ModelAndView createNewModelAndView(final Group groupsubject, final String message) {
+	protected ModelAndView createNewModelAndView(final Group groupsubject, final int subjectId, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("group/create");
 		result.addObject("group", groupsubject);
 		result.addObject("message", message);
+		result.addObject("subjectId", subjectId);
 		return result;
 	}
 
@@ -179,19 +194,35 @@ public class GroupController {
 	@RequestMapping(value = "/student/subscribe", method = RequestMethod.GET)
 	public ModelAndView subscribe(@RequestParam final Group q) {
 		ModelAndView result;
-		final Date today = new Date();
 
-		final Student student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
+		try {
 
-		q.getStudents().add(student);
-		this.grouptService.save(q);
-		final List<Group> groups = student.getGroups();
-		groups.add(q);
-		student.setGroups(groups);
+			final Student student = (Student) this.loginservice.findActorByUsername(LoginService.getPrincipal().getId());
 
-		this.studentService.update(student);
+			final Subject s = this.subjectservice.findOneByGroupId(q.getId());
 
-		result = new ModelAndView("redirect:/group/student/mylist.do");
+			for (final Group group : s.getGroups())
+				if (group.getStudents().contains(student))
+					throw new IllegalArgumentException();
+
+			Assert.isTrue(!q.getStudents().contains(student));
+
+			q.getStudents().add(student);
+			this.grouptService.save(q);
+			final List<Group> groups = student.getGroups();
+			groups.add(q);
+			student.setGroups(groups);
+
+			this.studentService.update(student);
+
+			result = new ModelAndView("redirect:/group/student/mylist.do");
+
+		} catch (final Throwable oops) {
+
+			result = this.myList();
+			result.addObject("message", "groupAlreadyExist");
+		}
+
 		return result;
 	}
 

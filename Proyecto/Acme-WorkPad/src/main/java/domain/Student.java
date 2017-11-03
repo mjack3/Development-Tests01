@@ -1,6 +1,7 @@
 
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Access;
@@ -17,6 +18,11 @@ public class Student extends Actor {
 	private List<Group>		groups;
 	private List<Subject>	subjects;
 
+
+	public Student() {
+		super();
+		this.groups = new ArrayList<Group>();
+	}
 
 	//Getters
 	@NotNull

@@ -1,8 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import security.LoginService;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
-import domain.Submission;
 
 @Service
 @Transactional
@@ -45,14 +42,12 @@ public class GroupService {
 
 	public Group create() {
 		final Group groupSubject = new Group();
-		groupSubject.setName(new String());
-		groupSubject.setDescription(new String());
-		groupSubject.setStartDate(new Date());
-		groupSubject.setEndDate(new Date());
-		groupSubject.setSubmission(new ArrayList<Submission>());
 
 		Assert.isTrue(LoginService.isAnyAuthenticated());
 		Assert.isTrue(LoginService.hasRole("STUDENT"));
+
+		final Student student = this.studentService.checkPrincipal();
+		groupSubject.getStudents().add(student);
 
 		return groupSubject;
 	}
@@ -66,50 +61,22 @@ public class GroupService {
 		if (this.exists(entity.getId())) {
 			aux = this.groupRepository.findOne(entity.getId());
 
-			aux.setName(entity.getName());
-			aux.setDescription(entity.getDescription());
-			aux.setStartDate(entity.getStartDate());
-			aux.setEndDate(entity.getEndDate());
-			aux.setSubmission(entity.getSubmission());
-
-			final List<Group> groups = a.getGroups();
-
-			groups.add(aux);
-			a.setGroups(groups);
-
-			this.studentService.update(a);
-
-			final Subject subject = this.subjectService.findOne(subjectId);
-
-			final List<Group> groupsSubject = subject.getGroups();
-			groupsSubject.add(aux);
-			subject.setGroups(groupsSubject);
-
-			this.subjectService.save(subject);
-
-			return this.groupRepository.save(aux);
+			aux = this.groupRepository.saveAndFlush(entity);
 
 		} else {
-			entity.setSubmission(new ArrayList<Submission>());
+
 			aux = this.groupRepository.save(entity);
-			final List<Group> groups = a.getGroups();
+			final Student student = this.studentService.checkPrincipal();
 
-			groups.add(aux);
-			a.setGroups(groups);
-
-			this.studentService.save(a);
-
+			student.getGroups().add(aux);
+			this.studentService.update(student);
 			final Subject subject = this.subjectService.findOne(subjectId);
+			subject.getGroups().add(aux);
+			this.subjectService.update(subject);
 
-			final List<Group> groupsSubject = subject.getGroups();
-			groupsSubject.add(aux);
-			subject.setGroups(groupsSubject);
-
-			this.subjectService.save(subject);
-
-			return aux;
 		}
 
+		return aux;
 	}
 
 	public Group findOne(final Integer id) {

@@ -1,6 +1,7 @@
 
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Access;
@@ -34,6 +35,12 @@ public class Subject extends DomainEntity {
 	private Administrator				administrator;
 	private List<Student>				students;
 
+
+	public Subject() {
+		super();
+		this.students = new ArrayList<>();
+		this.groups = new ArrayList<>();
+	}
 
 	//Getters
 	@NotBlank

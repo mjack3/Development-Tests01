@@ -28,7 +28,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	 * @param word
 	 * @return all instance with seats that contains word
 	 */
-	
+
 	@Query("select s from Subject s where s.title like concat('%', ?1, '%') and s.seats > s.students.size")
 	Collection<Subject> findSubjectsByWordWithSeats(String word);
 
@@ -65,5 +65,8 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	Collection<Subject> findSubjectsByWordWithSeats(String keyword, int id);
 	@Query("select s from Subject s join s.assigments a where a.id=?1")
 	Subject findOneByAssignment(int assignmentId);
+
+	@Query("select resul from Student s join s.subjects resul join resul.groups g where s.id = ?2 and g.id=?1")
+	Subject findOneByGroupId(int id, int id2);
 
 }

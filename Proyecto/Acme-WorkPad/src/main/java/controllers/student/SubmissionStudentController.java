@@ -35,48 +35,45 @@ public class SubmissionStudentController extends AbstractController {
 		super();
 	}
 
+
 	@Autowired
-	private SubmissionService submissionService;
+	private SubmissionService	submissionService;
 	@Autowired
-	private StudentService studentService;
+	private StudentService		studentService;
+
 
 	// Creation --------------------------------------------
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET, params = "assignmentId")
-	public ModelAndView create(@RequestParam int assignmentId) {
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam final int assignmentId) {
 
 		ModelAndView result;
 		try {
-			SubmissionForm submissionForm = submissionService
-					.create(assignmentId);
+			final SubmissionForm submissionForm = this.submissionService.create(assignmentId);
 
 			result = this.createEditModelAndView(submissionForm);
-		} catch (Throwable oops) {
-			result = new ModelAndView(
-					"redirect:/assignment/student/list.do?studentId="
-							+ studentService.checkPrincipal().getId());
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/assignment/student/list.do?studentId=" + this.studentService.checkPrincipal().getId());
 		}
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam Group q) {
+	public ModelAndView list(@RequestParam final Group q) {
 
 		ModelAndView result;
-		
+
 		result = new ModelAndView("submission/list");
 		result.addObject("submissions", q.getSubmission());
 
 		return result;
 	}
 
-
 	// Editar
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(SubmissionForm submissionForm,
-			BindingResult binding, RedirectAttributes redirectAttrs) {
+	public ModelAndView save(final SubmissionForm submissionForm, final BindingResult binding, final RedirectAttributes redirectAttrs) {
 		ModelAndView result;
 
 		try {
@@ -84,23 +81,20 @@ public class SubmissionStudentController extends AbstractController {
 
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(submissionForm);
-			else {
-				result = new ModelAndView(
-						"redirect:/assignment/student/list.do?studentId="
-								+ studentService.checkPrincipal().getId());
-			}
-		} catch (Throwable oops) {
-			if(oops.getMessage()=="error.attachment.format")result = this.createEditModelAndView(submissionForm,"submission.attachment.format.error");
+			else
+				result = new ModelAndView("redirect:/assignment/student/list.do?studentId=" + this.studentService.checkPrincipal().getId());
+		} catch (final Throwable oops) {
+			if (oops.getMessage() == "error.attachment.format")
+				result = this.createEditModelAndView(submissionForm, "submission.attachment.format.error");
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(submissionForm);
 			else
-				result = this.createEditModelAndView(submissionForm,
-						"submission.commit.error");
+				result = this.createEditModelAndView(submissionForm, "submission.commit.error");
 		}
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(SubmissionForm submissionForm) {
+	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm) {
 		ModelAndView result;
 
 		result = this.createEditModelAndView(submissionForm, null);
@@ -108,8 +102,7 @@ public class SubmissionStudentController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(
-			SubmissionForm submissionForm, String message) {
+	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm, final String message) {
 		ModelAndView result;
 
 		result = new ModelAndView("submission/student/edit");

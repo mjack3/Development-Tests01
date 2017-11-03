@@ -250,4 +250,14 @@ public class SubjectService {
 		return this.repository.findOneByAssignment(assignmentId);
 	}
 
+	public Subject findOneByGroupId(final int id) {
+		// TODO Auto-generated method stub
+		Assert.notNull(id);
+		Assert.isTrue(LoginService.hasRole("STUDENT"));
+		final Student student = this.studentService.checkPrincipal();
+		final Subject resul = this.repository.findOneByGroupId(id, student.getId());
+
+		return resul;
+	}
+
 }

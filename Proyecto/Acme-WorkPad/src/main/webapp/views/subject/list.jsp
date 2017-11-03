@@ -68,6 +68,8 @@
 							code='subject.createGroup' /></a>
 			</jstl:if>
 		</td>
+		
+		
 	</acme:list>
 
 </security:authorize>
