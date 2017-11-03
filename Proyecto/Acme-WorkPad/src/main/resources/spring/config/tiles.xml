@@ -14,7 +14,7 @@
 		<value>/views/misc/tiles.xml</value>		
 		<value>/views/security/tiles.xml</value>
 		<value>/views/welcome/tiles.xml</value>
-		
+		<value>/views/activityRecord/tiles.xml</value>
 		<value>/views/administrator/tiles.xml</value>
 		<value>/views/customer/tiles.xml</value>
 		<value>/views/profile/tiles.xml</value>
@@ -43,6 +43,7 @@
 
 	
 		<value>/views/category/tiles.xml</value>
+		<value>/views/school/tiles.xml</value>
 	
 
     </util:list>

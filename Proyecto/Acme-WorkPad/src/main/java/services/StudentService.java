@@ -39,6 +39,8 @@ public class StudentService {
 	private LoginService		loginService;
 	@Autowired
 	private SubjectService		subjectService;
+	@Autowired
+	private SeminarService		seminarService;
 
 
 	public StudentService() {
@@ -198,4 +200,27 @@ public class StudentService {
 		this.subjectService.update(subject);
 	}
 
+	public void goInSeminary(final int seminaryId) {
+		// TODO Auto-generated method stub
+		final Seminar seminar = this.seminarService.findOne(seminaryId);
+		final Student student = this.checkPrincipal();
+		Assert.isTrue(!student.getSeminars().contains(seminar));
+		Assert.isTrue(seminar.getSeats() > 0);
+		student.getSeminars().add(seminar);
+		this.update(student);
+
+		seminar.setSeats(seminar.getSeats() - 1);
+		this.seminarService.update(seminar);
+	}
+
+	public void goOutSeminary(final int seminaryId) {
+		// TODO Auto-generated method stub
+		final Seminar seminar = this.seminarService.findOne(seminaryId);
+		final Student student = this.checkPrincipal();
+		Assert.isTrue(student.getSeminars().contains(seminar));
+
+		student.getSeminars().remove(seminar);
+		seminar.setSeats(seminar.getSeats() + 1);
+		this.update(student);
+	}
 }

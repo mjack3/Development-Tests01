@@ -1,8 +1,9 @@
 
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -11,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import domain.DomainEntity;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,42 +20,47 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 public class ActivityRecord extends DomainEntity {
 
-	private String			description;
-	private Date			writtenDate;
-	private List<String>	attachment;
+	private String				description;
+	private Date				writtenDate;
+	private Collection<String>	attachment;
 
+
+	public ActivityRecord() {
+		super();
+		this.attachment = new HashSet<String>();
+	}
 
 	//Getters
 
 	@NotBlank
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getWrittenDate() {
-		return writtenDate;
+		return this.writtenDate;
 	}
 
 	@NotNull
-	@ElementCollection(targetClass = String.class)
-	public List<String> getAttachment() {
-		return attachment;
+	@ElementCollection
+	public Collection<String> getAttachment() {
+		return this.attachment;
 	}
 
 	//Setters
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public void setWrittenDate(Date writtenDate) {
+	public void setWrittenDate(final Date writtenDate) {
 		this.writtenDate = writtenDate;
 	}
 
-	public void setAttachment(List<String> attachment) {
+	public void setAttachment(final Collection<String> attachment) {
 		this.attachment = attachment;
 	}
 

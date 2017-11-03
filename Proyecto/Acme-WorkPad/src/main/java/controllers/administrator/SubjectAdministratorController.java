@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import controllers.AbstractController;
-import domain.Administrator;
-import domain.Category;
-import domain.Subject;
-import domain.Teacher;
 import security.LoginService;
 import services.AdministratorService;
 import services.CategoryService;
 import services.SubjectService;
 import services.TeacherService;
+import controllers.AbstractController;
+import domain.Administrator;
+import domain.Category;
+import domain.Subject;
+import domain.Teacher;
 
 @Controller
 @RequestMapping("/subject/administrator")
@@ -44,7 +44,7 @@ public class SubjectAdministratorController extends AbstractController {
 	@Autowired
 	TeacherService			teacherService;
 
-	private Subject tosave;
+	private Subject			tosave;
 
 
 	//Mis asignaturas
@@ -69,32 +69,31 @@ public class SubjectAdministratorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/associateTeacher", method = RequestMethod.GET)
-	public ModelAndView associateTeacher(@RequestParam Integer q) {
+	public ModelAndView associateTeacher(@RequestParam final Integer q) {
 		ModelAndView result;
-		tosave= subjectService.findOne(q);
-		result= new ModelAndView("subject/associate");
-		result.addObject("teachers",teacherService.findAll());
-
+		this.tosave = this.subjectService.findOne(q);
+		result = new ModelAndView("subject/associate");
+		result.addObject("teachers", this.teacherService.findAll());
 
 		return result;
 	}
 
 	@RequestMapping(value = "/saveAssociate", method = RequestMethod.GET)
-	public ModelAndView saveAssociate(@RequestParam Integer q) {
+	public ModelAndView saveAssociate(@RequestParam final Integer q) {
 		ModelAndView result;
-		Administrator a = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
-		Teacher teacher = teacherService.findOne(q);	
-		try {	
-			Subject subject = tosave;
+		final Administrator a = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		final Teacher teacher = this.teacherService.findOne(q);
+		try {
+			Subject subject = this.tosave;
 			subject.setTeacher(teacher);
 			subject = this.subjectService.save(subject);
-			List<Subject> subs = teacher.getSubjects();
+			final List<Subject> subs = teacher.getSubjects();
 			subs.add(subject);
 			teacher.setSubjects(subs);
-			teacherService.save(teacher);
+			this.teacherService.save2(teacher);
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
 			result.addObject("subject", a.getSubjects());
-		} catch (Throwable th) {
+		} catch (final Throwable th) {
 			th.printStackTrace();
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
 			result.addObject("subject", a.getSubjects());
@@ -116,27 +115,26 @@ public class SubjectAdministratorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveEdit( @Valid Subject subject, BindingResult binding) {
+	public ModelAndView saveEdit(@Valid final Subject subject, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors()) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(subject, null);
-		} else {	
+		else
 			try {
 				this.subjectService.save(subject);
-				
+
 				result = new ModelAndView("redirect:/subject/administrator/list.do");
 
-			} catch (Throwable th) {
+			} catch (final Throwable th) {
 				th.printStackTrace();
 				result = this.createEditModelAndView(subject, "subject.commit.error");
 			}
-		}
 		return result;
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam Subject q) {
+	public ModelAndView delete(@RequestParam final Subject q) {
 		ModelAndView result;
 
 		try {
@@ -167,7 +165,7 @@ public class SubjectAdministratorController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/edit");
-		List<Category> categories = this.categoryService.findAll();
+		final List<Category> categories = this.categoryService.findAll();
 		result.addObject("categories", categories);
 		result.addObject("subject", subject);
 		result.addObject("message", message);

@@ -2,7 +2,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -46,7 +45,7 @@ public class SeminarService {
 
 		seminar.setDuration(0);
 		seminar.setHall("");
-		seminar.setOrganisedDate(new Date());
+
 		seminar.setSeats(0);
 		seminar.setSummary("");
 		seminar.setTitle("");

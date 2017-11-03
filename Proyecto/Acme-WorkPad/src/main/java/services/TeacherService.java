@@ -328,4 +328,9 @@ public class TeacherService {
 		Assert.isTrue(LoginService.getPrincipal().getId() == teacher.getUserAccount().getId());
 		this.update(teacher);
 	}
+
+	public void save2(final Teacher teacher) {
+		// TODO Auto-generated method stub
+		this.repository.save(teacher);
+	}
 }

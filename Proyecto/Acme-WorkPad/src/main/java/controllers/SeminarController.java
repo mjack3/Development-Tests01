@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -10,55 +11,54 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Seminar;
-import domain.Student;
-import domain.Teacher;
 import services.SeminarService;
 import services.StudentService;
 import services.TeacherService;
+import domain.Seminar;
+import domain.Student;
+import domain.Teacher;
 
 @Controller
 @RequestMapping("/seminar")
 public class SeminarController extends AbstractController {
 
 	@Autowired
-	SeminarService seminarService;
-	
+	SeminarService	seminarService;
+
 	@Autowired
-	TeacherService teacherService;
-	
+	TeacherService	teacherService;
+
 	@Autowired
-	StudentService studentService;
-	
-	
-	@RequestMapping(value="/teacher/save", method=RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@Valid Seminar seminar, BindingResult binding) {
+	StudentService	studentService;
+
+
+	@RequestMapping(value = "/teacher/save", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveCreate(@Valid Seminar seminar, final BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			result = new ModelAndView("seminar/edit");
 			result.addObject("seminar", seminar);
-		} else {
+		} else
 			try {
-				Teacher teacher = teacherService.checkPrincipal();
-				seminar = seminarService.save(seminar);
-				if(!teacher.getSeminars().contains(seminar)) {
+				final Teacher teacher = this.teacherService.checkPrincipal();
+				seminar = this.seminarService.save(seminar);
+				if (!teacher.getSeminars().contains(seminar)) {
 					teacher.getSeminars().add(seminar);
-					teacherService.update(teacher);
+					this.teacherService.update(teacher);
 				}
 				result = new ModelAndView("seminar/list");
 				result.addObject("seminars", teacher.getSeminars());
-			} catch (Throwable th) {
-				
+			} catch (final Throwable th) {
+
 				result = new ModelAndView("seminar/edit");
 				result.addObject("seminar", seminar);
 				result.addObject("message", "folder.commit.error");
 			}
-		}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/teacher/edit", method = RequestMethod.GET)
-	public ModelAndView teacherEdit(@RequestParam Seminar q) {
+	public ModelAndView teacherEdit(@RequestParam final Seminar q) {
 		ModelAndView result;
 
 		result = new ModelAndView("seminar/edit");
@@ -66,68 +66,105 @@ public class SeminarController extends AbstractController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/teacher/delete", method = RequestMethod.GET)
-	public ModelAndView teacherDelete(@RequestParam Seminar q) {
+	public ModelAndView teacherDelete(@RequestParam final Seminar q) {
 		ModelAndView result;
-		Teacher teacher = teacherService.checkPrincipal();
+		final Teacher teacher = this.teacherService.checkPrincipal();
 		try {
 			teacher.getSeminars().remove(q);
-			teacherService.update(teacher);
-			seminarService.delete(q);
+			this.teacherService.update(teacher);
+			this.seminarService.delete(q);
 			result = new ModelAndView("seminar/list");
 			result.addObject("seminars", teacher.getSeminars());
-		} catch (Throwable th) {		
+		} catch (final Throwable th) {
 			result = new ModelAndView("seminar/list");
 			result.addObject("seminars", teacher.getSeminars());
 		}
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/teacher/create", method = RequestMethod.GET)
 	public ModelAndView teacherCreate() {
 		ModelAndView result;
 
 		result = new ModelAndView("seminar/create");
-		result.addObject("seminar", seminarService.create());
+		result.addObject("seminar", this.seminarService.create());
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/teacher/list", method = RequestMethod.GET)
 	public ModelAndView teacherList() {
 		ModelAndView result;
-		
-		Teacher teacher = teacherService.checkPrincipal();
+
+		final Teacher teacher = this.teacherService.checkPrincipal();
 
 		result = new ModelAndView("seminar/list");
 		result.addObject("seminars", teacher.getSeminars());
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/student/list", method = RequestMethod.GET)
 	public ModelAndView studentList() {
 		ModelAndView result;
-		
-		Student student = studentService.checkPrincipal();
+
+		final Student student = this.studentService.checkPrincipal();
 		result = new ModelAndView("seminar/list");
-		result.addObject("seminars", seminarService.findAll());
+		result.addObject("seminars", this.seminarService.findAll());
 		result.addObject("mySeminars", student.getSeminars());
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/student/myList", method = RequestMethod.GET)
 	public ModelAndView myStudentList() {
 		ModelAndView result;
-		
-		Student student = studentService.checkPrincipal();
+
+		final Student student = this.studentService.checkPrincipal();
 		result = new ModelAndView("seminar/list");
 		result.addObject("seminars", student.getSeminars());
 		result.addObject("mySeminars", student.getSeminars());
 
 		return result;
 	}
+
+	@RequestMapping(value = "/student/into", method = RequestMethod.GET)
+	public ModelAndView goIn(@RequestParam final int q) {
+
+		ModelAndView resul;
+
+		try {
+
+			this.studentService.goInSeminary(q);
+			resul = this.myStudentList();
+
+		} catch (final Throwable oops) {
+			resul = this.myStudentList();
+			resul.addObject("message", "seminar.commit.error");
+		}
+		return resul;
+
+	}
+
+	@RequestMapping(value = "/student/out", method = RequestMethod.GET)
+	public ModelAndView goOut(@RequestParam final int q) {
+
+		ModelAndView resul;
+
+		try {
+
+			this.studentService.goOutSeminary(q);
+			resul = this.myStudentList();
+
+		} catch (final Throwable oops) {
+			resul = this.myStudentList();
+			resul.addObject("message", "seminar.commit.error");
+		}
+		return resul;
+
+	}
+
 }

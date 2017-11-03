@@ -51,6 +51,7 @@ public class Actor extends DomainEntity {
 		return this.email;
 	}
 
+	@NotBlank
 	@NotNull
 	public String getPhone() {
 		return this.phone;

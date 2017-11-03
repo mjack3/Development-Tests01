@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ActivityRecordRepository;
 import security.LoginService;
+import security.UserAccount;
 import domain.ActivityRecord;
 import domain.Actor;
 
@@ -26,6 +29,9 @@ public class ActivityRecordService {
 
 	@Autowired
 	LoginService						loginService;
+
+	@Autowired
+	private Validator					validator;
 
 
 	public ActivityRecordService() {
@@ -88,5 +94,36 @@ public class ActivityRecordService {
 		Assert.isTrue(a.getActivitiesRecords().contains(activityRecord));
 		this.activityRecordRepository.delete(activityRecord);
 
+	}
+
+	public Collection<ActivityRecord> findAllPrincipal() {
+		// TODO Auto-generated method stub
+
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		final UserAccount userAccount = LoginService.getPrincipal();
+		final Collection<ActivityRecord> activityRecords = this.activityRecordRepository.findAllPrincipal(userAccount.getId());
+		return null;
+	}
+
+	public ActivityRecord create() {
+		// TODO Auto-generated method stub
+		return new ActivityRecord();
+	}
+
+	public ActivityRecord reconstruct(final ActivityRecord activityRecord, final BindingResult bindingResult) {
+		// TODO Auto-generated method stub
+		ActivityRecord resul;
+		if (activityRecord.getId() == 0)
+			resul = this.create();
+		else
+			resul = this.findOne(activityRecord.getId());
+
+		resul.setDescription(activityRecord.getDescription());
+		resul.setAttachment(activityRecord.getAttachment());
+		resul.setWrittenDate(activityRecord.getWrittenDate());
+
+		this.validator.validate(resul, bindingResult);
+
+		return resul;
 	}
 }

@@ -18,18 +18,21 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasRole('STUDENT')">
-	<acme:list list="${seminars}" requestURI="seminar/student/list.do" pagesize="6">
-	<jstl:if test="${!mySeminars.contains(row)}">
-		<td>
-		<a href="seminar/student/into.do?q=${row.id}"> <spring:message code="seminar.into" />  </a>
-		</td>
-	</jstl:if>
-	<jstl:if test="${mySeminars.contains(row)}">
-		<td>
-		<a href="seminar/student/out.do?q=${row.id}"> <spring:message code="seminar.out" />  </a>
-		</td>
-	</jstl:if>
-	
+	<acme:list variable="row" list="${seminars}" requestURI="seminar/student/list.do" pagesize="6">
+	<td>
+	<jstl:choose>
+		<jstl:when test="${!mySeminars.contains(row)}">
+			
+			<a href="seminar/student/into.do?q=${row.id}"> <spring:message code="seminar.into" />  </a>
+			
+		</jstl:when>
+		<jstl:when test="${mySeminars.contains(row)}">
+			
+			<a href="seminar/student/out.do?q=${row.id}"> <spring:message code="seminar.out" />  </a>
+			
+		</jstl:when>
+	</jstl:choose>
+	</td>
 	</acme:list>
 </security:authorize>
 

@@ -11,6 +11,7 @@
 
 	<util:list id="messages">
 		<value>/views/master-page/messages</value>
+		<value>/views/activityRecord/messages</value>
 		<value>/views/misc/messages</value>
 		<value>/views/security/messages</value>		
 		<value>/views/welcome/messages</value>
@@ -43,6 +44,7 @@
 		<value>/views/bulletin/messages</value>
 	
 		<value>/views/category/messages</value>
+		<value>/views/school/messages</value>
 	
     </util:list>
 

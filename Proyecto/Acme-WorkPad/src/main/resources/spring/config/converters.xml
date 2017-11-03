@@ -30,6 +30,7 @@
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.AuthorityToStringConverter" />
 
+<bean class="converters.SchoolToStringConverter"/>
 		<bean class="converters.SubmissionToStringConverter"/>
 		<bean class="converters.SubjectToStringConverter" />
 		<bean class="converters.MailMessageToStringConverter" />
@@ -48,6 +49,7 @@
 		<bean class="converters.StringToSeminarConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		<bean class="converters.StringToAuthorityConverter" />
+	<bean class="converters.StringToSchoolConverter" />
 
 		<bean class="converters.StringToBibliographyRecordConverter" />
 	<bean class="converters.StringToUserAccountConverter" />
@@ -65,10 +67,7 @@
 		
 		
 		
-		<!-- MIGUEL -->
-		<bean class="converters.ActivityRecordToStringConverter" />
-		<bean class="converters.StringToActivityRecordConverter" />
-		<!--  -->
+		
 		
 		
 		<!-- KARLI -->

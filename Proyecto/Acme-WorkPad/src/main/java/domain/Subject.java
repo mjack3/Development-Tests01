@@ -60,6 +60,7 @@ public class Subject extends DomainEntity {
 	}
 
 	@Range(min = 0)
+	@NotNull
 	public Integer getSeats() {
 		return this.seats;
 	}

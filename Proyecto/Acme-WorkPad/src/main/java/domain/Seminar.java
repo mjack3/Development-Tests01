@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -29,59 +30,62 @@ public class Seminar extends DomainEntity {
 	//Getters
 	@NotBlank
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	@NotBlank
 	public String getSummary() {
-		return summary;
+		return this.summary;
 	}
 
 	@NotNull
+	@Future
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getOrganisedDate() {
-		return organisedDate;
+		return this.organisedDate;
 	}
 
-	@Range(min = 0)
+	@Range(min = 1)
+	@NotNull
 	public Integer getDuration() {
-		return duration;
+		return this.duration;
 	}
 
 	@NotBlank
 	public String getHall() {
-		return hall;
+		return this.hall;
 	}
 
 	@Range(min = 0)
+	@NotNull
 	public Integer getSeats() {
-		return seats;
+		return this.seats;
 	}
 
 	//Setters
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
-	public void setSummary(String summary) {
+	public void setSummary(final String summary) {
 		this.summary = summary;
 	}
 
-	public void setOrganisedDate(Date organisedDate) {
+	public void setOrganisedDate(final Date organisedDate) {
 		this.organisedDate = organisedDate;
 	}
 
-	public void setDuration(Integer duration) {
+	public void setDuration(final Integer duration) {
 		this.duration = duration;
 	}
 
-	public void setHall(String hall) {
+	public void setHall(final String hall) {
 		this.hall = hall;
 	}
 
-	public void setSeats(Integer seats) {
+	public void setSeats(final Integer seats) {
 		this.seats = seats;
 	}
 
