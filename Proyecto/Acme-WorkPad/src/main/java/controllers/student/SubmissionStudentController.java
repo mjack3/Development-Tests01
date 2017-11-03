@@ -102,7 +102,9 @@ public class SubmissionStudentController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm, final String message) {
+
+	protected ModelAndView createEditModelAndView(SubmissionForm submissionForm, String message) {
+
 		ModelAndView result;
 
 		result = new ModelAndView("submission/student/edit");
