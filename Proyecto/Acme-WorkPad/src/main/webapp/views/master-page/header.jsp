@@ -40,6 +40,9 @@
 				        </li>
 				        	<li><a href="folder/actor/list.do"><spring:message
 									code="master.page.actor.folders" /> </a></li>
+								
+								<li><a href="activityRecord/authenticated/list.do"><spring:message
+									code="master.page.listActivityRecord" /> </a></li>
 					</security:authorize>
 					
 					

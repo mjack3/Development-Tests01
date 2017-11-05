@@ -2,6 +2,9 @@
 package services;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ import domain.Actor;
 @Transactional
 public class ActivityRecordService {
 
+	@Autowired
+	private ActorService				actorService;
 	@Autowired
 	private ActivityRecordRepository	activityRecordRepository;
 	@Autowired
@@ -58,22 +63,22 @@ public class ActivityRecordService {
 		// TODO Auto-generated method stub
 		Assert.isTrue(LoginService.isAnyAuthenticated());
 		ActivityRecord saved = null;
-		if (activityRecord.getId() == 0)
+
+		final Actor a = this.actorService.findOnePrincipal();
+
+		if (activityRecord.getId() == 0) {
 			saved = this.activityRecordRepository.save(activityRecord);
-		else {
+			a.getActivitiesRecords().add(saved);
+			this.actorService.update(a);
+		} else {
 			Assert.isTrue(this.activityRecordRepository.exists(activityRecord.getId()));
-			Actor a;
-			if (LoginService.hasRole("TEACHER"))
-				a = this.teacherService.checkPrincipal();
-			else
-				a = this.studentService.checkPrincipal();
-			Assert.isTrue(a.getActivitiesRecords().contains(activityRecord));
+			if (a.getActivitiesRecords() != null || !a.getActivitiesRecords().isEmpty())
+				Assert.isTrue(a.getActivitiesRecords().contains(activityRecord));
 			saved = this.activityRecordRepository.save(activityRecord);
 		}
 
 		return saved;
 	}
-
 	public ActivityRecord findOne(final Integer idARecord) {
 		// TODO Auto-generated method stub
 		Assert.notNull(idARecord);
@@ -96,13 +101,13 @@ public class ActivityRecordService {
 
 	}
 
-	public Collection<ActivityRecord> findAllPrincipal() {
+	public List<ActivityRecord> findAllPrincipal() {
 		// TODO Auto-generated method stub
 
 		Assert.isTrue(LoginService.isAnyAuthenticated());
 		final UserAccount userAccount = LoginService.getPrincipal();
-		final Collection<ActivityRecord> activityRecords = this.activityRecordRepository.findAllPrincipal(userAccount.getId());
-		return null;
+		final List<ActivityRecord> activityRecords = this.activityRecordRepository.findAllPrincipal(userAccount.getId());
+		return activityRecords;
 	}
 
 	public ActivityRecord create() {
@@ -119,11 +124,33 @@ public class ActivityRecordService {
 			resul = this.findOne(activityRecord.getId());
 
 		resul.setDescription(activityRecord.getDescription());
-		resul.setAttachment(activityRecord.getAttachment());
+		resul.setAttachments(activityRecord.getAttachments());
 		resul.setWrittenDate(activityRecord.getWrittenDate());
+		final String pattern = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+		for (final String s : resul.getAttachments())
+			if (!ActivityRecordService.IsMatch(s, pattern))
+				bindingResult.rejectValue("attachments", "URls only", "URLs only");
 
 		this.validator.validate(resul, bindingResult);
 
 		return resul;
+	}
+
+	private static boolean IsMatch(final String s, final String pattern) {
+		try {
+			final Pattern patt = Pattern.compile(pattern);
+			final Matcher matcher = patt.matcher(s);
+			return matcher.matches();
+		} catch (final RuntimeException e) {
+			return false;
+		}
+	}
+
+	public ActivityRecord findOnePrincipal(final int q) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		final ActivityRecord activityRecord = this.activityRecordRepository.findOnePrincipal(q, LoginService.getPrincipal().getId());
+		Assert.notNull(activityRecord);
+		return activityRecord;
 	}
 }

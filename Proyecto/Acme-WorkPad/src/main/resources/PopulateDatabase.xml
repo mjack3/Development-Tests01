@@ -1807,8 +1807,8 @@
 	
 	<bean id="activityRecord1" class="domain.ActivityRecord">
 		<property name="description" value="Record1" />
-		<property name="writtenDate" value="20/09/2017 12:00:00" />
-		<property name="attachment">
+		<property name="writtenDate" value="20/09/2015" />
+		<property name="attachments">
 			<list>
 			</list>
 		</property>
@@ -1816,8 +1816,8 @@
 	
 	<bean id="activityRecord2" class="domain.ActivityRecord">
 		<property name="description" value="Record2" />
-		<property name="writtenDate" value="20/09/2017 12:00:00" />
-		<property name="attachment">
+		<property name="writtenDate" value="20/09/2014" />
+		<property name="attachments">
 			<list>
 			</list>
 		</property>
@@ -1825,8 +1825,8 @@
 	
 	<bean id="activityRecord3" class="domain.ActivityRecord">
 		<property name="description" value="Record3" />
-		<property name="writtenDate" value="20/09/2017 12:00:00" />
-		<property name="attachment">
+		<property name="writtenDate" value="20/09/2013" />
+		<property name="attachments">
 			<list>
 			</list>
 		</property>
@@ -1834,8 +1834,8 @@
 	
 	<bean id="activityRecord4" class="domain.ActivityRecord">
 		<property name="description" value="Record4" />
-		<property name="writtenDate" value="20/09/2017 12:00:00" />
-		<property name="attachment">
+		<property name="writtenDate" value="20/09/2012" />
+		<property name="attachments">
 			<list>
 			</list>
 		</property>
@@ -1843,8 +1843,8 @@
 	
 	<bean id="activityRecord5" class="domain.ActivityRecord">
 		<property name="description" value="Record5" />
-		<property name="writtenDate" value="20/09/2017 12:00:00" />
-		<property name="attachment">
+		<property name="writtenDate" value="20/09/2014" />
+		<property name="attachments">
 			<list>
 			</list>
 		</property>

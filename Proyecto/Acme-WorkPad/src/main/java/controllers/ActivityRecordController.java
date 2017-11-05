@@ -1,13 +1,16 @@
 
 package controllers;
 
-import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActivityRecordService;
@@ -30,7 +33,7 @@ public class ActivityRecordController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView resul = new ModelAndView("activityRecord/list");
 
-		final Collection<ActivityRecord> activityRecords = this.activityRecordService.findAllPrincipal();
+		final List<ActivityRecord> activityRecords = this.activityRecordService.findAllPrincipal();
 
 		resul.addObject("activityRecords", activityRecords);
 		resul.addObject("requestURI", "activityRecord/authenticated/list.do");
@@ -45,6 +48,15 @@ public class ActivityRecordController extends AbstractController {
 		return resul;
 	}
 
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int q) {
+
+		final ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
+		final ModelAndView resul = this.createEditModelAndView(activityRecord, null);
+
+		return resul;
+	}
+
 	@RequestMapping(value = "edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(ActivityRecord activityRecord, final BindingResult bindingResult) {
 		ModelAndView resul;
@@ -53,17 +65,22 @@ public class ActivityRecordController extends AbstractController {
 
 			activityRecord = this.activityRecordService.reconstruct(activityRecord, bindingResult);
 
+			final Date tomorrow = DateUtils.addDays(new Date(), 1);
+			if (activityRecord.getWrittenDate().after(tomorrow)) {
+				bindingResult.rejectValue("writtenDate", "must.be.past", "must be past");
+				throw new IllegalArgumentException();
+			}
+
 			if (bindingResult.hasErrors())
 				resul = this.createEditModelAndView(activityRecord, null);
 			else {
 				this.activityRecordService.save(activityRecord);
-				resul = this.list();
+				resul = new ModelAndView("redirect:list.do");
 			}
 
 		} catch (final Throwable oops) {
 			// TODO: handle exception
-			resul = this.list();
-			resul.addObject("message", "activityRecord.commit.error");
+			resul = this.createEditModelAndView(activityRecord, "activityRecord.commit.error");
 		}
 
 		return resul;

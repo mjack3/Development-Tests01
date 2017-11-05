@@ -19,10 +19,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<acme:acme_form type="${type }" skip_fields="startDate,endDate" hiddenFields="subjectId" cancel="welcome/index.do" url="${requestURI }" entity="${activity }">
+<form:form action="${actionParam }" modelAttribute="activityRecord">
 
+<form:hidden path="id"/>
+<form:hidden path="version"/>
 
-<acme:textbox2 code="activity.startDate" path="startDate"/>
-<acme:textbox2 code="activity.endDate" path="endDate"/>
+<acme:textbox2 code="activityrecord.description" path="description"/>
+<acme:textbox2 code="activityrecord.writtenDate" path="writtenDate"/>
+<acme:textbox2 code="activityrecord.attachments" path="attachments"/>
 
-</acme:acme_form>
+<br />
+
+<acme:submit name="save" code="activityrecord.save"/>
+<acme:cancel url="/welcome/index.do" code="activityrecord.cancel"/>
+</form:form>

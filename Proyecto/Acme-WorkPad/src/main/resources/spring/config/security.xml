@@ -29,7 +29,7 @@
 <!-- FIN reme -->
 
 		<!-- MIGUEL -->
-		
+				<security:intercept-url access="isAuthenticated()" pattern="/activityRecord/authenticated/**"/>
 		<security:intercept-url access="permitAll" pattern="/**/search.do"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/subject/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/activity/teacher/**"/>
@@ -37,7 +37,6 @@
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/assignment/teacher/**"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/out.do"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/into.do"/>
-		<security:intercept-url access="isAuthenticated()" pattern="/activityRecord/authenticated/**"/>
 		
 		<!-- ADRI -->
 		

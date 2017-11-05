@@ -3,7 +3,6 @@ package domain;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -22,12 +21,11 @@ public class ActivityRecord extends DomainEntity {
 
 	private String				description;
 	private Date				writtenDate;
-	private Collection<String>	attachment;
+	private Collection<String>	attachments;
 
 
 	public ActivityRecord() {
 		super();
-		this.attachment = new HashSet<String>();
 	}
 
 	//Getters
@@ -46,8 +44,8 @@ public class ActivityRecord extends DomainEntity {
 
 	@NotNull
 	@ElementCollection
-	public Collection<String> getAttachment() {
-		return this.attachment;
+	public Collection<String> getAttachments() {
+		return this.attachments;
 	}
 
 	//Setters
@@ -60,8 +58,8 @@ public class ActivityRecord extends DomainEntity {
 		this.writtenDate = writtenDate;
 	}
 
-	public void setAttachment(final Collection<String> attachment) {
-		this.attachment = attachment;
+	public void setAttachments(final Collection<String> attachments) {
+		this.attachments = attachments;
 	}
 
 }

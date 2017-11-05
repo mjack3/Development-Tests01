@@ -20,7 +20,8 @@
 	<util:list id="converters">
 							
 							<!-- ADRI -->
-		
+		<bean class="converters.StringToActorConverter" />
+		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StudentToStringConverter" />
 		<bean class="converters.TeacherToStringConverter" />
