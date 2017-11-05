@@ -91,12 +91,15 @@ public class ActivityRecordService {
 	public void delete(final ActivityRecord activityRecord) {
 		// TODO Auto-generated method stub
 		Assert.isTrue(LoginService.isAnyAuthenticated());
-		Actor a;
-		if (LoginService.hasRole("TEACHER"))
-			a = this.teacherService.checkPrincipal();
-		else
-			a = this.studentService.checkPrincipal();
+
+		final Actor a = this.actorService.findOnePrincipal();
 		Assert.isTrue(a.getActivitiesRecords().contains(activityRecord));
+
+		a.getActivitiesRecords().remove(activityRecord);
+		this.actorService.update(a);
+
+		this.activityRecordRepository.delete(activityRecord);
+
 		this.activityRecordRepository.delete(activityRecord);
 
 	}

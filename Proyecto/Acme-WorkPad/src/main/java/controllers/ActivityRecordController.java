@@ -86,6 +86,24 @@ public class ActivityRecordController extends AbstractController {
 		return resul;
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int q) {
+		ModelAndView resul;
+
+		try {
+
+			final ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
+			this.activityRecordService.delete(activityRecord);
+			resul = new ModelAndView("redirect:list");
+
+		} catch (final Throwable oops) {
+			resul = new ModelAndView("redirect:list");
+			resul.addObject("message", "activityRecord.commit.error");
+		}
+
+		return resul;
+	}
+
 	private ModelAndView createEditModelAndView(final ActivityRecord activityRecord, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("activityRecord/edit");
