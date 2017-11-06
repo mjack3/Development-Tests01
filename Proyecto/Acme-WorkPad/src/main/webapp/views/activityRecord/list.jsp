@@ -18,9 +18,36 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-	
-	<acme:list variable="row"  requestURI="${requestURI }" list="${activityRecords }" deleteUrl="activityRecord/authenticated/delete.do" editUrl="activityRecord/authenticated/edit.do" >
+<security:authorize access="isAuthenticated()">
 
-	</acme:list>
+<acme:list variable="row"  requestURI="${requestURI }" list="${activityRecords }"  >
+		
+		<jstl:choose>
+			<jstl:when test="${principal.userAccount.id == userAccountId }">
+			<td>
+			<a href="activityRecord/authenticated/edit.do?q=${row.id }"> <spring:message code="activityrecord.edit" /> </a>
+			</td>
+			<td>
+			<a href="activityRecord/authenticated/delete.do?q=${row.id }"> <spring:message code="activityrecord.delete" /> </a>
+			</td>
+			</jstl:when>
+		</jstl:choose>
+		
+		<jstl:if test="">
+		
+		</jstl:if>
+		
+</acme:list>
 	<br />
-	<a class="btn btn-primary" href="activityRecord/authenticated/create.do"> <spring:message code="activity.create" /> </a>
+	
+	<jstl:choose>
+			<jstl:when test="${principal.userAccount.id == userAccountId }">
+					<a class="btn btn-primary" href="activityRecord/authenticated/create.do"> <spring:message code="activity.create" /> </a>
+			</jstl:when>
+	</jstl:choose>
+	
+
+
+</security:authorize>
+	
+	

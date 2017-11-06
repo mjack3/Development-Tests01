@@ -100,8 +100,6 @@ public class ActivityRecordService {
 
 		this.activityRecordRepository.delete(activityRecord);
 
-		this.activityRecordRepository.delete(activityRecord);
-
 	}
 
 	public List<ActivityRecord> findAllPrincipal() {
@@ -155,5 +153,13 @@ public class ActivityRecordService {
 		final ActivityRecord activityRecord = this.activityRecordRepository.findOnePrincipal(q, LoginService.getPrincipal().getId());
 		Assert.notNull(activityRecord);
 		return activityRecord;
+	}
+
+	public List<ActivityRecord> findAllByUserAccountId(final int userAccountId) {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		Assert.isTrue(this.loginService.exists(userAccountId));
+		final List<ActivityRecord> activityRecords = this.activityRecordRepository.findAllByUserAccountId(userAccountId);
+		return activityRecords;
 	}
 }

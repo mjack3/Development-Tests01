@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +38,17 @@ public class StudentController {
 		result = this.createNewModelAndView(this.studentService.create(), null);
 
 		return result;
+	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+
+		final ModelAndView resul = new ModelAndView("student/list");
+
+		final Collection<Student> students = this.studentService.findAll();
+		resul.addObject("students", students);
+		resul.addObject("requestURI", "student/list.do");
+		return resul;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)

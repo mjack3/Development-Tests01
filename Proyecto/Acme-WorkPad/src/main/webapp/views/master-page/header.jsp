@@ -26,9 +26,9 @@
 						<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 						<li><a class="fNiv" href="student/create.do"><spring:message code="master.page.student.create" /></a></li>
 						 
-					</security:authorize>
+					</security:authorize>	
 					
-					
+					<li><a class="fNiv" href="student/list.do"><spring:message code="master.page.listStudent"/></a></li>			
 					
 					<security:authorize access="isAuthenticated()">
 						<security:authentication property="principal.id" var="id" />
@@ -43,6 +43,7 @@
 								
 								<li><a href="activityRecord/authenticated/list.do"><spring:message
 									code="master.page.listActivityRecord" /> </a></li>
+									
 					</security:authorize>
 					
 					

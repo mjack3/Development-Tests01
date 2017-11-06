@@ -13,7 +13,18 @@
 hidden_fields="seminars,bibliographiesRecords,userAccount,folders,activitiesRecords,socialIdentities" 
 pagesize="6"
 entityUrl="{subjects: subject/listTeacher.do}"
-></acme:list>
+variable="row"
+>
+
+<security:authorize access="isAuthenticated()">
+
+<td>
+<a href="activityRecord/authenticated/list.do?userAccountId=${row.userAccount.id }"> <spring:message code="teacher.activitiesRecords" /> </a>
+</td>
+
+</security:authorize>
+
+</acme:list>
 
 
 

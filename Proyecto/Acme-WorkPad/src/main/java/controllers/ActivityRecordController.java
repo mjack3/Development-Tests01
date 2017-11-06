@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActivityRecordService;
+import services.ActorService;
 import domain.ActivityRecord;
+import domain.Actor;
 
 @Controller
 @RequestMapping("/activityRecord/authenticated")
@@ -28,14 +30,24 @@ public class ActivityRecordController extends AbstractController {
 	@Autowired
 	private ActivityRecordService	activityRecordService;
 
+	@Autowired
+	ActorService					actorService;
+
 
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(@RequestParam(defaultValue = "0") int userAccountId) {
 		final ModelAndView resul = new ModelAndView("activityRecord/list");
-
-		final List<ActivityRecord> activityRecords = this.activityRecordService.findAllPrincipal();
-
+		final List<ActivityRecord> activityRecords;
+		if (userAccountId != 0)
+			activityRecords = this.activityRecordService.findAllPrincipal();
+		else {
+			userAccountId = this.actorService.findOnePrincipal().getUserAccount().getId();
+			activityRecords = this.activityRecordService.findAllByUserAccountId(userAccountId);
+		}
+		final Actor principal = this.actorService.findOnePrincipal();
 		resul.addObject("activityRecords", activityRecords);
+		resul.addObject("principal", principal);
+		resul.addObject("userAccountId", userAccountId);
 		resul.addObject("requestURI", "activityRecord/authenticated/list.do");
 		return resul;
 	}
@@ -94,7 +106,7 @@ public class ActivityRecordController extends AbstractController {
 
 			final ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
 			this.activityRecordService.delete(activityRecord);
-			resul = new ModelAndView("redirect:list");
+			resul = new ModelAndView("redirect:list.do");
 
 		} catch (final Throwable oops) {
 			resul = new ModelAndView("redirect:list");

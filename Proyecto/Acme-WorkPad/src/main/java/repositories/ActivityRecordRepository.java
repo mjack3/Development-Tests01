@@ -22,4 +22,7 @@ public interface ActivityRecordRepository extends JpaRepository<ActivityRecord, 
 	@Query("select resul from Actor a join a.activitiesRecords resul where resul.id=?1 and a.userAccount.id = ?2")
 	ActivityRecord findOnePrincipal(int q, int id);
 
+	@Query("select resul from Actor a join a.activitiesRecords resul where  a.userAccount.id = ?1")
+	List<ActivityRecord> findAllByUserAccountId(int userAccountId);
+
 }
