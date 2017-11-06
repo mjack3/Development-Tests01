@@ -36,6 +36,9 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
 	@Query("select a from Student s join s.subjects su join su.assigments a where s.id=?1")
 	Collection<Assignment> findAllByPrincipalStudent(int id);
 	
+	@Query("select a from Student s join s.groups g join s.subjects su join su.assigments a where s.id=?1 and g in su.groups")
+	Collection<Assignment> findAllByPrincipal(int id);
+	
 	@Query("select c.submission from Group c where c.id=?1")
 	Collection<Submission> findAllByGroupId(int id);
 

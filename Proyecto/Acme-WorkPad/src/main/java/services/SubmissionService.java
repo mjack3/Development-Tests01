@@ -81,6 +81,9 @@ public class SubmissionService {
 	public SubmissionForm create(final int assignmentId) {
 		final Student student = this.studentService.checkPrincipal();
 		Assert.notNull(student);
+		if(assignmentService.exists(assignmentId)){
+			
+		}
 		final Assignment assignment = this.assignmentService.findOne(assignmentId);
 		Assert.notNull(assignment);
 		final Subject subject = this.subjectService.findOneByAssignment(assignmentId);
@@ -90,6 +93,7 @@ public class SubmissionService {
 		form.setAssignmentId(assignmentId);
 
 		final Collection<Submission> submissions = this.submissionRepository.findSubmissionsByGroupAndAssignment(assignmentId, group.getId());
+		
 		if (submissions.isEmpty())
 			form.setTryNumber(1);
 		else {

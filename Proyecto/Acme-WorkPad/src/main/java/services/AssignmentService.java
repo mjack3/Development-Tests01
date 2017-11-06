@@ -1,8 +1,8 @@
-
 package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 
 import repositories.AssignmentRepository;
 import domain.Assignment;
+import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
@@ -23,16 +24,15 @@ import forms.AssignmentForm;
 public class AssignmentService {
 
 	@Autowired
-	private AssignmentRepository	repository;
+	private AssignmentRepository repository;
 	@Autowired
-	private TeacherService			teacherService;
+	private TeacherService teacherService;
 	@Autowired
-	private SubjectService			subjectService;
+	private SubjectService subjectService;
 	@Autowired
-	private StudentService			studentService;
+	private StudentService studentService;
 	@Autowired
-	private GroupService			groupService;
-
+	private GroupService groupService;
 
 	public AssignmentService() {
 		super();
@@ -53,6 +53,7 @@ public class AssignmentService {
 
 		return saved;
 	}
+
 	public Assignment update(final Assignment assignment) {
 		// TODO Auto-generated method stub
 		Assert.isTrue(this.repository.exists(assignment.getId()));
@@ -74,15 +75,18 @@ public class AssignmentService {
 	}
 
 	/**
-	 * Devuelve todas las assigments del profesor logueado por el id de una asignatura
+	 * Devuelve todas las assigments del profesor logueado por el id de una
+	 * asignatura
 	 * 
 	 * @param subjectId
 	 * @return
 	 */
-	public Collection<Assignment> findAllPrincipalBySubjectId(final int subjectId) {
+	public Collection<Assignment> findAllPrincipalBySubjectId(
+			final int subjectId) {
 		// TODO Auto-generated method stub
 
-		return this.repository.findAllTeacherIdSubjectId(this.teacherService.checkPrincipal().getId(), subjectId);
+		return this.repository.findAllTeacherIdSubjectId(this.teacherService
+				.checkPrincipal().getId(), subjectId);
 	}
 
 	public Assignment reconstruct(final AssignmentForm assignmentForm) {
@@ -113,7 +117,8 @@ public class AssignmentService {
 	 */
 	public Assignment findOnePrinicpal(final int q) {
 		// TODO Auto-generated method stub
-		return this.repository.findOneTeacherIdAssignmentId(this.teacherService.checkPrincipal().getId(), q);
+		return this.repository.findOneTeacherIdAssignmentId(this.teacherService
+				.checkPrincipal().getId(), q);
 	}
 
 	public Assignment save(final Assignment assignment, final Subject subject) {
@@ -132,8 +137,20 @@ public class AssignmentService {
 	public Collection<Assignment> findAllByPrincipalStudent() {
 		final Student student = this.studentService.checkPrincipal();
 		Assert.notNull(student);
+		Collection<Group> groups = student.getGroups();
+		final Collection<Assignment> resul = new HashSet<Assignment>();
+		Collection<Subject> subjects = student.getSubjects();
+		if (!student.getGroups().isEmpty() && !student.getSubjects().isEmpty()) {
 
-		final Collection<Assignment> resul = this.repository.findAllByPrincipalStudent(student.getId());
+			for (Group g : groups) {
+				for (Subject s : subjects) {
+					if (s.getGroups().contains(g)) {
+						resul.addAll(s.getAssigments());
+					}
+				}
+			}
+		}
+
 		return resul;
 	}
 
@@ -141,6 +158,10 @@ public class AssignmentService {
 		Assert.notNull(id);
 		Assert.isTrue(this.groupService.exists(id));
 		return this.repository.findAllByGroupId(id);
+	}
+
+	public boolean exists(int assignmentId) {
+		return this.repository.exists(assignmentId);
 	}
 
 }
