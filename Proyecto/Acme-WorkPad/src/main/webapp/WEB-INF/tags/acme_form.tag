@@ -265,14 +265,14 @@
 	if(cancel != null) {
 		//<input onclick="${cancel}" type="button" class="btn btn-warning" value="<spring:message code="acme.cancel" />">
 %>
-	<input onclick="window.history.back()" type="button" class="btn btn-warning" value="<spring:message code="acme.cancel" />">
+	<input onclick="window.location='welcome/index.do'"type="button" class="btn btn-warning" value="<spring:message code="acme.cancel" />">
 <%
 	} else {
 %>
-	<input onclick="window.history.back()" type="button" class="btn btn-warning" value="<spring:message code="acme.cancel" />">
+	<input onclick="window.location='welcome/index.do'" type="button" class="btn btn-warning" value="<spring:message code="acme.cancel" />">
 <%
 	}
 %>
-	<button type="reset" class="btn btn-danger" value="Reset"><spring:message code="acme.clear"/></button>
+
 
 </form:form>

@@ -136,30 +136,6 @@ public class TeacherService {
 	 * @return profesor actualizado
 	 */
 
-	public Teacher update(final Teacher actor) {
-		Assert.notNull(actor);
-		Teacher m = null;
-
-		if (this.exists(actor.getId())) {
-			m = this.findOne(actor.getId());
-			m.setName(actor.getName());
-			m.setEmail(actor.getEmail());
-			m.setPhone(actor.getPhone());
-			m.setPostalAddress(actor.getPostalAddress());
-			m.setSurname(actor.getSurname());
-
-			m = this.repository.save(m);
-		} else {
-
-			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
-			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
-
-			m = this.repository.save(actor);
-		}
-		return m;
-	}
-
 	/**
 	 * Crea un nuevo profesor
 	 * 
@@ -168,28 +144,28 @@ public class TeacherService {
 	 * @return profesor creado
 	 */
 
-	public Teacher save(final Teacher actor) {
-		Assert.notNull(actor);
+	public Teacher save(Teacher teacher) {
+
+		Assert.notNull(teacher);
 		Teacher m = null;
 
-		if (this.exists(actor.getId())) {
-			m = this.findOne(actor.getId());
-			m.setName(actor.getName());
-			m.setEmail(actor.getEmail());
-			m.setPhone(actor.getPhone());
-			m.setPostalAddress(actor.getPostalAddress());
-			m.setSurname(actor.getSurname());
-			m.setFolders(actor.getFolders());
+		if (this.exists(teacher.getId())) {
+			m = this.findOne(teacher.getId());
+			m.setName(teacher.getName());
+			m.setEmail(teacher.getEmail());
+			m.setPhone(teacher.getPhone());
+			m.setPostalAddress(teacher.getPostalAddress());
+			m.setSurname(teacher.getSurname());
+			m.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 
 			m = this.repository.save(m);
 		} else {
-
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
-			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
-
-			m = this.repository.save(actor);
+			teacher.getUserAccount().setPassword(encoder.encodePassword(teacher.getUserAccount().getPassword(), null));
+			teacher.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
+			m = this.repository.save(teacher);
 		}
+
 		return m;
 	}
 
@@ -210,8 +186,8 @@ public class TeacherService {
 
 	}
 
-	public boolean exists(int assignmentId) {
-		return assignmentService.exists(assignmentId);
+	public boolean exists(Integer id) {
+		return repository.exists(id);
 	}
 
 	/**
@@ -361,11 +337,7 @@ public class TeacherService {
 		// TODO Auto-generated method stub
 		Assert.isTrue(LoginService.hasRole("TEACHER"));
 		Assert.isTrue(LoginService.getPrincipal().getId() == teacher.getUserAccount().getId());
-		this.update(teacher);
+		this.save(teacher);
 	}
 
-	public void save2(final Teacher teacher) {
-		// TODO Auto-generated method stub
-		this.repository.save(teacher);
-	}
 }

@@ -163,7 +163,7 @@ public class StudentService {
 			m = this.repository.save(m);
 		} else {
 
-			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
 			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 

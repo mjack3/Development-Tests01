@@ -19,8 +19,8 @@
 
 
 <security:authorize access="hasRole('TEACHER')">
-	<acme:acme_form skip_fields="organisedDate" type="edit" entity="${seminar}" url="seminar/teacher/save.do" cancel="welcome/index.do">
-		<acme:textbox2 code="seminar.organisedDate"  path="organisedDate"/> <b>dd/MM/yyyy</b>
+	<acme:acme_form skip_fields="organisedDate" type="edit" hiddenFields="organisedDate" entity="${seminar}" url="seminar/teacher/save.do" cancel="welcome/index.do">
+		<acme:textbox2 code="seminar.organisedDate"  path="organisedDate"/> 
 	
 	</acme:acme_form>
 </security:authorize>

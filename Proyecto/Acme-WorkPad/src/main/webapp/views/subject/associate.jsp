@@ -30,7 +30,7 @@ pagesize="6"
 entityUrl="{subjects: subject/listTeacher.do}"
 variable="e">
 	<td>
-		<a href="subject/administrator/saveAssociate.do?q=${e.id}"> <spring:message code="subject.associateFinal" />
+		<a href="subject/administrator/saveAssociate.do?q=${e.id}"> <spring:message code="subject.associateFinal" /></a>
 	</td>
 
 </acme:list>

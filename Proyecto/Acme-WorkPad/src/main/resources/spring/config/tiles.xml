@@ -44,6 +44,8 @@
 	
 		<value>/views/category/tiles.xml</value>
 		<value>/views/school/tiles.xml</value>
+		<value>/views/bibliographyrecord/tiles.xml</value>
+		
 	
 
     </util:list>

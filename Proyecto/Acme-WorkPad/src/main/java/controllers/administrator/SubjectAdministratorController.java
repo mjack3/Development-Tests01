@@ -98,7 +98,7 @@ public class SubjectAdministratorController extends AbstractController {
 			final List<Subject> subs = teacher.getSubjects();
 			subs.add(subject);
 			teacher.setSubjects(subs);
-			this.teacherService.save2(teacher);
+			this.teacherService.save(teacher);
 			result = new ModelAndView("redirect:/subject/administrator/list.do");
 			result.addObject("subject", a.getSubjects());
 		} catch (final Throwable th) {

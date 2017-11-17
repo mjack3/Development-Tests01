@@ -45,7 +45,7 @@
 	
 		<value>/views/category/messages</value>
 		<value>/views/school/messages</value>
-	
+		<value>/views/bibliographyrecord/messages</value>
     </util:list>
 
 </beans>

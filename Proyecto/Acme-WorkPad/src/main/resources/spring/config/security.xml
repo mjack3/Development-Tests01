@@ -39,7 +39,7 @@
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/assignment/teacher/**"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/out.do"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/into.do"/>
-		<security:intercept-url access="permitAll()" pattern="/student/list.do"/>
+		<security:intercept-url access="isAuthenticated()" pattern="/student/list.do"/>
 		<!-- ADRI -->
 		
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/seminar/student/myList.do"/>
@@ -103,7 +103,7 @@
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/save.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/edit.do"/>
         
-        
+       
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/list.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/create.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/delete.do"/>
@@ -116,6 +116,7 @@
         <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/save.do"/>
          <security:intercept-url access="hasRole('STUDENT')" pattern="/group/student/subscribe.do"/>
           <security:intercept-url access="hasRole('STUDENT')" pattern="/group/student/mylist.do"/>
+          <security:intercept-url access="permitAll" pattern="/bibliographyrecord/list.do"/> 
        
 		
         <security:intercept-url access="permitAll" pattern="/welcome/cookies.do"/>
@@ -137,7 +138,7 @@
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/edit.do"/>
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/saveEdit.do"/>
 	   
-
+		
 	   
 <!-- FIN reme -->
 		<security:intercept-url access="permitAll" pattern="/favicon.ico"/> 
@@ -145,7 +146,7 @@
 		<security:intercept-url access="permitAll" pattern="/scripts/**"/> 
 		<security:intercept-url access="permitAll" pattern="/styles/**"/> 
 		 
-		
+	
 		<security:intercept-url access="permitAll" pattern="/views/misc/index.jsp"/> 
 
 		<security:intercept-url access="permitAll" pattern="/security/login.do"/> 

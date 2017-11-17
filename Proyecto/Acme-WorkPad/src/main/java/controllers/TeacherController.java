@@ -104,7 +104,7 @@ public class TeacherController extends AbstractController {
 					result.addObject("image", school.getBanner());
 					this.toSave = teacher;
 				} else {
-					this.teacherService.update(teacher);
+					this.teacherService.save(teacher);
 					result = new ModelAndView("redirect:/welcome/index.do");
 				}
 			} catch (final Throwable th) {
@@ -144,7 +144,7 @@ public class TeacherController extends AbstractController {
 	public ModelAndView saveConfirmEdit() {
 		ModelAndView result;
 		try {
-			this.teacherService.update(this.toSave);
+			this.teacherService.save(this.toSave);
 			result = new ModelAndView("redirect:/welcome/index.do");
 		} catch (final Throwable th) {
 			th.printStackTrace();

@@ -17,5 +17,5 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<acme:acme_form hiddenFields="seminars,groups,subjects,folders,activitiesRecords,socialIdentities,userAccount" another_mapped_classes="domain.Actor" type="edit" entity="${student}" url="student/saveEdit.do" cancel="welcome/index.do">
+<acme:acme_form hiddenFields="seminars,bibliographiesRecords,subjects,folders,activitiesRecords,socialIdentities,userAccount" another_mapped_classes="domain.Actor" type="edit" entity="${student}" url="student/saveEdit.do" cancel="welcome/index.do">
 </acme:acme_form>

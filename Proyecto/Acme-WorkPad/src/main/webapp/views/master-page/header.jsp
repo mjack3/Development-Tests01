@@ -122,7 +122,7 @@
        <li><a href="teacher/list.do"><spring:message code="master.page.teacher.list" /></a></li>
       </security:authorize>
 
-	<security:authorize access="permitAll()">
+	<security:authorize access="isAuthenticated()">
 	
 		<li><a class="fNiv" href="student/list.do"><spring:message code="master.page.listStudent"/></a></li>				
       

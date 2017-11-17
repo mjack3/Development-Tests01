@@ -50,7 +50,7 @@ public class SeminarController extends AbstractController {
 				seminar = this.seminarService.save(seminar);
 				if (!teacher.getSeminars().contains(seminar)) {
 					teacher.getSeminars().add(seminar);
-					this.teacherService.update(teacher);
+					this.teacherService.save(teacher);
 				}
 				result = new ModelAndView("seminar/list");
 				School school = schoolService.findAll().iterator().next();
@@ -85,7 +85,7 @@ public class SeminarController extends AbstractController {
 		final Teacher teacher = this.teacherService.checkPrincipal();
 		try {
 			teacher.getSeminars().remove(q);
-			this.teacherService.update(teacher);
+			this.teacherService.save(teacher);
 			this.seminarService.delete(q);
 			result = new ModelAndView("seminar/list");
 			School school = schoolService.findAll().iterator().next();
@@ -120,6 +120,8 @@ public class SeminarController extends AbstractController {
 		final Teacher teacher = this.teacherService.checkPrincipal();
 
 		result = new ModelAndView("seminar/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("seminars", teacher.getSeminars());
 
 		return result;
