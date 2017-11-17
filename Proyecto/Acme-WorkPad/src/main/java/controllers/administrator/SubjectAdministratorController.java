@@ -14,16 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.LoginService;
-import services.AdministratorService;
-import services.CategoryService;
-import services.SubjectService;
-import services.TeacherService;
 import controllers.AbstractController;
 import domain.Administrator;
 import domain.Category;
+import domain.School;
 import domain.Subject;
 import domain.Teacher;
+import security.LoginService;
+import services.AdministratorService;
+import services.CategoryService;
+import services.SchoolService;
+import services.SubjectService;
+import services.TeacherService;
 
 @Controller
 @RequestMapping("/subject/administrator")
@@ -43,6 +45,8 @@ public class SubjectAdministratorController extends AbstractController {
 
 	@Autowired
 	TeacherService			teacherService;
+	@Autowired
+	private SchoolService	schoolService;
 
 	private Subject			tosave;
 
@@ -55,6 +59,8 @@ public class SubjectAdministratorController extends AbstractController {
 
 		final Administrator a = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		result = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("requestURI", "/subject/administrator/list.do");
 		final List<Subject> subjectByAdministrator = new ArrayList<Subject>();
 		if (this.administratorService.exists(a.getId()))
@@ -73,6 +79,8 @@ public class SubjectAdministratorController extends AbstractController {
 		ModelAndView result;
 		this.tosave = this.subjectService.findOne(q);
 		result = new ModelAndView("subject/associate");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("teachers", this.teacherService.findAll());
 
 		return result;
@@ -107,6 +115,8 @@ public class SubjectAdministratorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final Integer q) {
 		ModelAndView result;
 		result = new ModelAndView("subject/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("subject", this.subjectService.findOne(q));
 		final List<Category> categories = this.categoryService.findAll();
 		result.addObject("categories", categories);
@@ -165,6 +175,8 @@ public class SubjectAdministratorController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		final List<Category> categories = this.categoryService.findAll();
 		result.addObject("categories", categories);
 		result.addObject("subject", subject);

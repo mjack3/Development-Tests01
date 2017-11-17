@@ -18,18 +18,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.LoginService;
-import services.GroupService;
-import services.StudentService;
-import services.SubjectService;
 import domain.Group;
+import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
+import security.LoginService;
+import services.GroupService;
+import services.SchoolService;
+import services.StudentService;
+import services.SubjectService;
 
 @Controller
 @RequestMapping("/group")
-public class GroupController {
+public class GroupController extends AbstractController {
 
 	@Autowired
 	GroupService			grouptService;
@@ -39,6 +41,8 @@ public class GroupController {
 	private SubjectService	subjectservice;
 	@Autowired
 	private StudentService	studentService;
+	@Autowired
+	private SchoolService	schoolService;
 
 	private Integer			subjectId		= null;
 	private Boolean			subjectscond	= false;
@@ -58,6 +62,8 @@ public class GroupController {
 			resul = this.createNewModelAndView(this.grouptService.create(), subjectId, null);
 		else {
 			resul = new ModelAndView("master.page");
+			School school = schoolService.findAll().iterator().next();
+			resul.addObject("image", school.getBanner());
 			resul.addObject("message", "groupAlreadyExist");
 		}
 
@@ -99,6 +105,8 @@ public class GroupController {
 	protected ModelAndView createNewModelAndView(final Group groupsubject, final int subjectId, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("group/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("group", groupsubject);
 		result.addObject("message", message);
 		result.addObject("subjectId", subjectId);
@@ -111,6 +119,8 @@ public class GroupController {
 		final Date today = new Date();
 
 		result = new ModelAndView("group/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("requestURL", "/group/student/list");
 		Student student = null;
 		Teacher teacher = null;
@@ -231,6 +241,8 @@ public class GroupController {
 		ModelAndView result;
 
 		result = new ModelAndView("group/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("requestURL", "/group/student/mylist");
 		Student student = null;
 

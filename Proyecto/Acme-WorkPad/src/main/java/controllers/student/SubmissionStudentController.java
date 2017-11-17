@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import services.StudentService;
-import services.SubmissionService;
 import controllers.AbstractController;
 import domain.Group;
+import domain.School;
 import forms.SubmissionForm;
+import services.SchoolService;
+import services.StudentService;
+import services.SubmissionService;
 
 @Controller
 @RequestMapping("/submission/student")
@@ -40,6 +42,8 @@ public class SubmissionStudentController extends AbstractController {
 	private SubmissionService	submissionService;
 	@Autowired
 	private StudentService		studentService;
+	@Autowired
+	private SchoolService		schoolService;
 
 
 	// Creation --------------------------------------------
@@ -65,6 +69,8 @@ public class SubmissionStudentController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("submission/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("submissions", q.getSubmission());
 
 		return result;
@@ -102,12 +108,13 @@ public class SubmissionStudentController extends AbstractController {
 		return result;
 	}
 
-
 	protected ModelAndView createEditModelAndView(SubmissionForm submissionForm, String message) {
 
 		ModelAndView result;
 
 		result = new ModelAndView("submission/student/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("submissionForm", submissionForm);
 		result.addObject("message", message);
 		result.addObject("requestParam", "submission/student/edit.do");

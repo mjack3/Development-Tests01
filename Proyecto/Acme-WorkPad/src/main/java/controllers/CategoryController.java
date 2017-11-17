@@ -8,14 +8,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.Category;
+import domain.School;
 import services.CategoryService;
+import services.SchoolService;
 
 @Controller
 @RequestMapping("/category")
 public class CategoryController extends AbstractController {
 
 	@Autowired
-	CategoryService categoryService;
+	private CategoryService	categoryService;
+	@Autowired
+	private SchoolService	schoolService;
 
 
 	@RequestMapping("/view")
@@ -23,6 +27,8 @@ public class CategoryController extends AbstractController {
 		ModelAndView res;
 
 		res = new ModelAndView("category/view");
+		School school = schoolService.findAll().iterator().next();
+		res.addObject("image", school.getBanner());
 		res.addObject("category", q);
 
 		return res;

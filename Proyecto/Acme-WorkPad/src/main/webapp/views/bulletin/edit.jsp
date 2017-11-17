@@ -26,12 +26,17 @@
 
 	<form:hidden path="subjectId" />
 	<form:hidden path="postedDate" />
-		
+		<div class="form-group" style="width: 20%;">
 	<acme:textbox code="bulletin.title" path="title"/>
 	<br />
 	
 	
-	<acme:textarea code="bulletin.text" path="text" />
+	<form:label path="text">
+				<spring:message code="bulletin.text" />:
+		</form:label>
+			<form:textarea cols="20" rows="10" path="text"
+				class="form-control" />
+			<form:errors cssClass="error" path="text" />
 	<br />
 	
 	
@@ -42,5 +47,5 @@
 
 	<acme:cancel url="/subject/list.do" code="bulletin.cancel" />
 		
-
+</div>	
 </form:form>

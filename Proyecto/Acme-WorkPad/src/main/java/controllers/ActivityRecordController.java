@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActivityRecordService;
-import services.ActorService;
 import domain.ActivityRecord;
 import domain.Actor;
+import domain.School;
+import services.ActivityRecordService;
+import services.ActorService;
+import services.SchoolService;
 
 @Controller
 @RequestMapping("/activityRecord/authenticated")
@@ -31,12 +33,17 @@ public class ActivityRecordController extends AbstractController {
 	private ActivityRecordService	activityRecordService;
 
 	@Autowired
-	ActorService					actorService;
+	private ActorService			actorService;
+
+	@Autowired
+	private SchoolService			schoolService;
 
 
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "0") int userAccountId) {
 		final ModelAndView resul = new ModelAndView("activityRecord/list");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		final List<ActivityRecord> activityRecords;
 		if (userAccountId != 0)
 			activityRecords = this.activityRecordService.findAllPrincipal();
@@ -119,7 +126,8 @@ public class ActivityRecordController extends AbstractController {
 	private ModelAndView createEditModelAndView(final ActivityRecord activityRecord, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("activityRecord/edit");
-
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		resul.addObject("activityRecord", activityRecord);
 		resul.addObject("message", message);
 		resul.addObject("actionParam", "activityRecord/authenticated/edit.do");

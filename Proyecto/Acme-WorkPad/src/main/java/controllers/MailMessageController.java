@@ -15,20 +15,24 @@ import org.springframework.web.servlet.ModelAndView;
 import domain.Actor;
 import domain.Folder;
 import domain.MailMessage;
+import domain.School;
 import security.LoginService;
 import services.FolderService;
 import services.MailMessageService;
+import services.SchoolService;
 
 @Controller
 @RequestMapping("/mailmessage")
-public class MailMessageController {
+public class MailMessageController extends AbstractController {
 
 	@Autowired
-	MailMessageService	mailmessageService;
+	private MailMessageService	mailmessageService;
 	@Autowired
-	FolderService		folderService;
+	private FolderService		folderService;
 	@Autowired
-	LoginService		loginService;
+	private LoginService		loginService;
+	@Autowired
+	private SchoolService		schoolService;
 
 
 	@RequestMapping(value = "/actor/create", method = RequestMethod.GET)
@@ -44,9 +48,9 @@ public class MailMessageController {
 	@RequestMapping(value = "/actor/save", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveCreate(@RequestParam String subject, @RequestParam String body, @RequestParam String priority, @RequestParam String mail) {
 		ModelAndView result;
-		if(subject == null || subject == "" || body == null || body == "" ) {
+		if (subject == null || subject == "" || body == null || body == "") {
 			result = createNewModelAndView(mailmessageService.create(), "commit.error");
-		}else {
+		} else {
 			try {
 				mailmessageService.send(subject, body, priority, mail);
 				result = new ModelAndView("redirect:/folder/actor/list.do");
@@ -54,7 +58,6 @@ public class MailMessageController {
 				return create(e.getMessage());
 			}
 		}
-		
 
 		return result;
 	}
@@ -62,6 +65,8 @@ public class MailMessageController {
 	protected ModelAndView createNewModelAndView(MailMessage mailmessage, String message) {
 		ModelAndView result;
 		result = new ModelAndView("mailmessage/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", mailmessage);
 		result.addObject("message", message);
 		return result;
@@ -73,6 +78,8 @@ public class MailMessageController {
 
 		request.getSession().setAttribute("folder_id", folder.getId());
 		result = new ModelAndView("mailmessage/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", folder.getMessages());
 
 		return result;
@@ -82,6 +89,8 @@ public class MailMessageController {
 	public ModelAndView view(@RequestParam MailMessage q) {
 		ModelAndView result;
 		result = new ModelAndView("mailmessage/view");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", q);
 		return result;
 	}
@@ -99,6 +108,8 @@ public class MailMessageController {
 		ModelAndView result;
 		Actor a = loginService.selectSelf();
 		result = new ModelAndView("mailmessage/moveTo");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", q);
 		result.addObject("folders", a.getFolders());
 		return result;
@@ -108,6 +119,8 @@ public class MailMessageController {
 	public ModelAndView edit(@RequestParam MailMessage mailmessage) {
 		ModelAndView result;
 		result = new ModelAndView("mailmessage/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", mailmessage);
 		return result;
 	}

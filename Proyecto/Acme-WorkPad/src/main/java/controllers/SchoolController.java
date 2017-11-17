@@ -17,7 +17,7 @@ import services.SchoolService;
 
 @Controller
 @RequestMapping("/school")
-public class SchoolController {
+public class SchoolController extends AbstractController {
 
 	@Autowired
 	SchoolService	schoolService;
@@ -30,6 +30,8 @@ public class SchoolController {
 	public ModelAndView edit() {
 		ModelAndView result;
 		result = new ModelAndView("school/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		final Administrator d = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		if (d.getSchools().contains(schoolService.findAll().iterator().next())) {
 			result.addObject("school", schoolService.findAll().iterator().next());
@@ -65,6 +67,7 @@ public class SchoolController {
 	protected ModelAndView createEditModelAndView(School school, String message) {
 		ModelAndView result = new ModelAndView("school/edit");
 
+		result.addObject("image", school.getBanner());
 		result.addObject("school", school);
 		result.addObject("message", message);
 

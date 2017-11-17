@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import controllers.AbstractController;
+import domain.School;
+import domain.Subject;
+import services.SchoolService;
 import services.SubjectService;
 import services.TeacherService;
-import controllers.AbstractController;
-import domain.Subject;
 
 @Controller
 @RequestMapping("/subject/teacher")
@@ -22,6 +24,8 @@ public class SubjectTeacherConrtroller extends AbstractController {
 	private SubjectService	subjectService;
 	@Autowired
 	private TeacherService	teacherService;
+	@Autowired
+	private SchoolService	schoolService;
 
 
 	public SubjectTeacherConrtroller() {
@@ -32,6 +36,8 @@ public class SubjectTeacherConrtroller extends AbstractController {
 	public ModelAndView list() {
 
 		final ModelAndView resul = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		final Collection<Subject> subjects = this.subjectService.findAllByPrincipal(this.teacherService.checkPrincipal());
 
 		resul.addObject("subject", subjects);

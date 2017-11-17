@@ -13,10 +13,6 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.TeacherRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 import domain.Activity;
 import domain.ActivityRecord;
 import domain.Assignment;
@@ -28,6 +24,10 @@ import domain.SocialIdentity;
 import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
+import repositories.TeacherRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 
 @Transactional
 @Service
@@ -137,11 +137,27 @@ public class TeacherService {
 	 */
 
 	public Teacher update(final Teacher actor) {
-
 		Assert.notNull(actor);
-		Assert.isTrue(this.repository.exists(actor.getId()));
+		Teacher m = null;
 
-		return this.repository.save(actor);
+		if (this.exists(actor.getId())) {
+			m = this.findOne(actor.getId());
+			m.setName(actor.getName());
+			m.setEmail(actor.getEmail());
+			m.setPhone(actor.getPhone());
+			m.setPostalAddress(actor.getPostalAddress());
+			m.setSurname(actor.getSurname());
+
+			m = this.repository.save(m);
+		} else {
+
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
+			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
+
+			m = this.repository.save(actor);
+		}
+		return m;
 	}
 
 	/**
@@ -153,13 +169,28 @@ public class TeacherService {
 	 */
 
 	public Teacher save(final Teacher actor) {
-
 		Assert.notNull(actor);
+		Teacher m = null;
 
-		final Md5PasswordEncoder enc = new Md5PasswordEncoder();
-		actor.getUserAccount().setPassword(enc.encodePassword(actor.getUserAccount().getPassword(), null));
+		if (this.exists(actor.getId())) {
+			m = this.findOne(actor.getId());
+			m.setName(actor.getName());
+			m.setEmail(actor.getEmail());
+			m.setPhone(actor.getPhone());
+			m.setPostalAddress(actor.getPostalAddress());
+			m.setSurname(actor.getSurname());
+			m.setFolders(actor.getFolders());
 
-		return this.repository.save(actor);
+			m = this.repository.save(m);
+		} else {
+
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
+			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
+
+			m = this.repository.save(actor);
+		}
+		return m;
 	}
 
 	// Others methods ----------------------------------------
@@ -177,6 +208,10 @@ public class TeacherService {
 
 		return activities;
 
+	}
+
+	public boolean exists(int assignmentId) {
+		return assignmentService.exists(assignmentId);
 	}
 
 	/**

@@ -24,7 +24,7 @@
 
 <form:hidden path="subjectId"/>
 <acme:textbox2 code="activity.title" path="title"/>
-<acme:textbox2 code="activity.description" path="description"/>
+<acme:textarea code="activity.description" path="description"/>
 <acme:textbox2 code="activity.startDate" path="startDate"/>
 <acme:textbox2 code="activity.endDate" path="endDate"/>
 <acme:textbox2 code="activity.link" path="link"/>

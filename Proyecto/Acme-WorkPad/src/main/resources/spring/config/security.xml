@@ -134,6 +134,8 @@
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/list.do"/>
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/edit.do"/>
 	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/delete.do"/>
+	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/edit.do"/>
+	   <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/saveEdit.do"/>
 	   
 
 	   

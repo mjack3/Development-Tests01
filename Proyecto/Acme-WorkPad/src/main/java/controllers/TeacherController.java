@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.TeacherService;
+import domain.School;
 import domain.Teacher;
+import services.SchoolService;
+import services.TeacherService;
 
 @Controller
 @RequestMapping("/teacher")
-public class TeacherController {
+public class TeacherController extends AbstractController {
 
 	@Autowired
 	private TeacherService	teacherService;
+	@Autowired
+	private SchoolService	schoolService;
 
 	private Teacher			toSave;
 
@@ -36,6 +40,8 @@ public class TeacherController {
 		ModelAndView res;
 
 		res = new ModelAndView("teacher/view");
+		School school = schoolService.findAll().iterator().next();
+		res.addObject("image", school.getBanner());
 		res.addObject("teacher", q);
 
 		return res;
@@ -70,6 +76,8 @@ public class TeacherController {
 				final Matcher matcher = pattern.matcher(teacher.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("teacher/confirm");
+					School school = schoolService.findAll().iterator().next();
+					result.addObject("image", school.getBanner());
 					this.toSave = teacher;
 				} else {
 					this.teacherService.save(teacher);
@@ -92,6 +100,8 @@ public class TeacherController {
 				final Matcher matcher = pattern.matcher(teacher.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("teacher/confirm");
+					School school = schoolService.findAll().iterator().next();
+					result.addObject("image", school.getBanner());
 					this.toSave = teacher;
 				} else {
 					this.teacherService.update(teacher);
@@ -109,6 +119,8 @@ public class TeacherController {
 		ModelAndView result;
 
 		result = new ModelAndView("teacher/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("teachers", this.teacherService.findAll());
 
 		return result;
@@ -145,6 +157,8 @@ public class TeacherController {
 	protected ModelAndView createNewModelAndView(final Teacher teacher, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("teacher/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("teacher", teacher);
 		result.addObject("message", message);
 		return result;
@@ -153,6 +167,8 @@ public class TeacherController {
 	protected ModelAndView createEditModelAndView(final Teacher teacher, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("teacher/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("teacher", teacher);
 		result.addObject("message", message);
 		return result;

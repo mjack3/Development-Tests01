@@ -26,8 +26,8 @@
 	<form:hidden path="subjectId"/>
 
 	<acme:textbox2 code="assignment.title" path="title"/>
-	<acme:textbox2 code="assignment.description" path="description"/>
-	<acme:textbox2 code="assignment.startDate" path="startDate"/>
+	<acme:textarea code="assignment.description" path="description"/>
+	<acme:textbox2 code="assignment.startDate"  path="startDate"/>
 	<acme:textbox2 code="assignment.endDate" path="endDate"/>
 	<acme:textbox2 code="assignment.link" path="link"/>
 

@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import domain.ActivityRecord;
+import domain.Administrator;
+import domain.SocialIdentity;
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.ActivityRecord;
-import domain.Administrator;
-import domain.SocialIdentity;
 
 @Transactional
 @Service
@@ -48,7 +48,6 @@ public class AdministratorService {
 
 		Assert.notNull(actor);
 		Assert.isTrue(this.repository.exists(actor.getId()));
-		Assert.isTrue(actor.getPhone().matches("^$|^\\\\+([1-9][0-9]{0,2}) (\\\\([1-9][0-9]{0,3}\\\\)) ([a-zA-Z0-9 -]{4,})$"));
 
 		return this.repository.save(actor);
 	}
@@ -156,7 +155,7 @@ public class AdministratorService {
 
 
 	@Autowired
-	LoginService	loginService;
+	LoginService loginService;
 
 
 	public void editInfo(final Administrator admin) {

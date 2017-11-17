@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.StudentService;
+import domain.School;
 import domain.Student;
+import services.SchoolService;
+import services.StudentService;
 
 @Controller
 @RequestMapping("/student")
-public class StudentController {
+public class StudentController extends AbstractController {
 
 	@Autowired
 	private StudentService	studentService;
+	@Autowired
+	private SchoolService	schoolService;
 
 	private Student			toSave;
 
@@ -44,10 +48,11 @@ public class StudentController {
 	public ModelAndView list() {
 
 		final ModelAndView resul = new ModelAndView("student/list");
-
+		School school = schoolService.findAll().iterator().next();
 		final Collection<Student> students = this.studentService.findAll();
 		resul.addObject("students", students);
 		resul.addObject("requestURI", "student/list.do");
+		resul.addObject("image", school.getBanner());
 		return resul;
 	}
 
@@ -71,6 +76,8 @@ public class StudentController {
 				final Matcher matcher = pattern.matcher(student.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("student/confirm");
+					School school = schoolService.findAll().iterator().next();
+					result.addObject("image", school.getBanner());
 					this.toSave = student;
 				} else {
 					this.studentService.save(student);
@@ -94,6 +101,8 @@ public class StudentController {
 				final Matcher matcher = pattern.matcher(student.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("student/confirm");
+					School school = schoolService.findAll().iterator().next();
+					result.addObject("image", school.getBanner());
 					this.toSave = student;
 				} else {
 					this.studentService.update(student);
@@ -137,6 +146,8 @@ public class StudentController {
 	protected ModelAndView createNewModelAndView(final Student student, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("student/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("student", student);
 		result.addObject("message", message);
 		return result;
@@ -145,6 +156,8 @@ public class StudentController {
 	protected ModelAndView createEditModelAndView(final Student student, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("student/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("student", student);
 		result.addObject("message", message);
 		return result;

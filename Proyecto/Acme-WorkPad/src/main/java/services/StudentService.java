@@ -12,10 +12,6 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.StudentRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 import domain.ActivityRecord;
 import domain.Folder;
 import domain.Group;
@@ -24,6 +20,10 @@ import domain.Seminar;
 import domain.SocialIdentity;
 import domain.Student;
 import domain.Subject;
+import repositories.StudentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 
 @Transactional
 @Service
@@ -112,11 +112,27 @@ public class StudentService {
 	 */
 
 	public Student update(final Student actor) {
-
 		Assert.notNull(actor);
-		Assert.isTrue(this.repository.exists(actor.getId()));
+		Student m = null;
 
-		return this.repository.save(actor);
+		if (this.exists(actor.getId())) {
+			m = this.findOne(actor.getId());
+			m.setName(actor.getName());
+			m.setEmail(actor.getEmail());
+			m.setPhone(actor.getPhone());
+			m.setPostalAddress(actor.getPostalAddress());
+			m.setSurname(actor.getSurname());
+
+			m = this.repository.save(m);
+		} else {
+
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
+			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
+
+			m = this.repository.save(actor);
+		}
+		return m;
 	}
 
 	public List<Student> findAll() {
@@ -131,16 +147,29 @@ public class StudentService {
 	 * @return estudiante creado
 	 */
 
-	public Student save(final Student student) {
+	public Student save(final Student actor) {
 
-		Assert.notNull(student);
+		Assert.notNull(actor);
+		Student m = null;
 
-		final Md5PasswordEncoder enc = new Md5PasswordEncoder();
-		student.getUserAccount().setPassword(enc.encodePassword(student.getUserAccount().getPassword(), null));
+		if (this.exists(actor.getId())) {
+			m = this.findOne(actor.getId());
+			m.setName(actor.getName());
+			m.setEmail(actor.getEmail());
+			m.setPhone(actor.getPhone());
+			m.setPostalAddress(actor.getPostalAddress());
+			m.setSurname(actor.getSurname());
 
-		final Student saved = this.repository.save(student);
+			m = this.repository.save(m);
+		} else {
 
-		return saved;
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
+			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
+
+			m = this.repository.save(actor);
+		}
+		return m;
 	}
 
 	//Other Methods

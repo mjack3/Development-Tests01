@@ -7,7 +7,7 @@
 <tiles-definitions>
 
 	<definition name="bulletin/actor/edit" extends="master.page">
-		<put-attribute name="title" value="Edit bulletin" />
+		<put-attribute name="title" value="Create bulletin" />
 		<put-attribute name="body" value="/views/bulletin/edit.jsp" />
 	</definition>
 

@@ -42,6 +42,7 @@
 		list="${subject}" variable="e" requestURI="${requestURI}"
 		hidden_fields="administrator,activities,assigments,bulletins,groups,students"
 		pagesize="6">
+		
 	</acme:list>
 
 </security:authorize>
@@ -82,7 +83,7 @@
 		hidden_fields="administrator,activities,assigments,students"
 		pagesize="6">
 		
-		<jstl:if test="${MySubjects == 1}">
+		<!--<jstl:if test="${MySubjects == 1}">-->
 		<td><a href="bulletin/actor/create.do?q=${e.id}"> <spring:message
 					code="bulletin.create" />
 		</a></td>
@@ -92,7 +93,7 @@
 					code='acme.edit' /></a></td>
 		<td><a href="subject/administrator/associateTeacher.do?q=${e.id}"> <spring:message
 					code='subject.associate' /></a></td>
-		</jstl:if>
+		<!--</jstl:if>-->
 	</acme:list>
 
 </security:authorize>
@@ -108,14 +109,14 @@
 					code="bulletin.create" />
 		</a></td>
 		<jstl:if test="${principal.subjects.contains(e)}">
-			<td><a href="activity/teacher/list.do?subjectId=${e.id }"> <spring:message
-						code="subject.activities" /></td>
-			</a>
+			<td><a href="activity/teacher/list.do?subjectId=${e.id }"><spring:message
+						code="subject.activities" /> </a></td>
+			
 			<td>
-		<a href="assignment/teacher/list.do?subjectId=${e.id}"> <spring:message
-					code="subject.assigments" />
+		<a href="assignment/teacher/list.do?subjectId=${e.id}"><spring:message
+					code="subject.assigments" /> </a>
 			</td>
-			</a>
+			
 			</jstl:if>
 	</acme:list>
 

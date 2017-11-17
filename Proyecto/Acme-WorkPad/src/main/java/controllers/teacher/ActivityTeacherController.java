@@ -14,13 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActivityService;
-import services.SubjectService;
-import services.TeacherService;
 import controllers.AbstractController;
 import domain.Activity;
+import domain.School;
 import domain.Subject;
 import forms.ActivityForm;
+import services.ActivityService;
+import services.SchoolService;
+import services.SubjectService;
+import services.TeacherService;
 
 @Controller
 @RequestMapping("/activity/teacher")
@@ -33,6 +35,8 @@ public class ActivityTeacherController extends AbstractController {
 	private ActivityService	activityService;
 	@Autowired
 	private SubjectService	subjectService;
+	@Autowired
+	private SchoolService	schoolService;
 
 
 	public ActivityTeacherController() {
@@ -96,6 +100,8 @@ public class ActivityTeacherController extends AbstractController {
 	private ModelAndView createCreateModelAndView(final ActivityForm activityForm, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("activity/create");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		resul.addObject("activityForm", activityForm);
 
 		resul.addObject("message", message);
@@ -107,6 +113,8 @@ public class ActivityTeacherController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int subjectId) {
 		final ModelAndView resul = new ModelAndView("activity/list");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 
 		final Subject subject = this.subjectService.findOnePrincipal(subjectId);
 		final Collection<Activity> activities = this.teacherService.findAllActivitiesBySubject(subject);
@@ -184,6 +192,8 @@ public class ActivityTeacherController extends AbstractController {
 	private ModelAndView createEditModelAndView(final Activity activity, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("activity/edit");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 
 		resul.addObject("activity", activity);
 		resul.addObject("message", message);

@@ -92,7 +92,7 @@ public class FolderService {
 
 		if (actor instanceof Student) {
 			studentService.save((Student) actor);
-		} else if (actor instanceof Teacher) {
+		}if (actor instanceof Teacher) {
 			teacherService.save((Teacher) actor);
 
 		} else {

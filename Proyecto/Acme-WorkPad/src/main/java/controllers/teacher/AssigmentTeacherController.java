@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.AssignmentService;
-import services.SubjectService;
 import controllers.AbstractController;
 import domain.Assignment;
+import domain.School;
 import domain.Subject;
 import forms.AssignmentForm;
+import services.AssignmentService;
+import services.SchoolService;
+import services.SubjectService;
 
 @RequestMapping("/assignment/teacher")
 @Controller
@@ -29,6 +31,8 @@ public class AssigmentTeacherController extends AbstractController {
 	private AssignmentService	assignmentService;
 	@Autowired
 	private SubjectService		subjectService;
+	@Autowired
+	private SchoolService		schoolService;
 
 
 	public AssigmentTeacherController() {
@@ -121,6 +125,8 @@ public class AssigmentTeacherController extends AbstractController {
 	private ModelAndView createEditModelAndView(final AssignmentForm assignmentForm, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("assignment/edit");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		resul.addObject("assignmentForm", assignmentForm);
 		resul.addObject("requestURI", "assignment/teacher/edit.do");
 
@@ -134,6 +140,8 @@ public class AssigmentTeacherController extends AbstractController {
 		final Collection<Assignment> assignments = this.assignmentService.findAllPrincipalBySubjectId(subjectId);
 
 		resul = new ModelAndView("assignment/list");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		resul.addObject("assigments", assignments);
 		resul.addObject("subjectId", subjectId);
 

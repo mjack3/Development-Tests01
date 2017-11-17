@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -10,15 +11,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.School;
 import domain.SpamWord;
+import services.SchoolService;
 import services.SpamWordService;
 
 @Controller
 @RequestMapping("/spamword")
-public class SpamWordController {
+public class SpamWordController extends AbstractController {
 
 	@Autowired
-	SpamWordService spamwordService;
+	private SpamWordService	spamwordService;
+	@Autowired
+	private SchoolService	schoolService;
+
 
 	@RequestMapping(value = "/administrator/create", method = RequestMethod.GET)
 	public ModelAndView create() {
@@ -48,6 +54,8 @@ public class SpamWordController {
 	protected ModelAndView createNewModelAndView(SpamWord spamword, String message) {
 		ModelAndView result;
 		result = new ModelAndView("spamword/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("spamword", spamword);
 		result.addObject("message", message);
 		return result;
@@ -58,6 +66,8 @@ public class SpamWordController {
 		ModelAndView result;
 
 		result = new ModelAndView("spamword/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("spamword", spamwordService.findAll());
 
 		return result;
@@ -67,6 +77,8 @@ public class SpamWordController {
 	public ModelAndView edit(@RequestParam SpamWord q) {
 		ModelAndView result;
 		result = new ModelAndView("spamword/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("spamword", q);
 		return result;
 	}
@@ -99,6 +111,8 @@ public class SpamWordController {
 
 	protected ModelAndView createEditModelAndView(SpamWord spamword, String message) {
 		ModelAndView result = new ModelAndView("spamword/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 
 		result.addObject("spamword", spamword);
 		result.addObject("message", message);

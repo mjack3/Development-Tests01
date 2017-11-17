@@ -11,25 +11,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.SeminarService;
-import services.StudentService;
-import services.TeacherService;
+import domain.School;
 import domain.Seminar;
 import domain.Student;
 import domain.Teacher;
+import services.SchoolService;
+import services.SeminarService;
+import services.StudentService;
+import services.TeacherService;
 
 @Controller
 @RequestMapping("/seminar")
 public class SeminarController extends AbstractController {
 
 	@Autowired
-	SeminarService	seminarService;
+	private SeminarService	seminarService;
 
 	@Autowired
-	TeacherService	teacherService;
+	private TeacherService	teacherService;
 
 	@Autowired
-	StudentService	studentService;
+	private StudentService	studentService;
+	@Autowired
+	private SchoolService	schoolService;
 
 
 	@RequestMapping(value = "/teacher/save", method = RequestMethod.POST, params = "save")
@@ -37,6 +41,8 @@ public class SeminarController extends AbstractController {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			result = new ModelAndView("seminar/edit");
+			School school = schoolService.findAll().iterator().next();
+			result.addObject("image", school.getBanner());
 			result.addObject("seminar", seminar);
 		} else
 			try {
@@ -47,10 +53,14 @@ public class SeminarController extends AbstractController {
 					this.teacherService.update(teacher);
 				}
 				result = new ModelAndView("seminar/list");
+				School school = schoolService.findAll().iterator().next();
+				result.addObject("image", school.getBanner());
 				result.addObject("seminars", teacher.getSeminars());
 			} catch (final Throwable th) {
 
 				result = new ModelAndView("seminar/edit");
+				School school = schoolService.findAll().iterator().next();
+				result.addObject("image", school.getBanner());
 				result.addObject("seminar", seminar);
 				result.addObject("message", "folder.commit.error");
 			}
@@ -62,6 +72,8 @@ public class SeminarController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("seminar/edit");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("seminar", q);
 
 		return result;
@@ -76,9 +88,13 @@ public class SeminarController extends AbstractController {
 			this.teacherService.update(teacher);
 			this.seminarService.delete(q);
 			result = new ModelAndView("seminar/list");
+			School school = schoolService.findAll().iterator().next();
+			result.addObject("image", school.getBanner());
 			result.addObject("seminars", teacher.getSeminars());
 		} catch (final Throwable th) {
 			result = new ModelAndView("seminar/list");
+			School school = schoolService.findAll().iterator().next();
+			result.addObject("image", school.getBanner());
 			result.addObject("seminars", teacher.getSeminars());
 		}
 
@@ -90,6 +106,8 @@ public class SeminarController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("seminar/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("seminar", this.seminarService.create());
 
 		return result;
@@ -113,6 +131,8 @@ public class SeminarController extends AbstractController {
 
 		final Student student = this.studentService.checkPrincipal();
 		result = new ModelAndView("seminar/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("seminars", this.seminarService.findAll());
 		result.addObject("mySeminars", student.getSeminars());
 
@@ -125,6 +145,8 @@ public class SeminarController extends AbstractController {
 
 		final Student student = this.studentService.checkPrincipal();
 		result = new ModelAndView("seminar/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("seminars", student.getSeminars());
 		result.addObject("mySeminars", student.getSeminars());
 

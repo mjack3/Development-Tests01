@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -10,20 +11,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.LoginService;
-import services.FolderService;
 import domain.Actor;
 import domain.Folder;
+import domain.School;
+import security.LoginService;
+import services.FolderService;
+import services.SchoolService;
 
 @Controller
 @RequestMapping("/folder")
-public class FolderController {
+public class FolderController extends AbstractController {
 
 	@Autowired
-	FolderService folderService;
+	private FolderService	folderService;
 	@Autowired
-	LoginService loginService;
-	
+	private LoginService	loginService;
+	@Autowired
+	private SchoolService	schoolService;
+
+
 	@RequestMapping(value = "/actor/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
@@ -33,7 +39,7 @@ public class FolderController {
 		return result;
 	}
 
-	@RequestMapping(value="/actor/save", method=RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/actor/save", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveCreate(@Valid Folder folder, BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
@@ -52,6 +58,8 @@ public class FolderController {
 	protected ModelAndView createNewModelAndView(Folder folder, String message) {
 		ModelAndView result;
 		result = new ModelAndView("folder/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("folder", folder);
 		result.addObject("message", message);
 		return result;
@@ -61,16 +69,20 @@ public class FolderController {
 	public ModelAndView delete(@RequestParam Folder folder) {
 		ModelAndView result;
 		Actor a = loginService.selectSelf();
-		if(a!=null){
-			if(a.getFolders().contains(folder)){
+		if (a != null) {
+			if (a.getFolders().contains(folder)) {
 				folderService.delete(folder);
 				result = new ModelAndView("folder/list");
+				School school = schoolService.findAll().iterator().next();
+				result.addObject("image", school.getBanner());
 				result.addObject("folder", a.getFolders());
-			}else{
+			} else {
 				result = new ModelAndView("folder/list");
+				School school = schoolService.findAll().iterator().next();
+				result.addObject("image", school.getBanner());
 				result.addObject("folder", a.getFolders());
 			}
-		}else{
+		} else {
 			return new ModelAndView("redirect:/welcome/index.do");
 		}
 		return result;
@@ -79,10 +91,12 @@ public class FolderController {
 	@RequestMapping(value = "/actor/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		
+
 		Actor a = loginService.selectSelf();
 
 		result = new ModelAndView("folder/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("folder", a.getFolders());
 
 		return result;
@@ -92,22 +106,26 @@ public class FolderController {
 	public ModelAndView edit(@RequestParam Folder folder) {
 		ModelAndView result;
 		Actor a = loginService.selectSelf();
-		if(a!=null){
-			if(a.getFolders().contains(folder)){
+		if (a != null) {
+			if (a.getFolders().contains(folder)) {
 				result = new ModelAndView("folder/edit");
+				School school = schoolService.findAll().iterator().next();
+				result.addObject("image", school.getBanner());
 				result.addObject("folder", folder);
-			}else{
+			} else {
 				result = new ModelAndView("folder/list");
+				School school = schoolService.findAll().iterator().next();
+				result.addObject("image", school.getBanner());
 				result.addObject("folder", a.getFolders());
 			}
-		}else{
+		} else {
 			return new ModelAndView("redirect:/welcome/index.do");
 		}
 
 		return result;
 	}
 
-	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST,params = "delete")
+	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView deleteEdit(@Valid Folder folder) {
 		ModelAndView result;
 
@@ -121,7 +139,7 @@ public class FolderController {
 		return result;
 	}
 
-	@RequestMapping(value="/actor/edit", method=RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveEdit(@Valid Folder folder, BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
@@ -139,7 +157,8 @@ public class FolderController {
 
 	protected ModelAndView createEditModelAndView(Folder folder, String message) {
 		ModelAndView result = new ModelAndView("folder/edit");
-
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("folder", folder);
 		result.addObject("message", message);
 
@@ -147,4 +166,3 @@ public class FolderController {
 	}
 
 }
-

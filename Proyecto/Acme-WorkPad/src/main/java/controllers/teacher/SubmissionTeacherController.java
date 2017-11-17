@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import controllers.AbstractController;
+import domain.School;
 import domain.Submission;
 import services.AssignmentService;
+import services.SchoolService;
 import services.SubmissionService;
 
 @RequestMapping("/submission/teacher")
@@ -24,6 +26,8 @@ public class SubmissionTeacherController extends AbstractController {
 	private SubmissionService	submissionService;
 	@Autowired
 	private AssignmentService	assignmentService;
+	@Autowired
+	private SchoolService		schoolService;
 
 
 	public SubmissionTeacherController() {
@@ -33,6 +37,8 @@ public class SubmissionTeacherController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int q) {
 		final ModelAndView resul = new ModelAndView("submission/list");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 
 		final Collection<Submission> submissions = assignmentService.findAllByGroupId(q);
 		resul.addObject("submissions", submissions);
@@ -82,6 +88,8 @@ public class SubmissionTeacherController extends AbstractController {
 	private ModelAndView createGradeModelAndView(final Submission submission, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("submission/grade");
+		School school = schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
 		resul.addObject("submission", submission);
 		resul.addObject("requestParam", "submission/teacher/grade.do");
 		resul.addObject("message", message);

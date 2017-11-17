@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
 import security.LoginService;
+import services.SchoolService;
 import services.StudentService;
 import services.SubjectService;
 import services.TeacherService;
@@ -25,15 +27,17 @@ import services.TeacherService;
 public class SubjectController extends AbstractController {
 
 	@Autowired
-	SubjectService			subjectService;
+	private SubjectService	subjectService;
 
 	@Autowired
-	LoginService			loginService;
+	private LoginService	loginService;
 
 	@Autowired
-	StudentService			studentService;
+	private StudentService	studentService;
 	@Autowired
 	private TeacherService	teacherService;
+	@Autowired
+	private SchoolService	schoolService;
 
 
 	public SubjectController() {
@@ -49,6 +53,8 @@ public class SubjectController extends AbstractController {
 		Collection<Subject> subject;
 
 		view = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		view.addObject("image", school.getBanner());
 
 		if (sw.equals("sin"))
 			subject = this.subjectService.findSubjectsByWordWithoutSeats(keyword);
@@ -72,6 +78,8 @@ public class SubjectController extends AbstractController {
 		Collection<Subject> subject;
 
 		view = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		view.addObject("image", school.getBanner());
 
 		if (sw.equals("sin"))
 			subject = this.subjectService.findSubjectsByWordWithoutSeatsByPrincipal(keyword);
@@ -100,6 +108,8 @@ public class SubjectController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("requestURI", "/subject/student/list.do");
 		final Student d = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		result.addObject("subject", this.subjectService.subjectsByStudents(d.getId()));
@@ -119,6 +129,8 @@ public class SubjectController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("requestURI", "/subject/listTeacher.do");
 		result.addObject("subject", q.getSubjects());
 
@@ -132,6 +144,8 @@ public class SubjectController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("subject/list");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
 		result.addObject("requestURI", "/subject/list.do");
 		result.addObject("subject", this.subjectService.findAll());
 		result.addObject("requestSearch", "subject/search.do");
