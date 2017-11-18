@@ -30,6 +30,7 @@
 <acme:textbox2 code="activity.link" path="link"/>
 
 <acme:submit name="save" code="activity.save"/>
+
 <acme:cancel url="activity/teacher/list.do?subjectId=${activityForm.subjectId }" code="activity.cancel"/>
 
 </form:form>

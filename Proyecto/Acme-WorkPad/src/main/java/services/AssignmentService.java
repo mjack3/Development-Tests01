@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -11,28 +12,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.AssignmentRepository;
 import domain.Assignment;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
 import forms.AssignmentForm;
+import repositories.AssignmentRepository;
 
 @Service
 @Transactional
 public class AssignmentService {
 
 	@Autowired
-	private AssignmentRepository repository;
+	private AssignmentRepository	repository;
 	@Autowired
-	private TeacherService teacherService;
+	private TeacherService			teacherService;
 	@Autowired
-	private SubjectService subjectService;
+	private SubjectService			subjectService;
 	@Autowired
-	private StudentService studentService;
+	private StudentService			studentService;
 	@Autowired
-	private GroupService groupService;
+	private GroupService			groupService;
+
 
 	public AssignmentService() {
 		super();
@@ -81,12 +83,10 @@ public class AssignmentService {
 	 * @param subjectId
 	 * @return
 	 */
-	public Collection<Assignment> findAllPrincipalBySubjectId(
-			final int subjectId) {
+	public Collection<Assignment> findAllPrincipalBySubjectId(final int subjectId) {
 		// TODO Auto-generated method stub
 
-		return this.repository.findAllTeacherIdSubjectId(this.teacherService
-				.checkPrincipal().getId(), subjectId);
+		return this.repository.findAllTeacherIdSubjectId(this.teacherService.checkPrincipal().getId(), subjectId);
 	}
 
 	public Assignment reconstruct(final AssignmentForm assignmentForm) {
@@ -117,8 +117,7 @@ public class AssignmentService {
 	 */
 	public Assignment findOnePrinicpal(final int q) {
 		// TODO Auto-generated method stub
-		return this.repository.findOneTeacherIdAssignmentId(this.teacherService
-				.checkPrincipal().getId(), q);
+		return this.repository.findOneTeacherIdAssignmentId(this.teacherService.checkPrincipal().getId(), q);
 	}
 
 	public Assignment save(final Assignment assignment, final Subject subject) {
@@ -156,7 +155,7 @@ public class AssignmentService {
 
 	public Collection<Submission> findAllByGroupId(final int id) {
 		Assert.notNull(id);
-		Assert.isTrue(this.groupService.exists(id));
+		Assert.isTrue(this.repository.exists(id));
 		return this.repository.findAllByGroupId(id);
 	}
 

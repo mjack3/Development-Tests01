@@ -35,10 +35,14 @@
 
 <br/>
 
+
+
+<!--  -->
+
 <security:authorize access="isAnonymous()">
 
 	<acme:list
-		entityUrl="{teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, category:category/view.do, assigments:assignment/list.do}"
+		entityUrl="{teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,administator:administrator/view.do, category:category/view.do, assigments:assignment/list.do}"
 		list="${subject}" variable="e" requestURI="${requestURI}"
 		hidden_fields="administrator,activities,assigments,bulletins,groups,students"
 		pagesize="6">
@@ -59,9 +63,9 @@
 <security:authorize access="hasRole('STUDENT')">
 
 	<acme:list
-		entityUrl="{groups:group/student/list.do,bulletins:bulletin/actor/list.do, teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, category:category/view.do, assigments:assignment/list.do}"
+		entityUrl="{groups:group/student/list.do,bulletins:bulletin/actor/list.do, teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,activities:activity/list.do,activities:activity/list.do, administator:administrator/view.do, category:category/view.do, assigments:assignment/list.do}"
 		list="${subject}" variable="e" requestURI="${requestURI}"
-		hidden_fields="administrator,activities,assigments,students"
+		hidden_fields="administrator,students"
 		pagesize="6">
 		<td><a href="bulletin/actor/create.do?q=${e.id}"> <spring:message
 					code="bulletin.create" />
@@ -110,22 +114,24 @@
 <security:authorize access="hasRole('TEACHER')">
 
 	<acme:list
-		entityUrl="{groups:group/student/list.do,bulletins:bulletin/actor/list.do, teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,  administator:administrator/view.do, category:category/view.do, assigments:assignment/list.do}"
+		entityUrl="{groups:group/student/list.do,bulletins:bulletin/actor/list.do,teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,activities:activity/list.do,category:category/view.do,assigments:assignment/list.do}"
 		list="${subject}" variable="e" requestURI="${requestURI}"
-		hidden_fields="administrator,activities,assigments,students"
+		hidden_fields="administrator,students"
 		pagesize="6">
 		<td><a href="bulletin/actor/create.do?q=${e.id}"> <spring:message
 					code="bulletin.create" />
 		</a></td>
 		<jstl:if test="${principal.subjects.contains(e)}">
-			<td><a href="activity/teacher/list.do?subjectId=${e.id }"><spring:message
-						code="subject.activities" /> </a></td>
+			<td><a href="activity/teacher/create.do?q=${e.id}"><spring:message
+						code="subject.activities.create" /> </a></td>
 			
 			<td>
-		<a href="assignment/teacher/list.do?subjectId=${e.id}"><spring:message
-					code="subject.assigments" /> </a>
-			</td>
+			</jstl:if>
+			<jstl:if test="${principal.subjects.contains(e)}">
+			<td><a href="assignment/teacher/create.do?q=${e.id}"><spring:message
+						code="subject.assigments.create" /> </a></td>
 			
+			<td>
 			</jstl:if>
 	</acme:list>
 

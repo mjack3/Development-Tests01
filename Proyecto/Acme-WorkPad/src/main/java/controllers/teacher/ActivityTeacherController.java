@@ -48,11 +48,11 @@ public class ActivityTeacherController extends AbstractController {
 	 */
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int subjectId) {
+	public ModelAndView create(@RequestParam final int q) {
 		final ModelAndView resul;
 
 		final ActivityForm activityForm = new ActivityForm();
-		activityForm.setSubjectId(subjectId);
+		activityForm.setSubjectId(q);
 		resul = this.createCreateModelAndView(activityForm);
 
 		return resul;
@@ -84,7 +84,7 @@ public class ActivityTeacherController extends AbstractController {
 
 				final Subject subject = this.subjectService.findOnePrincipal(activityForm.getSubjectId());
 				this.activityService.save(activity, subject);
-				resul = new ModelAndView("redirect:list.do?subjectId=" + subject.getId());
+				resul = new ModelAndView("redirect:/activity/list.do?q=" + subject.getId());
 
 			} catch (final Throwable oops) {
 				resul = this.createCreateModelAndView(activityForm, "activity.commit.error");
@@ -111,17 +111,16 @@ public class ActivityTeacherController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam final int subjectId) {
+	public ModelAndView list(@RequestParam final int q) {
 		final ModelAndView resul = new ModelAndView("activity/list");
 		School school = schoolService.findAll().iterator().next();
 		resul.addObject("image", school.getBanner());
 
-		final Subject subject = this.subjectService.findOnePrincipal(subjectId);
+		final Subject subject = this.subjectService.findOnePrincipal(q);
 		final Collection<Activity> activities = this.teacherService.findAllActivitiesBySubject(subject);
 
 		resul.addObject("activities", activities);
 		resul.addObject("requestURI", "activity/teacher/list.do");
-		resul.addObject("subjectId", subjectId);
 
 		return resul;
 	}
@@ -155,7 +154,7 @@ public class ActivityTeacherController extends AbstractController {
 
 				this.activityService.save(activity);
 				final Subject subject = this.subjectService.findSubjectByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), activity.getId());
-				resul = new ModelAndView("redirect:list.do?subjectId=" + subject.getId());
+				resul = new ModelAndView("redirect:/activity/list.do?q=" + subject.getId());
 
 			} catch (final Throwable oops) {
 				resul = this.createEditModelAndView(activity, "activity.commit.error");
@@ -174,7 +173,7 @@ public class ActivityTeacherController extends AbstractController {
 			final Subject subject = this.subjectService.findSubjectByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), activity.getId());
 
 			this.activityService.delete(activity);
-			resul = new ModelAndView("redirect:list.do?subjectId=" + subject.getId());
+			resul = new ModelAndView("redirect:/activity/list.do?q=" + subject.getId());
 
 		} catch (final Throwable oops) {
 			resul = new ModelAndView("redirect:/welcome/index.do");
@@ -196,6 +195,7 @@ public class ActivityTeacherController extends AbstractController {
 		resul.addObject("image", school.getBanner());
 
 		resul.addObject("activity", activity);
+
 		resul.addObject("message", message);
 		resul.addObject("requestURI", "activity/teacher/edit.do");
 		resul.addObject("type", "edit");

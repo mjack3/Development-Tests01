@@ -19,7 +19,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 	
-	<acme:list variable="e" requestURI="${requestURI }" list="${assignments }" >
+	<acme:list variable="e" requestURI="${requestURI }" list="${assignments}"  entityUrl="{submission:submission/list.do}">
 	<a class="btn btn-primary" href="submission/student/create.do?assignmentId=${e.id}"> <spring:message code="assignment.submit" /> </a>
 	</acme:list>
 	

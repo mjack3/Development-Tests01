@@ -19,6 +19,18 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 	
-	<acme:list deleteUrl="assignment/teacher/delete.do" editUrl="assignment/teacher/edit.do" variable="e" entityUrl="{submission:submission/teacher/list.do}" requestURI="${requestURI }" list="${assigments }" />
+	<acme:list  variable="e"  requestURI="${requestURI}" list="${assigments}" entityUrl="{submission:submission/teacher/list.do}">
+	<security:authorize access="hasRole('TEACHER')" >
+	<jstl:if test="${myactivities.contains(e)}">
+	<td>
+	<a href="assignment/teacher/edit.do?q=${e.id}"><spring:message code="acme.edit"></spring:message></a>
+	<td/>
 	
-		<a class="btn btn-primary" href="assignment/teacher/create.do?subjectId=${subjectId }"> <spring:message code="activity.create" /> </a>
+	<td>
+	<a href="assignment/teacher/delete.do?q=${e.id}"><spring:message code="acme.delete"></spring:message></a>
+	<td/>
+	</jstl:if>
+	</security:authorize>
+	</acme:list>
+
+	

@@ -40,11 +40,11 @@ public class AssigmentTeacherController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int subjectId) {
+	public ModelAndView create(@RequestParam final int q) {
 		ModelAndView resul;
 
 		final AssignmentForm assignmentForm = new AssignmentForm();
-		assignmentForm.setSubjectId(subjectId);
+		assignmentForm.setSubjectId(q);
 		resul = this.createEditModelAndView(assignmentForm);
 
 		return resul;
@@ -84,7 +84,7 @@ public class AssigmentTeacherController extends AbstractController {
 				final Subject subject = this.subjectService.findOnePrincipal(assignmentForm.getSubjectId());
 				assignment = this.assignmentService.save(assignment, subject);
 
-				resul = new ModelAndView("redirect:/assignment/teacher/list.do?subjectId=" + subject.getId());
+				resul = new ModelAndView("redirect:/assignment/list.do?q=" + subject.getId());
 
 			} catch (final Throwable oops) {
 				resul = this.createEditModelAndView(assignmentForm, "assignment.commit.error");
@@ -161,7 +161,7 @@ public class AssigmentTeacherController extends AbstractController {
 			this.subjectService.update(subject);
 
 			this.assignmentService.delete(assignment);
-			resul = new ModelAndView("redirect:/assignment/teacher/list.do?subjectId=" + subject.getId());
+			resul = new ModelAndView("redirect:/assignment/list.do?q=" + subject.getId());
 
 		} catch (final Throwable oops) {
 			resul = new ModelAndView("redirect:/welcome/index.do");

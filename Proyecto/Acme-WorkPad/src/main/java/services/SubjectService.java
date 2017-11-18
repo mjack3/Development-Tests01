@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.SubjectRepository;
-import security.LoginService;
 import domain.Activity;
 import domain.Administrator;
 import domain.Assignment;
@@ -23,6 +21,8 @@ import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
+import repositories.SubjectRepository;
+import security.LoginService;
 
 @Transactional
 @Service
@@ -211,13 +211,6 @@ public class SubjectService {
 
 		final Subject subject = this.repository.findOne(subjectId);
 
-		if (LoginService.hasRole("TEACHER")) {
-			final Teacher teacher = this.teacherService.checkPrincipal();
-			Assert.isTrue(teacher.getSubjects().contains(subject));
-		} else if (LoginService.hasRole("STUDENT")) {
-			final Student student = this.studentService.checkPrincipal();
-			Assert.isTrue(student.getSubjects().contains(subject));
-		}
 		return subject;
 	}
 	/**
