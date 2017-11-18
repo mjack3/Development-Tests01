@@ -105,9 +105,13 @@
         
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/list.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/create.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/createSubFolder.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/delete.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/deleteSubFolder.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/save.do"/>
         <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/edit.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/editSubFolder.do"/>
+        <security:intercept-url access="isAuthenticated()" pattern="/folder/actor/listFolder.do"/>
         
        
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/list.do"/>

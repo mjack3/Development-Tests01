@@ -12,14 +12,9 @@
 
 
 <div class="btn-group btn-group-xs" role="group" aria-label="label">
-	<button onclick="javascript:location.href='folder/actor/create.do'"
+	<button onclick="javascript:location.href='folder/actor/createSubFolder.do?folder=${folder.id}'"
 		type="button" class="btn btn-default">
 		<spring:message code="folder.new" />
-	</button>
-	<button
-		onclick="javascript:location.href='mailmessage/actor/create.do'"
-		type="button" class="btn btn-default">
-		<spring:message code="folder.message.new" />
 	</button>
 </div>
 <table class="table table-over">
@@ -29,32 +24,43 @@
 			<th><spring:message code="folder.messages" /></th>
 		</tr>
 	</thead>
-	<jstl:forEach items="${folder}" var="e">
+	<jstl:forEach items="${folder.folderChildren}" var="c">
 		<tr>
-			<td><a href="folder/actor/listFolder.do?folder=${e.id}">${e.folderName}</a></td>
-			
+			<td><a href="folder/actor/listFolder.do?folder=${c.id}">${c.folderName}</a></td>
+
 			<!-- Si tiene subcarpetas, no se muestra cuantos mensajes tiene dicha carpeta -->
-			<jstl:if
-				test="${fn:length(e.folderChildren) == 0}">
-				<td><span class="badge">${fn:length(e.messages)}</span></td>
+			<jstl:if test="${fn:length(c.folderChildren) == 0}">
+				<td><span class="badge">${fn:length(c.messages)}</span></td>
 			</jstl:if>
-			<jstl:if
-				test="${fn:length(e.folderChildren) != 0}">
+			<jstl:if test="${fn:length(c.folderChildren) != 0}">
 				<td><span class="badge"></span></td>
 			</jstl:if>
 
 			<td><jstl:if
-					test="${e.folderName ne 'Inbox' and e.folderName ne 'Outbox' and e.folderName ne 'Trashbox' and e.folderName ne 'Spambox'}">
-					<a href="folder/actor/edit.do?folder=${e.id}"><spring:message
-							code="acme.edit" /></a>
+					test="${c.folderName ne 'Inbox' and c.folderName ne 'Outbox' and c.folderName ne 'Trashbox' and c.folderName ne 'Spambox'}">
+						<a href="folder/actor/editSubFolder.do?folder=${c.id}"><spring:message
+								code="acme.edit" /></a>
 				</jstl:if></td>
 			<td><jstl:if
-					test="${e.folderName ne 'Inbox' and e.folderName ne 'Outbox' and e.folderName ne 'Trashbox' and e.folderName ne 'Spambox' and fn:length(e.folderChildren) == 0}">
-					<a href="folder/actor/delete.do?folder=${e.id}"><spring:message
+					test="${c.folderName ne 'Inbox' and c.folderName ne 'Outbox' and c.folderName ne 'Trashbox' and c.folderName ne 'Spambox'}">
+					<jstl:if test="${fn:length(c.folderChildren)==0}">
+						<a href="folder/actor/deleteSubFolder.do?folder=${c.id}"><spring:message
 							code="acme.delete" /></a>
+					</jstl:if>
+					
 				</jstl:if></td>
 		</tr>
 	</jstl:forEach>
+	<tr>
+			<td>
+				<a href="mailmessage/actor/list.do?folder=${folder.id}">
+					<spring:message code="mailmessage.view.messages" />
+				</a>
+			</td>	
+			
+			<td><span class="badge">${fn:length(folder.messages)}</span></td>
+	</tr>
+
 </table>
 
 

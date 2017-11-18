@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Actor;
-import domain.Folder;
-import domain.MailMessage;
-import domain.School;
 import security.LoginService;
 import services.FolderService;
 import services.MailMessageService;
 import services.SchoolService;
+import domain.Actor;
+import domain.Folder;
+import domain.MailMessage;
+import domain.School;
 
 @Controller
 @RequestMapping("/mailmessage")
@@ -36,36 +36,35 @@ public class MailMessageController extends AbstractController {
 
 
 	@RequestMapping(value = "/actor/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam(required = false) String error) {
+	public ModelAndView create(@RequestParam(required = false) final String error) {
 		ModelAndView result;
 
-		result = createNewModelAndView(mailmessageService.create(), null);
+		result = this.createNewModelAndView(this.mailmessageService.create(), null);
 		result.addObject("error", error);
 
 		return result;
 	}
 
 	@RequestMapping(value = "/actor/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@RequestParam String subject, @RequestParam String body, @RequestParam String priority, @RequestParam String mail) {
+	public ModelAndView saveCreate(@RequestParam final String subject, @RequestParam final String body, @RequestParam final String priority, @RequestParam final String mail) {
 		ModelAndView result;
-		if (subject == null || subject == "" || body == null || body == "") {
-			result = createNewModelAndView(mailmessageService.create(), "commit.error");
-		} else {
+		if (subject == null || subject == "" || body == null || body == "")
+			result = this.createNewModelAndView(this.mailmessageService.create(), "commit.error");
+		else
 			try {
-				mailmessageService.send(subject, body, priority, mail);
+				this.mailmessageService.send(subject, body, priority, mail);
 				result = new ModelAndView("redirect:/folder/actor/list.do");
-			} catch (Exception e) {
-				return create(e.getMessage());
+			} catch (final Exception e) {
+				return this.create(e.getMessage());
 			}
-		}
 
 		return result;
 	}
 
-	protected ModelAndView createNewModelAndView(MailMessage mailmessage, String message) {
+	protected ModelAndView createNewModelAndView(final MailMessage mailmessage, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("mailmessage/create");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", mailmessage);
 		result.addObject("message", message);
@@ -73,12 +72,12 @@ public class MailMessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/actor/list", method = RequestMethod.GET)
-	public ModelAndView list(HttpServletRequest request, @RequestParam Folder folder) {
+	public ModelAndView list(final HttpServletRequest request, @RequestParam final Folder folder) {
 		ModelAndView result;
 
 		request.getSession().setAttribute("folder_id", folder.getId());
 		result = new ModelAndView("mailmessage/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", folder.getMessages());
 
@@ -86,29 +85,29 @@ public class MailMessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/actor/view", method = RequestMethod.GET)
-	public ModelAndView view(@RequestParam MailMessage q) {
+	public ModelAndView view(@RequestParam final MailMessage q) {
 		ModelAndView result;
 		result = new ModelAndView("mailmessage/view");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", q);
 		return result;
 	}
 
 	@RequestMapping(value = "/actor/move", method = RequestMethod.GET)
-	public ModelAndView move(HttpServletRequest request, @RequestParam MailMessage m, @RequestParam Folder f) {
+	public ModelAndView move(final HttpServletRequest request, @RequestParam final MailMessage m, @RequestParam final Folder f) {
 
-		mailmessageService.moveTo(m, f);
+		this.mailmessageService.moveTo(m, f);
 
-		return list(request, f);
+		return this.list(request, f);
 	}
 
 	@RequestMapping(value = "/actor/moveTo", method = RequestMethod.GET)
-	public ModelAndView moveTo(@RequestParam MailMessage q) {
+	public ModelAndView moveTo(@RequestParam final MailMessage q) {
 		ModelAndView result;
-		Actor a = loginService.selectSelf();
+		final Actor a = this.loginService.selectSelf();
 		result = new ModelAndView("mailmessage/moveTo");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", q);
 		result.addObject("folders", a.getFolders());
@@ -116,64 +115,63 @@ public class MailMessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/actor/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam MailMessage mailmessage) {
+	public ModelAndView edit(@RequestParam final MailMessage mailmessage) {
 		ModelAndView result;
 		result = new ModelAndView("mailmessage/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("mailmessage", mailmessage);
 		return result;
 	}
 
 	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView deleteEdit(@Valid MailMessage mailmessage) {
+	public ModelAndView deleteEdit(@Valid final MailMessage mailmessage) {
 		ModelAndView result;
 
 		try {
-			mailmessageService.delete(mailmessage);
+			this.mailmessageService.delete(mailmessage);
 			result = new ModelAndView("redirect:/mailmessage/list.do");
-		} catch (Throwable th) {
-			result = createEditModelAndView(mailmessage, "mailmessage.commit.error");
+		} catch (final Throwable th) {
+			result = this.createEditModelAndView(mailmessage, "mailmessage.commit.error");
 		}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/actor/delete", method = RequestMethod.GET)
-	public ModelAndView delete(HttpServletRequest request, @RequestParam MailMessage q) {
+	public ModelAndView delete(final HttpServletRequest request, @RequestParam final MailMessage q) {
 		ModelAndView result;
 
-		int folder_id = (int) request.getSession().getAttribute("folder_id");
+		final int folder_id = (int) request.getSession().getAttribute("folder_id");
 
 		try {
-			mailmessageService.delete(q);
+			this.mailmessageService.delete(q);
 			request.getSession().removeAttribute("folder_id");
-			result = list(request, folderService.findOne(folder_id));
-		} catch (Throwable th) {
-			result = list(request, folderService.findOne(folder_id));
+			result = this.list(request, this.folderService.findOne(folder_id));
+		} catch (final Throwable th) {
+			result = this.list(request, this.folderService.findOne(folder_id));
 		}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveEdit(@Valid MailMessage mailmessage, BindingResult binding) {
+	public ModelAndView saveEdit(@Valid final MailMessage mailmessage, final BindingResult binding) {
 		ModelAndView result;
-		if (binding.hasErrors()) {
-			result = createEditModelAndView(mailmessage, null);
-		} else {
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(mailmessage, null);
+		else
 			try {
-				mailmessageService.save(mailmessage);
+				this.mailmessageService.save(mailmessage);
 				result = new ModelAndView("redirect:/mailmessage/list.do");
-			} catch (Throwable th) {
-				result = createEditModelAndView(mailmessage, "mailmessage.commit.error");
+			} catch (final Throwable th) {
+				result = this.createEditModelAndView(mailmessage, "mailmessage.commit.error");
 			}
-		}
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(MailMessage mailmessage, String message) {
-		ModelAndView result = new ModelAndView("mailmessage/edit");
+	protected ModelAndView createEditModelAndView(final MailMessage mailmessage, final String message) {
+		final ModelAndView result = new ModelAndView("mailmessage/edit");
 
 		result.addObject("mailmessage", mailmessage);
 		result.addObject("message", message);

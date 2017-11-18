@@ -13,6 +13,10 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.TeacherRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Activity;
 import domain.ActivityRecord;
 import domain.Assignment;
@@ -24,10 +28,6 @@ import domain.SocialIdentity;
 import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
-import repositories.TeacherRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Transactional
 @Service
@@ -144,7 +144,7 @@ public class TeacherService {
 	 * @return profesor creado
 	 */
 
-	public Teacher save(Teacher teacher) {
+	public Teacher save(final Teacher teacher) {
 
 		Assert.notNull(teacher);
 		Teacher m = null;
@@ -156,7 +156,6 @@ public class TeacherService {
 			m.setPhone(teacher.getPhone());
 			m.setPostalAddress(teacher.getPostalAddress());
 			m.setSurname(teacher.getSurname());
-			m.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 
 			m = this.repository.save(m);
 		} else {
@@ -186,8 +185,8 @@ public class TeacherService {
 
 	}
 
-	public boolean exists(Integer id) {
-		return repository.exists(id);
+	public boolean exists(final Integer id) {
+		return this.repository.exists(id);
 	}
 
 	/**

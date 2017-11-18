@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.MailMessageRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Folder;
 import domain.MailMessage;
 import domain.Priority;
 import domain.SpamWord;
-import repositories.MailMessageRepository;
-import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -48,191 +48,185 @@ public class MailMessageService {
 
 	//CRUD Methods
 
-	public void send(String subject, String body, String priority, String recipient) {
+	public void send(final String subject, final String body, final String priority, final String recipient) {
 		try {
-			MailMessage mailMessage = new MailMessage();
+			final MailMessage mailMessage = new MailMessage();
 			mailMessage.setSubject(subject);
 			mailMessage.setSent(new Date());
 			mailMessage.setBody(body);
 
-			Priority prio = new Priority();
+			final Priority prio = new Priority();
 			prio.setValue(priority);
 
 			mailMessage.setPriority(prio);
 
-			Actor from = mailMessageRepository.selectActorByMail(recipient, recipient);
+			final Actor from = this.mailMessageRepository.selectActorByMail(recipient, recipient);
 
 			Assert.notNull(from);
 
 			mailMessage.setRecipient(from);
 
-			UserAccount userAccount = LoginService.getPrincipal();
-			Actor by = mailMessageRepository.selectSelf(userAccount.getUsername());
+			final UserAccount userAccount = LoginService.getPrincipal();
+			final Actor by = this.mailMessageRepository.selectSelf(userAccount.getUsername());
 
 			mailMessage.setSender(by);
 
-			MailMessage saved = mailMessageRepository.save(mailMessage);
+			final MailMessage saved = this.mailMessageRepository.save(mailMessage);
 
-			for (Folder e : by.getFolders()) {
+			for (final Folder e : by.getFolders())
 				if (e.getFolderName().equalsIgnoreCase("outbox")) {
 					e.getMessages().add(saved);
-					folderService.save(e);
+					this.folderService.save(e);
 
 					break;
 				}
-			}
 
 			boolean is_spam = false;
-			String lower = body.toLowerCase();
+			final String lower = body.toLowerCase();
 
-			for (SpamWord e : spamWordService.findAll()) {
+			for (final SpamWord e : this.spamWordService.findAll())
 				if (lower.contains(e.getName().toLowerCase())) {
 					is_spam = true;
 					break;
 				}
-			}
 
-			MailMessage saved_2 = mailMessageRepository.save(mailMessage);
+			final MailMessage saved_2 = this.mailMessageRepository.save(mailMessage);
 
-			for (Folder e : from.getFolders()) {
+			for (final Folder e : from.getFolders()) {
 				if (e.getFolderName().equalsIgnoreCase("Inbox") && !is_spam) {
 					e.getMessages().add(saved_2);
-					folderService.save(e);
+					this.folderService.save(e);
 
 					break;
 				}
 
 				if (e.getFolderName().equalsIgnoreCase("Spambox") && is_spam) {
 					e.getMessages().add(saved_2);
-					folderService.save(e);
+					this.folderService.save(e);
 
 					break;
 				}
 			}
 
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			throw new IllegalArgumentException(ex);
 		}
 	}
 
-	public void moveTo(MailMessage m, Folder f) {
-		Actor a = loginService.selectSelf();
-		List<Folder> folders = a.getFolders();
+	public void moveTo(final MailMessage m, final Folder f) {
+		final Actor a = this.loginService.selectSelf();
+		final List<Folder> folders = a.getFolders();
 
 		Folder in = null;
 
-		for (Folder e : folders) {
+		for (final Folder e : folders)
 			if (e.getMessages().contains(m)) {
 				in = e;
 				break;
 			}
-		}
 
 		if (in != null) {
 			in.getMessages().remove(m);
-			List<MailMessage> messages = new LinkedList<MailMessage>(f.getMessages());
+			final List<MailMessage> messages = new LinkedList<MailMessage>(f.getMessages());
 			messages.add(m);
 
-			folderService.save(in);
+			this.folderService.save(in);
 			f.setMessages(messages);
 
-			folderService.save(f);
+			this.folderService.save(f);
 		}
 	}
 
-	public void delete(Iterable<MailMessage> entities) {
-		mailMessageRepository.delete(entities);
+	public void delete(final Iterable<MailMessage> entities) {
+		this.mailMessageRepository.delete(entities);
 	}
 
 	public MailMessage create() {
-		MailMessage message = new MailMessage();
+		final MailMessage message = new MailMessage();
 
 		message.setBody(new String());
 
-		Priority priority = new Priority();
+		final Priority priority = new Priority();
 		priority.setValue("NEUTRAL");
 
 		message.setPriority(priority);
-		message.setRecipient(administratorService.create());
-		message.setSender(administratorService.create());
+		//		message.setRecipient(administratorService.create());
+		//		message.setSender(administratorService.create());
 		message.setSent(new Date());
 
 		return message;
 	}
 
-	public void delete(MailMessage entity) {
+	public void delete(final MailMessage entity) {
 		Assert.notNull(entity);
-		Actor a = loginService.selectSelf();
-		List<Folder> folders = a.getFolders();
+		final Actor a = this.loginService.selectSelf();
+		final List<Folder> folders = a.getFolders();
 
 		Folder folder = null;
 
-		for (Folder e : folders) {
+		for (final Folder e : folders)
 			if (e.getMessages().contains(entity)) {
 				folder = e;
 				break;
 			}
-		}
 
 		Assert.notNull(folder);
 
 		if (folder.getFolderName().equalsIgnoreCase("Trashbox")) {
 			folder.getMessages().remove(entity);
 
-			folderService.save(folder);
-			mailMessageRepository.delete(entity);
-		} else {
-			for (Folder e : folders) {
+			this.folderService.save(folder);
+			this.mailMessageRepository.delete(entity);
+		} else
+			for (final Folder e : folders)
 				if (e.getFolderName().equalsIgnoreCase("Trashbox")) {
 					folder.getMessages().remove(entity);
-					folderService.save(folder);
-					folderService.flush();
+					this.folderService.save(folder);
+					this.folderService.flush();
 
 					e.getMessages().add(entity);
-					folderService.save(e);
-					folderService.flush();
+					this.folderService.save(e);
+					this.folderService.flush();
 
 					break;
 				}
-			}
-		}
 	}
 
 	public List<MailMessage> findAll() {
-		return mailMessageRepository.findAll();
+		return this.mailMessageRepository.findAll();
 	}
 
-	public MailMessage findOne(Integer arg0) {
+	public MailMessage findOne(final Integer arg0) {
 		Assert.notNull(arg0);
 
-		return mailMessageRepository.findOne(arg0);
+		return this.mailMessageRepository.findOne(arg0);
 	}
 
-	public List<MailMessage> save(List<MailMessage> entities) {
+	public List<MailMessage> save(final List<MailMessage> entities) {
 		Assert.notNull(entities);
 		Assert.noNullElements(entities.toArray());
 
-		return mailMessageRepository.save(entities);
+		return this.mailMessageRepository.save(entities);
 	}
 
-	public MailMessage save(MailMessage arg0) {
+	public MailMessage save(final MailMessage arg0) {
 		Assert.notNull(arg0);
-		List<String> actors = administratorService.allActorName();
+		final List<String> actors = this.administratorService.allActorName();
 		Assert.isTrue(actors.contains(arg0.getRecipient().getUserAccount().getUsername()));
 		Assert.isTrue(actors.contains(arg0.getSender().getUserAccount().getUsername()));
-		return mailMessageRepository.save(arg0);
+		return this.mailMessageRepository.save(arg0);
 	}
 
 	//Other Methods
 
 	public void flush() {
-		mailMessageRepository.flush();
+		this.mailMessageRepository.flush();
 	}
 
-	public List<Folder> messagesByFolder(int folder_id) {
+	public List<Folder> messagesByFolder(final int folder_id) {
 		Assert.notNull(folder_id);
 
-		return mailMessageRepository.messagesByFolder(folder_id);
+		return this.mailMessageRepository.messagesByFolder(folder_id);
 	}
 
 }

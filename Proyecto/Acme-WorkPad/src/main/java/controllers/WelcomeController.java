@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Actor;
-import domain.School;
 import security.LoginService;
 import services.SchoolService;
+import domain.Actor;
+import domain.School;
 
 @Controller
 @RequestMapping("/welcome")
@@ -51,15 +51,15 @@ public class WelcomeController extends AbstractController {
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		moment = formatter.format(new Date());
 
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 
 		result = new ModelAndView("welcome/index");
+
 		if (LoginService.isAnyAuthenticated() == true) {
-			Actor a = loginService.findActorByUsername(LoginService.getPrincipal().getUsername());
+			final Actor a = this.loginService.findActorByUsername(LoginService.getPrincipal().getUsername());
 			result.addObject("name", a.getName());
-		} else {
+		} else
 			result.addObject("name", name);
-		}
 		result.addObject("moment", moment);
 		result.addObject("image", school.getBanner());
 		result.addObject("banner", school.getName());

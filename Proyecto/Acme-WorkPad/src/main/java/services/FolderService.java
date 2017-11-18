@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.FolderRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Folder;
 import domain.MailMessage;
 import domain.Student;
 import domain.Teacher;
-import repositories.FolderRepository;
-import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -40,9 +40,12 @@ public class FolderService {
 	@Autowired
 	private MailMessageService		mailmessageService;
 
+	@Autowired
+	private ActorService			actorService;
+
 
 	public Folder create() {
-		Folder folder = new Folder();
+		final Folder folder = new Folder();
 
 		folder.setFolderName(new String());
 		folder.setMessages(new ArrayList<MailMessage>());
@@ -51,21 +54,21 @@ public class FolderService {
 	}
 
 	public List<Folder> createDefaultFolders() {
-		List<Folder> folders = new ArrayList<Folder>();
+		final List<Folder> folders = new ArrayList<Folder>();
 
-		Folder inbox = create();
+		final Folder inbox = this.create();
 		inbox.setFolderName("Inbox");
 		inbox.setMessages(new LinkedList<MailMessage>());
 
-		Folder outbox = create();
+		final Folder outbox = this.create();
 		outbox.setFolderName("Outbox");
 		outbox.setMessages(new LinkedList<MailMessage>());
 
-		Folder trashbox = create();
+		final Folder trashbox = this.create();
 		trashbox.setFolderName("Trashbox");
 		trashbox.setMessages(new LinkedList<MailMessage>());
 
-		Folder spambox = create();
+		final Folder spambox = this.create();
 		spambox.setFolderName("Spambox");
 		spambox.setMessages(new LinkedList<MailMessage>());
 
@@ -77,67 +80,94 @@ public class FolderService {
 		return folders;
 	}
 
-	public Actor selectByUsername(String username) {
-		return folderRepository.selectByUsername(username);
+	public Actor selectByUsername(final String username) {
+		return this.folderRepository.selectByUsername(username);
 	}
 
-	public Folder saveCreate(Folder folder) {
+	public Folder saveCreate(final Folder folder) {
 		Assert.notNull(folder);
 
-		Folder saved = folderRepository.save(folder);
-		UserAccount userAccount = LoginService.getPrincipal();
+		final Folder saved = this.folderRepository.save(folder);
+		final UserAccount userAccount = LoginService.getPrincipal();
 
-		Actor actor = folderRepository.selectByUsername(userAccount.getUsername());
+		final Actor actor = this.folderRepository.selectByUsername(userAccount.getUsername());
 		actor.getFolders().add(saved);
 
-		if (actor instanceof Student) {
-			studentService.save((Student) actor);
-		}if (actor instanceof Teacher) {
-			teacherService.save((Teacher) actor);
-
-		} else {
-			administratorService.save((Administrator) actor);
-		}
+		if (actor instanceof Student)
+			this.studentService.save((Student) actor);
+		else if (actor instanceof Teacher)
+			this.teacherService.save((Teacher) actor);
+		else
+			this.administratorService.save((Administrator) actor);
 
 		return saved;
 	}
 
-	public Folder save(Folder entity) {
-		return folderRepository.save(entity);
+	public Folder save(final Folder entity) {
+		return this.folderRepository.save(entity);
 	}
 
-	public List<Folder> save(Iterable<Folder> entities) {
-		return folderRepository.save(entities);
+	public List<Folder> save(final Iterable<Folder> entities) {
+		return this.folderRepository.save(entities);
 	}
 
-	public void delete(Folder entity) {
+	public void delete(final Folder entity) {
 		Assert.notNull(entity);
 
-		UserAccount userAccount = LoginService.getPrincipal();
-		Actor actor = folderRepository.selectByUsername(userAccount.getUsername());
+		final UserAccount userAccount = LoginService.getPrincipal();
+		final Actor actor = this.folderRepository.selectByUsername(userAccount.getUsername());
 		actor.getFolders().remove(entity);
-		if (actor instanceof Student) {
-			studentService.save((Student) actor);
-		} else if (actor instanceof Teacher) {
-			teacherService.save((Teacher) actor);
-
-		} else {
-			administratorService.save((Administrator) actor);
-		}
-		mailmessageService.delete(entity.getMessages());
-		folderRepository.delete(entity);
+		if (actor instanceof Student)
+			this.studentService.save((Student) actor);
+		else if (actor instanceof Teacher)
+			this.teacherService.save((Teacher) actor);
+		else
+			this.administratorService.save((Administrator) actor);
+		this.mailmessageService.delete(entity.getMessages());
+		this.folderRepository.delete(entity);
 	}
 
-	public void delete(Iterable<Folder> entities) {
-		folderRepository.delete(entities);
+	public void delete(final Iterable<Folder> entities) {
+		this.folderRepository.delete(entities);
 	}
 
 	public void flush() {
-		folderRepository.flush();
+		this.folderRepository.flush();
 	}
 
-	public Folder findOne(Integer id) {
-		return folderRepository.findOne(id);
+	public Folder findOne(final Integer id) {
+		return this.folderRepository.findOne(id);
 	}
 
+	public List<Folder> findAllFolder(final Integer actorId) {
+		Assert.notNull(actorId);
+		final Actor actor = this.actorService.findOnePrincipal();
+
+		final List<Folder> folders = new ArrayList<Folder>();
+
+		for (final Folder f : actor.getFolders())
+			folders.addAll(FolderService.obtenerSubCarpetas(f));
+		return folders;
+
+	}
+
+	/**
+	 * Metodo recursivo que se utilizará para meterse por todas las ramas del arbol de carpetas y sacar una lista con todas las
+	 * carpetas que tenga un actor asociadas
+	 * 
+	 * @param folder
+	 * @return Lista de todas las carpetas que tiene un actor
+	 */
+	private static List<Folder> obtenerSubCarpetas(final Folder folder) {
+		final List<Folder> folders = new ArrayList<Folder>();
+
+		for (final Folder f : folder.getFolderChildren())
+			if (!f.getFolderChildren().isEmpty())
+				folders.addAll(FolderService.obtenerSubCarpetas(f));
+			else
+				folders.add(f);
+		if (!folder.getFolderChildren().isEmpty())
+			folders.add(folder);
+		return folders;
+	}
 }
