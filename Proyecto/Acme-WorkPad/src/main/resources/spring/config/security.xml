@@ -39,7 +39,7 @@
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/subject/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/activity/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/assignment/teacher/create.do"/>
-		
+		<security:intercept-url access="isAuthenticated()" pattern="/submission/teacher/list.do"/>
 		
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/submission/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/assignment/teacher/**"/>

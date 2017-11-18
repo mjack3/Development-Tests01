@@ -11,7 +11,7 @@
 <acme:list  list="${group}"  hidden_fields="students" requestURI="${requestURL}" entityUrl="{submission:submission/student/list.do}" variable="e" pagesize="6">
 
 <td><jstl:if
-				test="${isgroup==false and today.before(e.endDate)}">
+				test="${!isgroup and today.before(e.endDate)}">
 				<a href="group/student/subscribe.do?q=${e.id}"> <spring:message
 						code='group.registerSubject' /></a>
 			</jstl:if></td>

@@ -129,19 +129,9 @@ public class GroupController extends AbstractController {
 
 			System.out.println("-------------------- lista general-----------------");
 			boolean isgroup = false;
-			for (final Group g : this.grouptService.findAll()) {
-
-				System.out.println(!student.getGroups().contains(g));
-				isgroup = false;
-				if (!this.grouptService.studentByGroups(student.getId()).contains(g) && student.getSubjects().contains((this.subjectservice.findOne(q)))) {
-
-					System.out.println(this.subjectservice.subjectsByStudents(student.getId()).contains(this.subjectservice.findOne(q)));
-					System.out.println(!student.getGroups().contains(g));
-
+			for (Group a : subjectservice.findOne(q).getGroups()) {
+				if (a.getStudents().contains(student)) {
 					isgroup = true;
-
-				} else {
-					isgroup = false;
 					break;
 				}
 			}
