@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Group;
-import domain.School;
-import domain.Student;
-import domain.Subject;
-import domain.Teacher;
 import security.LoginService;
 import services.GroupService;
 import services.SchoolService;
 import services.StudentService;
 import services.SubjectService;
+import domain.Group;
+import domain.School;
+import domain.Student;
+import domain.Subject;
+import domain.Teacher;
 
 @Controller
 @RequestMapping("/group")
@@ -62,7 +62,7 @@ public class GroupController extends AbstractController {
 			resul = this.createNewModelAndView(this.grouptService.create(), subjectId, null);
 		else {
 			resul = new ModelAndView("master.page");
-			School school = schoolService.findAll().iterator().next();
+			final School school = this.schoolService.findAll().iterator().next();
 			resul.addObject("image", school.getBanner());
 			resul.addObject("message", "groupAlreadyExist");
 		}
@@ -105,7 +105,7 @@ public class GroupController extends AbstractController {
 	protected ModelAndView createNewModelAndView(final Group groupsubject, final int subjectId, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("group/create");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("group", groupsubject);
 		result.addObject("message", message);
@@ -119,7 +119,7 @@ public class GroupController extends AbstractController {
 		final Date today = new Date();
 
 		result = new ModelAndView("group/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("requestURL", "/group/student/list");
 		Student student = null;
@@ -129,12 +129,11 @@ public class GroupController extends AbstractController {
 
 			System.out.println("-------------------- lista general-----------------");
 			boolean isgroup = false;
-			for (Group a : subjectservice.findOne(q).getGroups()) {
+			for (final Group a : this.subjectservice.findOne(q).getGroups())
 				if (a.getStudents().contains(student)) {
 					isgroup = true;
 					break;
 				}
-			}
 			result.addObject("isgroup", isgroup);
 			System.out.println("-------------------- /lista general-----------------");
 
@@ -148,34 +147,35 @@ public class GroupController extends AbstractController {
 		this.subjectscond = false;
 
 		if (student != null) {
-
-			for (final Subject e : student.getSubjects())
-				subjects.add(e);
-			boolean isgroup = false;
-
-			System.out.println("--------------------mi lista -----------------");
-			for (final Group g : this.grouptService.findAll()) {
-				isgroup = false;
-				System.out.println(subjects.contains(this.subjectservice.findOne(q)));
-				for (final Student t : this.subjectservice.findOne(q).getStudents())
-					System.out.println(t.getName());
-
-				if (student.getSubjects().contains((this.subjectservice.findOne(q)))) {
-					System.out.println(subjects.contains(this.subjectservice.findOne(q)));
-					System.out.println(!student.getGroups().contains(g));
-					isgroup = true;
-				}
-				if (this.grouptService.studentByGroups(student.getId()).contains(g)) {
-					isgroup = false;
-					break;
-				}
-
-			}
-			result.addObject("isgroup", isgroup);
-			System.out.println("--------------------/mi lista -----------------");
-
-			result.addObject("today", today);
+			//
+			//			for (final Subject e : student.getSubjects())
+			//				subjects.add(e);
+			//			boolean isgroup = false;
+			//
+			//			System.out.println("--------------------mi lista -----------------");
+			//			for (final Group g : this.grouptService.findAll()) {
+			//				isgroup = false;
+			//				System.out.println(subjects.contains(this.subjectservice.findOne(q)));
+			//				for (final Student t : this.subjectservice.findOne(q).getStudents())
+			//					System.out.println(t.getName());
+			//
+			//				if (student.getSubjects().contains((this.subjectservice.findOne(q)))) {
+			//					System.out.println(subjects.contains(this.subjectservice.findOne(q)));
+			//					System.out.println(!student.getGroups().contains(g));
+			//					isgroup = true;
+			//				}
+			//				if (this.grouptService.studentByGroups(student.getId()).contains(g)) {
+			//					isgroup = false;
+			//					break;
+			//				}
+			//
+			//			}
+			//			result.addObject("isgroup", isgroup);
+			//			System.out.println("--------------------/mi lista -----------------");
+			//
+			//			result.addObject("today", today);
 		}
+		result.addObject("today", today);
 		if (teacher != null)
 			for (final Subject e : teacher.getSubjects())
 				subjects.add(e);
@@ -231,7 +231,7 @@ public class GroupController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("group/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("requestURL", "/group/student/mylist");
 		Student student = null;

@@ -27,18 +27,23 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 
-		
-	<acme:textbox code="submission.grade" path="grade"/> 
-	<br />
-	[0 - 100]
-	<br/>
-	
-	
+	<div class="form-group" style="width: 20%;">
+
+
+		<label> <spring:message code="submission.grade" />
+		</label> <br /> <input class="form-control" value="${grade}" type="number"
+			name="grade" max="100" min="0" />
+		<form:errors cssClass="error" path="grade" />
+		<br /> [0 - 100] <br />
+
+	</div>
 	<!-- Buttons -->
-		
+
 	<acme:submit name="save" code="submission.save" />
-	
-	<input onclick="window.history.back()" type="button" class="btn btn-warning" value="<spring:message code="submission.cancel" />">
-		
+
+	<input onclick="window.history.back()" type="button"
+		class="btn btn-warning"
+		value="<spring:message code="submission.cancel" />">
+
 
 </form:form>

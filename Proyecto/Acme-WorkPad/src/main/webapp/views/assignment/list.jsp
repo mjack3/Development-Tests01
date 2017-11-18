@@ -19,7 +19,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 	
-	<acme:list  variable="e"  requestURI="${requestURI}" list="${assigments}" entityUrl="{submission:submission/teacher/list.do}">
+	<acme:list  variable="e"  requestURI="${requestURI}" list="${assigments}" entityUrl="{submission:submission/teacher/listTask.do}">
 	<security:authorize access="hasRole('TEACHER')" >
 	<jstl:if test="${myactivities.contains(e)}">
 	<td>
