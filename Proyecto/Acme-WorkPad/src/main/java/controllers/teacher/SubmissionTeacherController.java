@@ -2,6 +2,7 @@
 package controllers.teacher;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class SubmissionTeacherController extends AbstractController {
 		School school = schoolService.findAll().iterator().next();
 		resul.addObject("image", school.getBanner());
 
-		final Collection<Submission> submissions = assignmentService.findAllByGroupId(q);
+		final Collection<Submission> submissions = assignmentService.findOne(q).getSubmission();
 		resul.addObject("submissions", submissions);
 		resul.addObject("requestURI", "submission/teacher/list.do");
 
@@ -88,8 +89,10 @@ public class SubmissionTeacherController extends AbstractController {
 	private ModelAndView createGradeModelAndView(final Submission submission, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("submission/grade");
-		School school = schoolService.findAll().iterator().next();
-		resul.addObject("image", school.getBanner());
+
+		List<School> school = schoolService.findAll();
+		resul.addObject("image", school.get(0).getBanner());
+
 		resul.addObject("submission", submission);
 		resul.addObject("requestParam", "submission/teacher/grade.do");
 		resul.addObject("message", message);
