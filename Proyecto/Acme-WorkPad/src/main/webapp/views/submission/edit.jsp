@@ -29,7 +29,7 @@
 	<form:hidden path="tryNumber" />	
 	<acme:textbox code="submission.content" path="content"/>
 	<br />
-	<acme:textbox code="submission.attachments" path="attachments" /><spring:message code="submission.attachments.format" />
+	<acme:textarea code="submission.attachments" path="attachments" /><spring:message code="submission.attachments.format" />
 	<br />
 	
 	

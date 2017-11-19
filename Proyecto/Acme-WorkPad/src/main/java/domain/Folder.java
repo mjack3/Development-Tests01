@@ -47,7 +47,6 @@ public class Folder extends DomainEntity {
 		this.messages = messages;
 	}
 
-	@NotNull
 	@OneToMany
 	public List<Folder> getFolderChildren() {
 		return this.folderChildren;

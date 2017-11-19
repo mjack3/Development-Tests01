@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import repositories.FolderRepository;
-import security.LoginService;
-import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Folder;
 import domain.MailMessage;
 import domain.Student;
 import domain.Teacher;
+import repositories.FolderRepository;
+import security.LoginService;
+import security.UserAccount;
 
 @Service
 @Transactional
@@ -59,18 +59,26 @@ public class FolderService {
 		final Folder inbox = this.create();
 		inbox.setFolderName("Inbox");
 		inbox.setMessages(new LinkedList<MailMessage>());
+		inbox.setFolderChildren(new ArrayList<Folder>());
+		inbox.setFolderFather(inbox);
 
 		final Folder outbox = this.create();
 		outbox.setFolderName("Outbox");
 		outbox.setMessages(new LinkedList<MailMessage>());
+		outbox.setFolderChildren(new ArrayList<Folder>());
+		outbox.setFolderFather(outbox);
 
 		final Folder trashbox = this.create();
 		trashbox.setFolderName("Trashbox");
 		trashbox.setMessages(new LinkedList<MailMessage>());
+		trashbox.setFolderChildren(new ArrayList<Folder>());
+		trashbox.setFolderFather(trashbox);
 
 		final Folder spambox = this.create();
 		spambox.setFolderName("Spambox");
 		spambox.setMessages(new LinkedList<MailMessage>());
+		spambox.setFolderChildren(new ArrayList<Folder>());
+		spambox.setFolderFather(spambox);
 
 		folders.add(inbox);
 		folders.add(outbox);
@@ -107,7 +115,7 @@ public class FolderService {
 		return this.folderRepository.save(entity);
 	}
 
-	public List<Folder> save(final Iterable<Folder> entities) {
+	public List<Folder> save(final List<Folder> entities) {
 		return this.folderRepository.save(entities);
 	}
 

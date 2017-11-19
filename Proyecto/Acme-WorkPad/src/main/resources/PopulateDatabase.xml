@@ -204,6 +204,10 @@
 			<list>
 				<ref bean="subject1" />
 				<ref bean="subject2" />
+				<ref bean="subject3" />
+				<ref bean="subject4" />
+				<ref bean="subject5" />
+				<ref bean="subject6" />
 			</list>
 		</property>
 	</bean>

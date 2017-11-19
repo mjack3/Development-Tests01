@@ -95,11 +95,11 @@
 		list="${subject}" variable="e" requestURI="${requestURI}"
 		hidden_fields="administrator,activities,assigments,students"
 		pagesize="6">
-		
-		<jstl:if test="${MySubjects == 1}">
-		<td><a href="bulletin/actor/create.do?q=${e.id}"> <spring:message
+			<td><a href="bulletin/actor/create.do?q=${e.id}"> <spring:message
 					code="bulletin.create" />
 		</a></td>
+		<jstl:if test="${MySubjects == 1}">
+	
 		<td><a href="subject/administrator/delete.do?q=${e.id}"> <spring:message
 					code='acme.delete' /></a></td>
 		<td><a href="subject/administrator/edit.do?q=${e.id}"> <spring:message

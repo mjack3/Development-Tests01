@@ -54,15 +54,11 @@ public class StudentService {
 		final Student res = new Student();
 
 		res.setActivitiesRecords(new ArrayList<ActivityRecord>());
-		res.setEmail("");
-		res.setFolders(this.createFolders());
-		res.setName("");
-		res.setPhone("");
-		res.setPostalAddress("");
+
 		res.setSeminars(new ArrayList<Seminar>());
 		res.setSocialIdentities(new ArrayList<SocialIdentity>());
 		res.setSubjects(new ArrayList<Subject>());
-		res.setSurname("");
+
 		final UserAccount account = new UserAccount();
 		final Authority auth = new Authority();
 		auth.setAuthority("STUDENT");
@@ -128,7 +124,6 @@ public class StudentService {
 
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
-			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
 
 			m = this.repository.save(actor);
 		}
@@ -165,7 +160,7 @@ public class StudentService {
 
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
-			actor.setFolders(this.folderService.save(this.folderService.createDefaultFolders()));
+			actor.setFolders(this.folderService.save(createFolders()));
 
 			m = this.repository.save(actor);
 		}
