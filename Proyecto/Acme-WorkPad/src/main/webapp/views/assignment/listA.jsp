@@ -19,8 +19,10 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 	
-	<acme:list variable="e" requestURI="${requestURI }" list="${assignments}"  entityUrl="{submission:submission/list.do}">
+	<acme:list variable="e" requestURI="${requestURI }" list="${assignments}"  entityUrl="{submission:submission/teacher/listTask.do}">
+	<jstl:if test="${today.after(e.startDate) and today.before(e.endDate)}">
 	<a class="btn btn-primary" href="submission/student/create.do?assignmentId=${e.id}"> <spring:message code="assignment.submit" /> </a>
+	</jstl:if>
 	</acme:list>
 	
 		

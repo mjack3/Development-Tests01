@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -51,6 +52,9 @@ public class AssignmentService {
 
 	public Assignment save(final Assignment assignment) {
 		Assert.notNull(assignment);
+		Date today = new Date();
+		Assert.isTrue(today.after(assignment.getStartDate()));
+		Assert.isTrue(today.before(assignment.getEndDate()));
 		final Assignment saved = this.repository.save(assignment);
 
 		return saved;

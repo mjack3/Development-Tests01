@@ -19,7 +19,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-	<acme:list hidden_fields="grade" variable="e" requestURI="${$requestURI }" list="${submissions }">
+	<acme:list hidden_fields="grade" variable="e" requestURI="${$requestURI}" list="${submissions }">
 	<security:authorize access="hasRole('TEACHER')">
 	<a href="submission/teacher/grade.do?submissionId=${e.id }"> <spring:message code="submission.grade" /> </a>
 	</security:authorize>
