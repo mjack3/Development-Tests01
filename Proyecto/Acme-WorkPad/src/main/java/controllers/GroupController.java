@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +25,7 @@ import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
+import forms.GroupForm;
 
 @Controller
 @RequestMapping("/group")
@@ -55,15 +53,14 @@ public class GroupController extends AbstractController {
 		final Student principal = this.studentService.checkPrincipal();
 		final boolean sw;
 		final Subject subject = this.subjectservice.findOne(subjectId);
-
+		final GroupForm groupForm = new GroupForm();
+		groupForm.setSubjectId(subjectId);
 		sw = CollectionUtils.containsAny(principal.getGroups(), subject.getGroups());
 
 		if (!sw)
-			resul = this.createNewModelAndView(this.grouptService.create(), subjectId, null);
+			resul = this.createNewModelAndView(groupForm, null);
 		else {
 			resul = new ModelAndView("master.page");
-			final School school = this.schoolService.findAll().iterator().next();
-			resul.addObject("image", school.getBanner());
 			resul.addObject("message", "groupAlreadyExist");
 		}
 
@@ -71,45 +68,73 @@ public class GroupController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveCreate(@Valid final Group groupsubject, @RequestParam final int subjectId, final BindingResult binding) {
-		ModelAndView result;
+	public ModelAndView save(final GroupForm groupForm, final BindingResult binding) {
+		ModelAndView resul;
+		try {
 
-		if (binding.hasErrors()) {
-			for (final ObjectError e : binding.getAllErrors())
-				System.out.println(e.toString());
-			result = this.createNewModelAndView(groupsubject, subjectId, null);
-		} else
-			try {
+			final Group group = this.grouptService.reconstruct(groupForm, binding);
 
-				final Subject subject = this.subjectservice.findOne(subjectId);
-				Assert.isTrue(this.studentService.checkPrincipal().getSubjects().contains(subject));
+			if (binding.hasErrors())
+				resul = this.createNewModelAndView(groupForm, null);
 
-				if (groupsubject.getStartDate().after(groupsubject.getEndDate())) {
-					binding.rejectValue("endDate", "dateError12", "error");
-					throw new IllegalArgumentException();
-				} else if (groupsubject.getStartDate().before(new Date())) {
-					binding.rejectValue("endDate", "dateError11.dateError11", "people can join with 24h in advance");
+			else if (groupForm.getStartDate().after(groupForm.getEndDate())) {
+				binding.rejectValue("endDate", "dateError12", "error");
+				throw new IllegalArgumentException();
+			} else if (groupForm.getStartDate().before(new Date())) {
+				binding.rejectValue("startDate", "dateError11.dateError11", "people can join with 24h in advance");
+				throw new IllegalArgumentException();
+			} else {
 
-					throw new IllegalArgumentException();
-				}
-
-				this.grouptService.save(groupsubject, subjectId);
-				result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
-			} catch (final Throwable th) {
-				th.printStackTrace();
-				result = this.createNewModelAndView(groupsubject, subjectId, "group.commit.error");
+				this.grouptService.save(group, groupForm.getSubjectId());
+				resul = new ModelAndView("redirect:/group/student/list.do?q=" + groupForm.getSubjectId());
 			}
-		return result;
+
+		} catch (final Throwable oops) {
+			resul = this.createNewModelAndView(groupForm, "group.commit.error");
+		}
+
+		return resul;
 	}
 
-	protected ModelAndView createNewModelAndView(final Group groupsubject, final int subjectId, final String message) {
+	/*
+	 * public ModelAndView saveCreate2(@Valid final Group groupsubject, @RequestParam final int subjectId, final BindingResult binding) {
+	 * ModelAndView result;
+	 * 
+	 * if (binding.hasErrors()) {
+	 * for (final ObjectError e : binding.getAllErrors())
+	 * System.out.println(e.toString());
+	 * result = this.createNewModelAndView(groupsubject, subjectId, null);
+	 * } else
+	 * try {
+	 * 
+	 * final Subject subject = this.subjectservice.findOne(subjectId);
+	 * Assert.isTrue(this.studentService.checkPrincipal().getSubjects().contains(subject));
+	 * 
+	 * if (groupsubject.getStartDate().after(groupsubject.getEndDate())) {
+	 * binding.rejectValue("endDate", "dateError12", "error");
+	 * throw new IllegalArgumentException();
+	 * } else if (groupsubject.getStartDate().before(new Date())) {
+	 * binding.rejectValue("endDate", "dateError11.dateError11", "people can join with 24h in advance");
+	 * 
+	 * throw new IllegalArgumentException();
+	 * }
+	 * 
+	 * this.grouptService.save(groupsubject, subjectId);
+	 * result = new ModelAndView("redirect:/group/student/list.do?q=" + subjectId);
+	 * } catch (final Throwable th) {
+	 * th.printStackTrace();
+	 * result = this.createNewModelAndView(groupsubject, subjectId, "group.commit.error");
+	 * }
+	 * return result;
+	 * }
+	 */
+
+	protected ModelAndView createNewModelAndView(final GroupForm groupForm, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("group/create");
-		final School school = this.schoolService.findAll().iterator().next();
-		result.addObject("image", school.getBanner());
-		result.addObject("group", groupsubject);
+		result.addObject("groupForm", groupForm);
+		result.addObject("image", this.schoolService.findAll().iterator().next().getBanner());
 		result.addObject("message", message);
-		result.addObject("subjectId", subjectId);
 		return result;
 	}
 

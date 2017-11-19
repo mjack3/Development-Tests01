@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.GroupRepository;
 import security.LoginService;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
+import forms.GroupForm;
 
 @Service
 @Transactional
@@ -126,6 +129,25 @@ public class GroupService {
 
 		student.getGroups().add(group);
 		this.studentService.update(student);
+	}
+
+
+	@Autowired
+	private Validator	validator;
+
+
+	public Group reconstruct(final GroupForm groupForm, final BindingResult binding) {
+		// TODO Auto-generated method stub
+		final Group resul = this.create();
+
+		resul.setName(groupForm.getName());
+		resul.setDescription(groupForm.getDescription());
+		resul.setEndDate(groupForm.getEndDate());
+		resul.setStartDate(groupForm.getStartDate());
+
+		this.validator.validate(groupForm, binding);
+
+		return resul;
 	}
 
 }

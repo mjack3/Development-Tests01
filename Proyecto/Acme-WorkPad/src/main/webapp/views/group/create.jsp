@@ -9,10 +9,19 @@
 
 <security:authorize access="hasRole('STUDENT')">
 
-<acme:acme_form hiddenFields="id,version,submission,students" type="create" entity="${group}" date_stamp="startDate,endDate" url="group/student/save.do?subjectId=${subjectId}" cancel="welcome/index.do">
 
-		
-</acme:acme_form>
+<form:form action="group/student/save.do" modelAttribute="groupForm">
+
+<form:hidden path="subjectId"/>
+
+<acme:textbox2 code="group.name" path="name"/>
+<acme:textbox2 code="group.description" path="description"/>
+<acme:textbox2 code="group.startDate" path="startDate"/>
+<acme:textbox2 code="group.endDate" path="endDate"/>
+<acme:submit name="save" code="acme.save"/>
+<acme:cancel url="/group/student/list.do?q=${groupForm.subjectId }" code="acme.cancel"/>
+
+</form:form>
 
 </security:authorize>
 
