@@ -18,8 +18,10 @@ import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
+import domain.Teacher;
 import forms.AssignmentForm;
 import repositories.AssignmentRepository;
+import security.LoginService;
 
 @Service
 @Transactional
@@ -35,6 +37,8 @@ public class AssignmentService {
 	private StudentService			studentService;
 	@Autowired
 	private GroupService			groupService;
+	@Autowired
+	private LoginService			loginService;
 
 
 	public AssignmentService() {
@@ -71,6 +75,18 @@ public class AssignmentService {
 		// TODO Auto-generated method stub
 		Assert.notNull(assignment);
 		Assert.isTrue(this.repository.exists(assignment.getId()));
+
+		Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		Boolean isAssi = false;
+		for (Subject a : teacher.getSubjects()) {
+			if (a.getAssigments().contains(assignment)) {
+				isAssi = true;
+				break;
+
+			}
+		}
+		Assert.isTrue(isAssi);
+
 		this.teacherService.checkPrincipal();
 		this.repository.delete(assignment);
 	}

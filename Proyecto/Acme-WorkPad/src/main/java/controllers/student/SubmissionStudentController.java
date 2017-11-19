@@ -23,6 +23,7 @@ import controllers.AbstractController;
 import domain.Group;
 import domain.School;
 import forms.SubmissionForm;
+import security.LoginService;
 import services.SchoolService;
 import services.StudentService;
 import services.SubmissionService;
@@ -44,6 +45,8 @@ public class SubmissionStudentController extends AbstractController {
 	private StudentService		studentService;
 	@Autowired
 	private SchoolService		schoolService;
+	@Autowired
+	private LoginService		loginservice;
 
 
 	// Creation --------------------------------------------
@@ -83,6 +86,7 @@ public class SubmissionStudentController extends AbstractController {
 		ModelAndView result;
 
 		try {
+
 			this.submissionService.reconstruct(submissionForm, binding);
 
 			if (binding.hasErrors())

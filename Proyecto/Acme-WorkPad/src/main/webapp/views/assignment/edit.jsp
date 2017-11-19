@@ -27,13 +27,8 @@
 
 	<acme:textbox2 code="assignment.title" path="title"/>
 	<acme:textarea code="assignment.description" path="description"/>
-	<label> <spring:message code="assignment.startDate"/> </label><br />
-		<input class="form-control" value="${assignment.startDate}" type="text" placeholder="DD/MM/YYYY" name="startDate"/>
-		<form:errors cssClass="error" path="startDate" /> <br />
-		
-		<label> <spring:message code="assignment.endDate"/> </label><br />
-		<input class="form-control" value="${assignment.endDate}" type="text"  placeholder="DD/MM/YYYY" name="endDate"/>
-		<form:errors cssClass="error" path="endDate" /> <br />
+	<acme:textbox2 code="assignment.startDate" path="startDate"/>
+<acme:textbox2 code="assignment.endDate" path="endDate"/>
 	<acme:textbox2 code="assignment.link" path="link"/>
 
 <acme:submit name="save" code="assignment.save"/>

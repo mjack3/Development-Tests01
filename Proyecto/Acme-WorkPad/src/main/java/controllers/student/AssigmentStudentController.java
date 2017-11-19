@@ -39,7 +39,7 @@ public class AssigmentStudentController extends AbstractController {
 			result.addObject("assignments", assignmentService.findAllByPrincipalStudent());
 			result.addObject("today", today);
 		} catch (Throwable oops) {
-			result = new ModelAndView("index.do");
+			result = new ModelAndView("redirect:/welcome/index.do");
 		}
 
 		return result;

@@ -33,4 +33,8 @@ public class CategoryService {
 		return this.categoryRepository.findOne(categoryId);
 	}
 
+	public boolean exists(Integer id) {
+		return categoryRepository.exists(id);
+	}
+
 }

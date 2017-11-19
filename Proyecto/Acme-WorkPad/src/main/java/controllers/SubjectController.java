@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -128,13 +129,18 @@ public class SubjectController extends AbstractController {
 	public ModelAndView listSubjectByTeacher(@RequestParam Teacher q) {
 		ModelAndView result;
 
-		result = new ModelAndView("subject/list");
-		School school = schoolService.findAll().iterator().next();
-		result.addObject("image", school.getBanner());
-		result.addObject("requestURI", "/subject/listTeacher.do");
-		result.addObject("subject", q.getSubjects());
+		try {
+			result = new ModelAndView("subject/list");
+			School school = schoolService.findAll().iterator().next();
+			result.addObject("image", school.getBanner());
+			result.addObject("requestURI", "/subject/listTeacher.do");
+			result.addObject("subject", q.getSubjects());
 
-		result.addObject("requestSearch", "subject/authenticated/search.do");
+			result.addObject("requestSearch", "subject/authenticated/search.do");
+		} catch (Throwable e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+
+		}
 		return result;
 	}
 
@@ -169,10 +175,11 @@ public class SubjectController extends AbstractController {
 	//Para Suscribirse
 	@RequestMapping(value = "/student/subscribe", method = RequestMethod.GET)
 	public ModelAndView subscribe(@RequestParam final Subject q) {
-		ModelAndView result;
+		ModelAndView result = null;
+		try {
+			final Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Assert.isTrue(!student.getSubjects().contains(q) && q.getSeats() > 0);
 
-		final Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
-		if ((!student.getSubjects().contains(q)) && q.getSeats() > 0) {
 			q.setSeats(q.getSeats() - 1);
 			this.subjectService.save(q);
 			final List<Subject> subjects = student.getSubjects();
@@ -180,15 +187,13 @@ public class SubjectController extends AbstractController {
 			student.setSubjects(subjects);
 
 			this.studentService.update(student);
-			for (Subject s : student.getSubjects()) {
-				System.out.println("titulo de la asignatura:" + s.getTitle());
-			}
-			for (Student s : q.getStudents()) {
-				System.out.println("nombre del estudiante: " + s.getName());
-			}
+			result = new ModelAndView("redirect:/subject/student/list.do");
+
+		} catch (Throwable e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
 
 		}
-		result = new ModelAndView("redirect:/subject/student/list.do");
+
 		return result;
 	}
 

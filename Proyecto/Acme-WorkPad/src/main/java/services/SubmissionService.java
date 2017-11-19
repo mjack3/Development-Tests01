@@ -22,6 +22,7 @@ import domain.Subject;
 import domain.Submission;
 import forms.SubmissionForm;
 import repositories.SubmissionRepository;
+import security.LoginService;
 
 @Service
 @Transactional
@@ -40,6 +41,8 @@ public class SubmissionService {
 	private GroupService			groupService;
 	@Autowired
 	private TeacherService			teacherService;
+	@Autowired
+	private LoginService			loginService;
 
 
 	public SubmissionService() {
@@ -49,6 +52,15 @@ public class SubmissionService {
 	public Submission save(final Submission submission) {
 		// TODO Auto-generated method stub
 		Assert.notNull(submission);
+		Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		Boolean isSub = false;
+		for (Group a : student.getGroups()) {
+			if (a.getSubmission().contains(submission)) {
+				isSub = true;
+				break;
+			}
+		}
+		Assert.isTrue(isSub);
 
 		final Submission saved = this.repository.save(submission);
 		return saved;

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +19,9 @@ import controllers.AbstractController;
 import domain.Activity;
 import domain.School;
 import domain.Subject;
+import domain.Teacher;
 import forms.ActivityForm;
+import security.LoginService;
 import services.ActivityService;
 import services.SchoolService;
 import services.SubjectService;
@@ -37,6 +40,8 @@ public class ActivityTeacherController extends AbstractController {
 	private SubjectService	subjectService;
 	@Autowired
 	private SchoolService	schoolService;
+	@Autowired
+	private LoginService	loginService;
 
 
 	public ActivityTeacherController() {
@@ -49,11 +54,16 @@ public class ActivityTeacherController extends AbstractController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int q) {
-		final ModelAndView resul;
-
-		final ActivityForm activityForm = new ActivityForm();
-		activityForm.setSubjectId(q);
-		resul = this.createCreateModelAndView(activityForm);
+		ModelAndView resul;
+		try {
+			Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Assert.isTrue(teacher.getSubjects().contains(subjectService.findOne(q)));
+			ActivityForm activityForm = new ActivityForm();
+			activityForm.setSubjectId(q);
+			resul = this.createCreateModelAndView(activityForm);
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+		}
 
 		return resul;
 	}
@@ -83,6 +93,8 @@ public class ActivityTeacherController extends AbstractController {
 				final Activity activity = this.activityService.reconstruct(activityForm);
 
 				final Subject subject = this.subjectService.findOnePrincipal(activityForm.getSubjectId());
+				Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+				Assert.isTrue(teacher.getSubjects().contains(subject));
 				this.activityService.save(activity, subject);
 				resul = new ModelAndView("redirect:/activity/list.do?q=" + subject.getId());
 
@@ -112,23 +124,47 @@ public class ActivityTeacherController extends AbstractController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int q) {
-		final ModelAndView resul = new ModelAndView("activity/list");
-		School school = schoolService.findAll().iterator().next();
-		resul.addObject("image", school.getBanner());
+		ModelAndView resul;
+		try {
 
-		final Subject subject = this.subjectService.findOnePrincipal(q);
-		final Collection<Activity> activities = this.teacherService.findAllActivitiesBySubject(subject);
+			resul = new ModelAndView("activity/list");
+			School school = schoolService.findAll().iterator().next();
+			resul.addObject("image", school.getBanner());
 
-		resul.addObject("activities", activities);
-		resul.addObject("requestURI", "activity/teacher/list.do");
+			final Subject subject = this.subjectService.findOnePrincipal(q);
+			final Collection<Activity> activities = this.teacherService.findAllActivitiesBySubject(subject);
+
+			resul.addObject("activities", activities);
+			resul.addObject("requestURI", "activity/teacher/list.do");
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+		}
 
 		return resul;
 	}
 
 	@RequestMapping(value = "edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int q) {
-		final Activity activity = this.activityService.findOnePrincipal(q);
-		final ModelAndView resul = this.createEditModelAndView(activity);
+		ModelAndView resul;
+		try {
+			final Activity activity = this.activityService.findOnePrincipal(q);
+
+			Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Boolean isAssi = false;
+			for (Subject a : teacher.getSubjects()) {
+				if (a.getActivities().contains(activity)) {
+					isAssi = true;
+					break;
+
+				}
+			}
+			Assert.isTrue(isAssi);
+
+			resul = this.createEditModelAndView(activity);
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+
+		}
 
 		return resul;
 	}
@@ -145,6 +181,20 @@ public class ActivityTeacherController extends AbstractController {
 				/*
 				 * otras comprobaciones
 				 */
+
+				//Seguridad
+				if (loginService.hasRole("TEACHER")) {
+					Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+					Boolean isAssi = false;
+					for (Subject a : teacher.getSubjects()) {
+						if (a.getActivities().contains(activity)) {
+							isAssi = true;
+							break;
+
+						}
+					}
+					Assert.isTrue(isAssi);
+				}
 
 				if ((!activity.getEndDate().after(activity.getStartDate())) || (activity.getStartDate().before(new Date()))) {
 					bindingResult.rejectValue("startDate", "activity.date.error", "error");
@@ -171,6 +221,17 @@ public class ActivityTeacherController extends AbstractController {
 
 			final Activity activity = this.activityService.findOnePrincipal(q);
 			final Subject subject = this.subjectService.findSubjectByTeacherIdActivityId(this.teacherService.checkPrincipal().getId(), activity.getId());
+
+			Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Boolean isAssi = false;
+			for (Subject a : teacher.getSubjects()) {
+				if (a.getActivities().contains(activity)) {
+					isAssi = true;
+					break;
+
+				}
+			}
+			Assert.isTrue(isAssi);
 
 			this.activityService.delete(activity);
 			resul = new ModelAndView("redirect:/activity/list.do?q=" + subject.getId());

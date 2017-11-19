@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,15 +37,23 @@ public class TeacherController extends AbstractController {
 	}
 
 	@RequestMapping("/view")
-	public ModelAndView view(@RequestParam final Teacher q) {
-		ModelAndView res;
+	public ModelAndView view(@RequestParam Teacher q) {
 
-		res = new ModelAndView("teacher/view");
-		School school = schoolService.findAll().iterator().next();
-		res.addObject("image", school.getBanner());
-		res.addObject("teacher", q);
+		try {
 
-		return res;
+			Assert.isTrue(teacherService.exists(q.getId()));
+			ModelAndView res;
+			res = new ModelAndView("teacher/view");
+			School school = schoolService.findAll().iterator().next();
+			res.addObject("image", school.getBanner());
+			res.addObject("teacher", q);
+			return res;
+		} catch (Throwable e) {
+			ModelAndView res = new ModelAndView("redirect:/welcome/index.do");
+			return res;
+
+		}
+
 	}
 
 	@RequestMapping(value = "/administrator/create", method = RequestMethod.GET)

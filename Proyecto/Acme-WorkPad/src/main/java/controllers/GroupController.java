@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.LoginService;
-import services.GroupService;
-import services.SchoolService;
-import services.StudentService;
-import services.SubjectService;
 import domain.Group;
 import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
 import forms.GroupForm;
+import security.LoginService;
+import services.GroupService;
+import services.SchoolService;
+import services.StudentService;
+import services.SubjectService;
 
 @Controller
 @RequestMapping("/group")
@@ -42,26 +42,32 @@ public class GroupController extends AbstractController {
 	@Autowired
 	private SchoolService	schoolService;
 
-	private Integer			subjectId		= null;
+	private Integer			subjectIds		= null;
 	private Boolean			subjectscond	= false;
 
 
 	@RequestMapping(value = "/student/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int subjectId) {
 		ModelAndView resul;
+		try {
+			final Student principal = this.studentService.checkPrincipal();
 
-		final Student principal = this.studentService.checkPrincipal();
-		final boolean sw;
-		final Subject subject = this.subjectservice.findOne(subjectId);
-		final GroupForm groupForm = new GroupForm();
-		groupForm.setSubjectId(subjectId);
-		sw = CollectionUtils.containsAny(principal.getGroups(), subject.getGroups());
+			final boolean sw;
+			final Subject subject = this.subjectservice.findOne(subjectId);
+			Assert.isTrue(principal.getSubjects().contains(subject));
+			final GroupForm groupForm = new GroupForm();
+			groupForm.setSubjectId(subjectId);
+			sw = CollectionUtils.containsAny(principal.getGroups(), subject.getGroups());
+			subjectIds = subjectId;
 
-		if (!sw)
-			resul = this.createNewModelAndView(groupForm, null);
-		else {
-			resul = new ModelAndView("master.page");
-			resul.addObject("message", "groupAlreadyExist");
+			if (!sw)
+				resul = this.createNewModelAndView(groupForm, null);
+			else {
+				resul = new ModelAndView("master.page");
+				resul.addObject("message", "groupAlreadyExist");
+			}
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
 		}
 
 		return resul;
@@ -71,6 +77,9 @@ public class GroupController extends AbstractController {
 	public ModelAndView save(final GroupForm groupForm, final BindingResult binding) {
 		ModelAndView resul;
 		try {
+			final Student principal = this.studentService.checkPrincipal();
+			final Subject subject = this.subjectservice.findOne(subjectIds);
+			Assert.isTrue(principal.getSubjects().contains(subject));
 
 			final Group group = this.grouptService.reconstruct(groupForm, binding);
 
@@ -210,7 +219,7 @@ public class GroupController extends AbstractController {
 
 		result.addObject("subjectscond", this.subjectscond);
 
-		this.subjectId = q;
+		this.subjectIds = q;
 
 		return result;
 	}

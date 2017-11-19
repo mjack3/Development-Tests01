@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,8 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import controllers.AbstractController;
 import domain.Assignment;
 import domain.School;
+import domain.Student;
 import domain.Subject;
+import domain.Teacher;
 import forms.AssignmentForm;
+import security.LoginService;
 import services.AssignmentService;
 import services.SchoolService;
 import services.SubjectService;
@@ -33,6 +37,8 @@ public class AssigmentTeacherController extends AbstractController {
 	private SubjectService		subjectService;
 	@Autowired
 	private SchoolService		schoolService;
+	@Autowired
+	private LoginService		loginService;
 
 
 	public AssigmentTeacherController() {
@@ -42,10 +48,15 @@ public class AssigmentTeacherController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int q) {
 		ModelAndView resul;
-
-		final AssignmentForm assignmentForm = new AssignmentForm();
-		assignmentForm.setSubjectId(q);
-		resul = this.createEditModelAndView(assignmentForm);
+		try {
+			Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Assert.isTrue(teacher.getSubjects().contains(subjectService.findOne(q)));
+			final AssignmentForm assignmentForm = new AssignmentForm();
+			assignmentForm.setSubjectId(q);
+			resul = this.createEditModelAndView(assignmentForm);
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+		}
 
 		return resul;
 	}
@@ -65,6 +76,7 @@ public class AssigmentTeacherController extends AbstractController {
 				/*
 				 * más comprobaciones
 				 */
+
 				final Date now = new Date();
 
 				if (!assignmentForm.getEndDate().after(assignmentForm.getStartDate())) {
@@ -82,6 +94,16 @@ public class AssigmentTeacherController extends AbstractController {
 
 				Assignment assignment = this.assignmentService.reconstruct(assignmentForm);
 				final Subject subject = this.subjectService.findOnePrincipal(assignmentForm.getSubjectId());
+				//Seguridad
+				if (loginService.hasRole("TEACHER")) {
+					Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+					Assert.isTrue(teacher.getSubjects().contains(subject));
+				}
+
+				if (loginService.hasRole("STUDENT")) {
+					Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+					Assert.isTrue(student.getSubjects().contains(subject));
+				}
 				assignment = this.assignmentService.save(assignment, subject);
 
 				resul = new ModelAndView("redirect:/assignment/list.do?q=" + subject.getId());
@@ -97,22 +119,37 @@ public class AssigmentTeacherController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int q) {
 
 		ModelAndView resul;
+		try {
+			final Assignment assignment = this.assignmentService.findOnePrinicpal(q);
+			final AssignmentForm assignmentForm = new AssignmentForm();
 
-		final Assignment assignment = this.assignmentService.findOnePrinicpal(q);
-		final AssignmentForm assignmentForm = new AssignmentForm();
+			//Seguridad
+			Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Boolean isAssi = false;
+			for (Subject a : teacher.getSubjects()) {
+				if (a.getAssigments().contains(assignment)) {
+					isAssi = true;
+					break;
 
-		assignmentForm.setDescription(assignment.getDescription());
-		assignmentForm.setTitle(assignment.getTitle());
-		assignmentForm.setEndDate(assignment.getEndDate());
-		assignmentForm.setLink(assignment.getLink());
-		assignmentForm.setStartDate(assignment.getStartDate());
-		assignmentForm.setId(assignment.getId());
-		assignmentForm.setVersion(assignment.getVersion());
+				}
+			}
+			Assert.isTrue(isAssi);
+			//Seguridad
+			assignmentForm.setDescription(assignment.getDescription());
+			assignmentForm.setTitle(assignment.getTitle());
+			assignmentForm.setEndDate(assignment.getEndDate());
+			assignmentForm.setLink(assignment.getLink());
+			assignmentForm.setStartDate(assignment.getStartDate());
+			assignmentForm.setId(assignment.getId());
+			assignmentForm.setVersion(assignment.getVersion());
 
-		final Subject subject = this.subjectService.findOneByAssignment(q);
-		assignmentForm.setSubjectId(subject.getId());
+			final Subject subject = this.subjectService.findOneByAssignment(q);
+			assignmentForm.setSubjectId(subject.getId());
 
-		resul = this.createEditModelAndView(assignmentForm);
+			resul = this.createEditModelAndView(assignmentForm);
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return resul;
 
 	}
@@ -136,16 +173,21 @@ public class AssigmentTeacherController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int subjectId) {
 		ModelAndView resul;
+		try {
+			Assert.isTrue(subjectService.exists(subjectId));
 
-		final Collection<Assignment> assignments = this.assignmentService.findAllPrincipalBySubjectId(subjectId);
+			final Collection<Assignment> assignments = this.assignmentService.findAllPrincipalBySubjectId(subjectId);
 
-		resul = new ModelAndView("assignment/list");
-		School school = schoolService.findAll().iterator().next();
-		resul.addObject("image", school.getBanner());
-		resul.addObject("assigments", assignments);
-		resul.addObject("subjectId", subjectId);
+			resul = new ModelAndView("assignment/list");
+			School school = schoolService.findAll().iterator().next();
+			resul.addObject("image", school.getBanner());
+			resul.addObject("assigments", assignments);
+			resul.addObject("subjectId", subjectId);
 
-		resul.addObject("requestURI", "assignment/teacher/list.do");
+			resul.addObject("requestURI", "assignment/teacher/list.do");
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return resul;
 	}
 

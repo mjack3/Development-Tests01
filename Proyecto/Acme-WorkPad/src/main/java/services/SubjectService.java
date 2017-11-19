@@ -111,6 +111,9 @@ public class SubjectService {
 
 		Subject aux = new Subject();
 		if (this.exists(entity.getId())) {
+			Administrator actor = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+
+			Assert.isTrue(actor.getSubjects().contains(entity.getId()));
 
 			aux = this.repository.findOne(entity.getId());
 			aux.setTitle(entity.getTitle());

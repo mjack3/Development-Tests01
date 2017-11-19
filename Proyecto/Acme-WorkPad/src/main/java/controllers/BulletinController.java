@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import domain.Bulletin;
 import domain.School;
 import domain.Subject;
 import forms.BulletinForm;
+import security.LoginService;
 import services.BulletinService;
 import services.SchoolService;
 import services.SubjectService;
@@ -30,17 +32,24 @@ public class BulletinController extends AbstractController {
 	private SubjectService	subjectService;
 	@Autowired
 	private SchoolService	schoolService;
+	@Autowired
+	private LoginService	loginService;
 
 
 	@RequestMapping(value = "/actor/create", method = RequestMethod.GET, params = "q")
 	public ModelAndView create(@RequestParam int q) {
 		ModelAndView result;
-		BulletinForm bulletinForm;
+		try {
+			Assert.isTrue(subjectService.exists(q));
+			BulletinForm bulletinForm;
 
-		bulletinForm = new BulletinForm();
-		bulletinForm.setSubjectId(q);
-		bulletinForm.setPostedDate(new Date());
-		result = this.createEditModelAndView(bulletinForm);
+			bulletinForm = new BulletinForm();
+			bulletinForm.setSubjectId(q);
+			bulletinForm.setPostedDate(new Date());
+			result = this.createEditModelAndView(bulletinForm);
+		} catch (Throwable e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
 	}
 
@@ -51,6 +60,7 @@ public class BulletinController extends AbstractController {
 		ModelAndView result;
 
 		try {
+
 			Bulletin bulletin = this.bulletinService.reconstruct(bulletinForm, binding);
 			Bulletin saved = bulletinService.save(bulletin);
 			if (binding.hasErrors())
@@ -104,12 +114,16 @@ public class BulletinController extends AbstractController {
 	@RequestMapping(value = "/actor/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam Integer q) {
 		ModelAndView result;
-
-		result = new ModelAndView("bulletin/list");
-		School school = schoolService.findAll().iterator().next();
-		result.addObject("image", school.getBanner());
-		result.addObject("id", q);
-		result.addObject("bulletin", bulletinService.findBySubject(q));
+		try {
+			Assert.isTrue(subjectService.exists(q));
+			result = new ModelAndView("bulletin/list");
+			School school = schoolService.findAll().iterator().next();
+			result.addObject("image", school.getBanner());
+			result.addObject("id", q);
+			result.addObject("bulletin", bulletinService.findBySubject(q));
+		} catch (Throwable e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 
 		return result;
 	}

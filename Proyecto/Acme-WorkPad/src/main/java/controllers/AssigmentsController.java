@@ -35,23 +35,28 @@ public class AssigmentsController extends AbstractController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam int q) {
-		ModelAndView resul = new ModelAndView("assignment/list");
-		resul.addObject("requestURI", "assignment/list.do");
-		Subject subject = this.subjectService.findOnePrincipal(q);
-		resul.addObject("assigments", subject.getAssigments());
-		School school = schoolService.findAll().iterator().next();
-		resul.addObject("image", school.getBanner());
+		ModelAndView resul;
+		try {
+			resul = new ModelAndView("assignment/list");
+			resul.addObject("requestURI", "assignment/list.do");
+			Subject subject = this.subjectService.findOnePrincipal(q);
+			resul.addObject("assigments", subject.getAssigments());
+			School school = schoolService.findAll().iterator().next();
+			resul.addObject("image", school.getBanner());
 
-		if (loginService.hasRole("TEACHER")) {
-			final Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			if (loginService.hasRole("TEACHER")) {
+				final Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 
-			List<Assignment> activities = new ArrayList<Assignment>();
-			for (Subject a : teacher.getSubjects()) {
-				activities.addAll(a.getAssigments());
+				List<Assignment> activities = new ArrayList<Assignment>();
+				for (Subject a : teacher.getSubjects()) {
+					activities.addAll(a.getAssigments());
 
+				}
+
+				resul.addObject("myactivities", activities);
 			}
-
-			resul.addObject("myactivities", activities);
+		} catch (Throwable e) {
+			resul = new ModelAndView("redirect:/welcome/index.do");
 		}
 
 		return resul;
