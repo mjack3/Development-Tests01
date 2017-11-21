@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.SubjectRepository;
+import security.LoginService;
 import domain.Activity;
 import domain.Administrator;
 import domain.Assignment;
@@ -21,8 +23,6 @@ import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
-import repositories.SubjectRepository;
-import security.LoginService;
 
 @Transactional
 @Service
@@ -111,9 +111,15 @@ public class SubjectService {
 
 		Subject aux = new Subject();
 		if (this.exists(entity.getId())) {
-			Administrator actor = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			if (LoginService.hasRole("TEACHER")) {
+				final Teacher actor = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 
-			Assert.isTrue(actor.getSubjects().contains(entity.getId()));
+				Assert.isTrue(actor.getSubjects().contains(entity));
+			} else if (LoginService.hasRole("ADMINISTRATOR")) {
+				final Administrator actor = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+
+				Assert.isTrue(actor.getSubjects().contains(entity));
+			}
 
 			aux = this.repository.findOne(entity.getId());
 			aux.setTitle(entity.getTitle());

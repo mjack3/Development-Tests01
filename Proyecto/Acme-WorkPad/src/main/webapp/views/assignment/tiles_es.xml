@@ -17,12 +17,12 @@
 <tiles-definitions>
 
 	<definition name="assignment/list" extends="master.page">	
-		<put-attribute name="title" value="Asignaciones" />
+		<put-attribute name="title" value="Tareas" />
 		<put-attribute name="body" value="/views/assignment/list.jsp" />
 	</definition>
 	
 	<definition name="assignment/student/list" extends="master.page">	
-		<put-attribute name="title" value="Asignaciones" />
+		<put-attribute name="title" value="Tareas" />
 		<put-attribute name="body" value="/views/assignment/listA.jsp" />
 	</definition>
 	

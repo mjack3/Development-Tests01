@@ -15,14 +15,14 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.SubmissionRepository;
+import security.LoginService;
 import domain.Assignment;
 import domain.Group;
 import domain.Student;
 import domain.Subject;
 import domain.Submission;
 import forms.SubmissionForm;
-import repositories.SubmissionRepository;
-import security.LoginService;
 
 @Service
 @Transactional
@@ -52,15 +52,17 @@ public class SubmissionService {
 	public Submission save(final Submission submission) {
 		// TODO Auto-generated method stub
 		Assert.notNull(submission);
-		Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
-		Boolean isSub = false;
-		for (Group a : student.getGroups()) {
-			if (a.getSubmission().contains(submission)) {
-				isSub = true;
-				break;
-			}
+		if(submission.getId() != 0){
+			final Student student = (Student) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Boolean isSub = false;
+			for (final Group a : student.getGroups())
+				if (a.getSubmission().contains(submission)) {
+					isSub = true;
+					break;
+				}
+			Assert.isTrue(isSub);
 		}
-		Assert.isTrue(isSub);
+		
 
 		final Submission saved = this.repository.save(submission);
 		return saved;
@@ -72,7 +74,7 @@ public class SubmissionService {
 	 */
 
 	@Autowired
-	private SubmissionRepository submissionRepository;
+	private SubmissionRepository	submissionRepository;
 
 
 	public boolean exists(final Integer id) {
@@ -94,7 +96,7 @@ public class SubmissionService {
 	public SubmissionForm create(final int assignmentId) {
 		final Student student = this.studentService.checkPrincipal();
 		Assert.notNull(student);
-		if (assignmentService.exists(assignmentId)) {
+		if (this.assignmentService.exists(assignmentId)) {
 
 		}
 		final Assignment assignment = this.assignmentService.findOne(assignmentId);
@@ -124,7 +126,7 @@ public class SubmissionService {
 
 	// Supporting Services ------------------------------------------
 	@Autowired(required = false)
-	private Validator validator;
+	private Validator	validator;
 
 
 	public Submission reconstruct(final SubmissionForm form, final BindingResult binding) {
@@ -133,9 +135,12 @@ public class SubmissionService {
 		final List<String> str = new ArrayList<String>(Arrays.asList(array));
 
 		for (final String s : str) {
-			final boolean b = Pattern.matches(
-				"(?i)\\b(?:(?:https?|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?)(?::\\d{2,5})?(?:[/?#]\\S*)?\\b",
-				s.trim());
+			//			final boolean b = Pattern.matches(
+			//				"(?i)\\b(?:(?:https?|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?)(?::\\d{2,5})?(?:[/?#]\\S*)?\\b",
+			//				s.trim());
+
+			final boolean b = Pattern.matches("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", s.trim());
+
 			Assert.isTrue(b, "error.attachment.format");
 
 		}

@@ -69,6 +69,7 @@
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/submission/student/edit.do"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/submission/student/list.do"/>
 		<security:intercept-url access="hasRole('STUDENT')" pattern="/submission/student/create.do"/>
+		<security:intercept-url access="hasRole('TEACHER')" pattern="/submission/teacher/grade.do"/>
 		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/administrator/dashboard.do"/> 
 		<security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/teacher/saveConfirm.do"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/teacher/saveConfirmEdit.do"/>  

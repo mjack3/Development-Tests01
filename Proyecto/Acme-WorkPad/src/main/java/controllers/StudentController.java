@@ -14,21 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.School;
-import domain.Student;
+import security.UserAccountRepository;
 import services.SchoolService;
 import services.StudentService;
+import domain.School;
+import domain.Student;
 
 @Controller
 @RequestMapping("/student")
 public class StudentController extends AbstractController {
 
 	@Autowired
-	private StudentService	studentService;
+	private StudentService			studentService;
 	@Autowired
-	private SchoolService	schoolService;
+	private SchoolService			schoolService;
 
-	private Student			toSave;
+	private Student					toSave;
+
+	@Autowired
+	private UserAccountRepository	userAccountRepository;
 
 
 	public StudentController() {
@@ -48,7 +52,7 @@ public class StudentController extends AbstractController {
 	public ModelAndView list() {
 
 		final ModelAndView resul = new ModelAndView("student/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		final Collection<Student> students = this.studentService.findAll();
 		resul.addObject("students", students);
 		resul.addObject("requestURI", "student/list.do");
@@ -76,15 +80,17 @@ public class StudentController extends AbstractController {
 				final Matcher matcher = pattern.matcher(student.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("student/confirm");
-					School school = schoolService.findAll().iterator().next();
+					final School school = this.schoolService.findAll().iterator().next();
 					result.addObject("image", school.getBanner());
 					this.toSave = student;
-				} else {
+				} else if (this.userAccountRepository.findByUsername(student.getUserAccount().getUsername()) == null) {
 					this.studentService.save(student);
 					result = new ModelAndView("redirect:/welcome/index.do");
+				} else {
+					binding.rejectValue("username", "student.repeat", "un error por defecto");
+					throw new IllegalArgumentException();
 				}
 			} catch (final Throwable th) {
-				th.printStackTrace();
 				result = this.createNewModelAndView(student, "student.commit.error");
 			}
 		return result;
@@ -101,7 +107,7 @@ public class StudentController extends AbstractController {
 				final Matcher matcher = pattern.matcher(student.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("student/confirm");
-					School school = schoolService.findAll().iterator().next();
+					final School school = this.schoolService.findAll().iterator().next();
 					result.addObject("image", school.getBanner());
 					this.toSave = student;
 				} else {
@@ -146,7 +152,7 @@ public class StudentController extends AbstractController {
 	protected ModelAndView createNewModelAndView(final Student student, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("student/create");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("student", student);
 		result.addObject("message", message);
@@ -156,7 +162,7 @@ public class StudentController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Student student, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("student/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("student", student);
 		result.addObject("message", message);
