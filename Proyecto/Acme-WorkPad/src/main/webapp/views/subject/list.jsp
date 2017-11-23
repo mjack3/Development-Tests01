@@ -170,11 +170,21 @@ $(document).ready(function(){
             				tdSyllabus.innerHTML.toUpperCase().indexOf(filter) > -1)
             				&& tdSeats.innerHTML.toUpperCase() != "0") {
     	          	        tr[i].style.display = "";
-    	          	      } else {
+    	          	    } else {
     	          	        tr[i].style.display = "none";
-    	          	      }
+    	          	    }
             			
-            			}
+            		}
+        		}else{
+        			if (tdTitle || tdSyllabus|| tdSeats) {
+            			if ((tdTitle.innerHTML.toUpperCase().indexOf(filter) > -1 || 
+            				tdSyllabus.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+    	          	        tr[i].style.display = "";
+    	          	    } else {
+    	          	        tr[i].style.display = "none";
+    	          	    }
+            			
+            		}
         		}
         		
           	      

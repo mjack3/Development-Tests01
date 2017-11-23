@@ -142,6 +142,35 @@ public class SubjectService {
 			return this.repository.save(entity);
 	}
 
+	public Subject saveBulletin(final Subject entity) {
+		Assert.notNull(entity);
+
+		Subject aux = new Subject();
+		Subject saved = null;
+		if (this.exists(entity.getId())) {
+			if (LoginService.isAnyAuthenticated()) {
+				aux = this.repository.findOne(entity.getId());
+				aux.setTitle(entity.getTitle());
+				aux.setTicker(entity.getTicker());
+				aux.setSyllabus(entity.getSyllabus());
+				aux.setSeats(entity.getSeats());
+				aux.setBulletins(entity.getBulletins());
+				aux.setActivities(entity.getActivities());
+				aux.setAssigments(entity.getAssigments());
+				aux.setGroups(entity.getGroups());
+				aux.setTeacher(entity.getTeacher());
+				aux.setBibliographiesRecords(entity.getBibliographiesRecords());
+				aux.setCategory(entity.getCategory());
+				aux.setAdministrator(entity.getAdministrator());
+				aux.setStudents(entity.getStudents());
+
+				saved = this.repository.save(aux);
+			}
+		} else
+			saved = this.repository.save(entity);
+		return saved;
+	}
+
 	public Subject findOne(final Integer id) {
 		return this.repository.findOne(id);
 	}

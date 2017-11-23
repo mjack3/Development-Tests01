@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import domain.Bulletin;
-import domain.School;
-import domain.Subject;
-import forms.BulletinForm;
 import security.LoginService;
 import services.BulletinService;
 import services.SchoolService;
 import services.SubjectService;
+import domain.Bulletin;
+import domain.School;
+import domain.Subject;
+import forms.BulletinForm;
 
 @Controller
 @RequestMapping("/bulletin")
@@ -37,17 +37,17 @@ public class BulletinController extends AbstractController {
 
 
 	@RequestMapping(value = "/actor/create", method = RequestMethod.GET, params = "q")
-	public ModelAndView create(@RequestParam int q) {
+	public ModelAndView create(@RequestParam final int q) {
 		ModelAndView result;
 		try {
-			Assert.isTrue(subjectService.exists(q));
+			Assert.isTrue(this.subjectService.exists(q));
 			BulletinForm bulletinForm;
 
 			bulletinForm = new BulletinForm();
 			bulletinForm.setSubjectId(q);
 			bulletinForm.setPostedDate(new Date());
 			result = this.createEditModelAndView(bulletinForm);
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
 		return result;
@@ -56,22 +56,22 @@ public class BulletinController extends AbstractController {
 	// Editar
 
 	@RequestMapping(value = "/actor/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(BulletinForm bulletinForm, BindingResult binding, RedirectAttributes redirectAttrs) {
+	public ModelAndView save(final BulletinForm bulletinForm, final BindingResult binding, final RedirectAttributes redirectAttrs) {
 		ModelAndView result;
 
 		try {
 
-			Bulletin bulletin = this.bulletinService.reconstruct(bulletinForm, binding);
-			Bulletin saved = bulletinService.save(bulletin);
+			final Bulletin bulletin = this.bulletinService.reconstruct(bulletinForm, binding);
+			final Bulletin saved = this.bulletinService.save(bulletin);
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(bulletinForm);
 			else {
-				Subject subject = subjectService.findOne(bulletinForm.getSubjectId());
+				final Subject subject = this.subjectService.findOne(bulletinForm.getSubjectId());
 				subject.getBulletins().add(saved);
-				subjectService.save(subject);
+				this.subjectService.saveBulletin(subject);
 				result = new ModelAndView("redirect:/bulletin/actor/list.do?q=" + subject.getId());
 			}
-		} catch (Throwable oops) {
+		} catch (final Throwable oops) {
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(bulletinForm);
 			else
@@ -80,7 +80,7 @@ public class BulletinController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(BulletinForm bulletinForm) {
+	protected ModelAndView createEditModelAndView(final BulletinForm bulletinForm) {
 		ModelAndView result;
 
 		result = this.createEditModelAndView(bulletinForm, null);
@@ -88,11 +88,11 @@ public class BulletinController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(BulletinForm bulletinForm, String message) {
+	protected ModelAndView createEditModelAndView(final BulletinForm bulletinForm, final String message) {
 		ModelAndView result;
 
 		result = new ModelAndView("bulletin/actor/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("bulletinForm", bulletinForm);
 		result.addObject("message", message);
@@ -101,10 +101,10 @@ public class BulletinController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createNewModelAndView(Bulletin bulletin, String message) {
+	protected ModelAndView createNewModelAndView(final Bulletin bulletin, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("bulletin/create");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("bulletin", bulletin);
 		result.addObject("message", message);
@@ -112,25 +112,25 @@ public class BulletinController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/actor/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam Integer q) {
+	public ModelAndView list(@RequestParam final Integer q) {
 		ModelAndView result;
 		try {
-			Assert.isTrue(subjectService.exists(q));
+			Assert.isTrue(this.subjectService.exists(q));
 			result = new ModelAndView("bulletin/list");
-			School school = schoolService.findAll().iterator().next();
+			final School school = this.schoolService.findAll().iterator().next();
 			result.addObject("image", school.getBanner());
 			result.addObject("id", q);
-			result.addObject("bulletin", bulletinService.findBySubject(q));
-		} catch (Throwable e) {
+			result.addObject("bulletin", this.bulletinService.findBySubject(q));
+		} catch (final Throwable e) {
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(Bulletin bulletin, String message) {
-		ModelAndView result = new ModelAndView("bulletin/edit");
-		School school = schoolService.findAll().iterator().next();
+	protected ModelAndView createEditModelAndView(final Bulletin bulletin, final String message) {
+		final ModelAndView result = new ModelAndView("bulletin/edit");
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("bulletin", bulletin);
 		result.addObject("message", message);
