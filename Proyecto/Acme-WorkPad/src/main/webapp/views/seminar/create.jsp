@@ -19,8 +19,63 @@
 
 
 <security:authorize access="hasRole('TEACHER')">
-	<acme:acme_form type="create" entity="${seminar}" hiddenFields="organisedDate" url="seminar/teacher/save.do" cancel="welcome/index.do">
-	<acme:textbox2 code="seminar.organisedDate"  path="organisedDate"/> 
-	</acme:acme_form>
+<form:form action="seminar/teacher/save.do" modelAttribute="seminar">
+
+	<div class="form-group" style="width: 20%;">
+
+		<label> <spring:message code="seminar.title" /></label> <br />
+		<input class="form-control" value="${seminar.title}" type="text"
+			name="title" />
+		<form:errors cssClass="error" path="title" />
+		
+		<br /> 
+		
+		<label> <spring:message code="seminar.summary"/> </label><br />
+		<form:textarea cols="30" rows="10" path="summary" class="form-control"/>
+		<form:errors cssClass="error" path="summary" /> 
+		
+		<br />
+		
+		<label> <spring:message code="seminar.organisedDate" /></label> <br />
+		<input class="form-control" value="${seminar.organisedDate}" type="text"
+			name="organisedDate" />
+		<form:errors cssClass="error" path="organisedDate" />
+		
+		<br /> 
+		
+		<label> <spring:message code="seminar.duration" /></label> <br />
+		<input class="form-control" value="${seminar.duration}" type="number" min="1"
+			name="duration" />
+		<form:errors cssClass="error" path="duration" />
+		
+		<br /> 
+		
+		<label> <spring:message code="seminar.hall" /></label> <br />
+		<input class="form-control" value="${seminar.hall}" type="text" 
+			name="hall" />
+		<form:errors cssClass="error" path="hall" />
+		
+		<br /> 
+		
+		<label> <spring:message code="seminar.seats" /></label> <br />
+		<input class="form-control" value="${seminar.seats}"type="number" min="1"
+			name="seats" />
+		<form:errors cssClass="error" path="seats" />
+		
+		<br /> 
+		</div>
+		
+
+	<spring:message code="seminar.save" var="actorSaveHeader" />
+	<spring:message code="seminar.cancel" var="actorCancelHeader" />
+	<input type="submit" class="btn btn-primary" name="save"
+		value="${actorSaveHeader}" />
+	<input onclick="window.location='seminar/teacher/list.do'"
+		class="btn btn-warning" type="button" name="cancel"
+		value="${actorCancelHeader}" />
+
+
+</form:form>
+
 </security:authorize>
 

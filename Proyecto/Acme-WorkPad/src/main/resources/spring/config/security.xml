@@ -127,6 +127,7 @@
         <security:intercept-url access="isAuthenticated()" pattern="/mailmessage/actor/moveTo.do"/>
          <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/edit.do"/>
         <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/school/administrator/save.do"/>
+        <security:intercept-url access="hasRole('ADMINISTRATOR')" pattern="/subject/administrator/create.do"/>
          <security:intercept-url access="hasRole('STUDENT')" pattern="/group/student/subscribe.do"/>
           <security:intercept-url access="hasRole('STUDENT')" pattern="/group/student/mylist.do"/>
           <security:intercept-url access="permitAll" pattern="/bibliographyrecord/list.do"/> 

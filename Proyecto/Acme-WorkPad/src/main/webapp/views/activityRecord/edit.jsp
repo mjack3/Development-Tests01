@@ -23,9 +23,10 @@
 
 <form:hidden path="id"/>
 <form:hidden path="version"/>
+<form:hidden path="writtenDate"/>
 
-<acme:textbox2 code="activityrecord.description" path="description"/>
-<acme:textbox2 code="activityrecord.writtenDate" path="writtenDate"/>
+<acme:textarea code="activityrecord.description" path="description"/>
+
 <acme:textbox2 code="activityrecord.attachments" path="attachments"/>
 
 <br />

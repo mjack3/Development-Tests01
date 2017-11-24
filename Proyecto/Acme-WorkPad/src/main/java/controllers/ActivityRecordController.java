@@ -44,15 +44,16 @@ public class ActivityRecordController extends AbstractController {
 		final ModelAndView resul = new ModelAndView("activityRecord/list");
 		School school = schoolService.findAll().iterator().next();
 		resul.addObject("image", school.getBanner());
-		final List<ActivityRecord> activityRecords;
+		final List<ActivityRecord> activityRecord;
 		if (userAccountId != 0)
-			activityRecords = this.activityRecordService.findAllPrincipal();
+			activityRecord = this.activityRecordService.findAllPrincipal();
 		else {
 			userAccountId = this.actorService.findOnePrincipal().getUserAccount().getId();
-			activityRecords = this.activityRecordService.findAllByUserAccountId(userAccountId);
+			activityRecord = this.activityRecordService.findAllByUserAccountId(userAccountId);
 		}
 		final Actor principal = this.actorService.findOnePrincipal();
-		resul.addObject("activityRecords", activityRecords);
+
+		resul.addObject("activityRecord", activityRecord);
 		resul.addObject("principal", principal);
 		resul.addObject("userAccountId", userAccountId);
 		resul.addObject("requestURI", "activityRecord/authenticated/list.do");
@@ -62,7 +63,7 @@ public class ActivityRecordController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView resul;
-		final ActivityRecord activityRecord = this.activityRecordService.create();
+		ActivityRecord activityRecord = this.activityRecordService.create();
 		resul = this.createEditModelAndView(activityRecord, null);
 		return resul;
 	}
@@ -70,8 +71,8 @@ public class ActivityRecordController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int q) {
 
-		final ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
-		final ModelAndView resul = this.createEditModelAndView(activityRecord, null);
+		ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
+		ModelAndView resul = this.createEditModelAndView(activityRecord, null);
 
 		return resul;
 	}
@@ -79,28 +80,33 @@ public class ActivityRecordController extends AbstractController {
 	@RequestMapping(value = "edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(ActivityRecord activityRecord, final BindingResult bindingResult) {
 		ModelAndView resul;
+		if (bindingResult.hasErrors())
+			resul = this.createEditModelAndView(activityRecord, null);
+		else
 
-		try {
+			try
 
-			activityRecord = this.activityRecordService.reconstruct(activityRecord, bindingResult);
+			{
 
-			final Date tomorrow = DateUtils.addDays(new Date(), 1);
-			if (activityRecord.getWrittenDate().after(tomorrow)) {
-				bindingResult.rejectValue("writtenDate", "must.be.past", "must be past");
-				throw new IllegalArgumentException();
+				activityRecord = this.activityRecordService.reconstruct(activityRecord, bindingResult);
+
+				final Date tomorrow = DateUtils.addDays(new Date(), 1);
+				if (activityRecord.getWrittenDate().after(tomorrow)) {
+					bindingResult.rejectValue("writtenDate", "must.be.past", "must be past");
+					throw new IllegalArgumentException();
+				}
+
+				if (bindingResult.hasErrors())
+					resul = this.createEditModelAndView(activityRecord, null);
+				else {
+					this.activityRecordService.save(activityRecord);
+					resul = new ModelAndView("redirect:list.do");
+				}
+
+			} catch (final Throwable oops) {
+				// TODO: handle exception
+				resul = this.createEditModelAndView(activityRecord, "activityRecord.commit.error");
 			}
-
-			if (bindingResult.hasErrors())
-				resul = this.createEditModelAndView(activityRecord, null);
-			else {
-				this.activityRecordService.save(activityRecord);
-				resul = new ModelAndView("redirect:list.do");
-			}
-
-		} catch (final Throwable oops) {
-			// TODO: handle exception
-			resul = this.createEditModelAndView(activityRecord, "activityRecord.commit.error");
-		}
 
 		return resul;
 	}

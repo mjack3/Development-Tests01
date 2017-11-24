@@ -19,27 +19,40 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="isAuthenticated()">
+<spring:message code="activityrecord.writtenDate" var="date"></spring:message>
+<spring:message code="activityrecord.attachments" var="attachments"></spring:message>
+<spring:message code="activityrecord.description" var="description"></spring:message>
+<spring:message code="activityrecord.edit" var="edit"></spring:message>
+<spring:message code="activityrecord.delete" var="delete"></spring:message>
 
-<acme:list variable="row"  requestURI="${requestURI }" list="${activityRecords }"  >
-		
-		<jstl:choose>
+<display:table name="activityRecord" id="row" requestURI="${requestURI}"
+	pagesize="12" class="table table-over">
+	<display:column property="description" title="${description}" sortable="false" />
+	<display:column property="writtenDate" title="${date}" sortable="false" />
+	<display:column title="${attachments}" sortable="false">
+	
+	<jstl:forEach items="${row.attachments}" var="e">
+	<a href="${e}" > <jstl:out value="${e}"></jstl:out></a>
+	
+	</jstl:forEach>
+	</display:column>
+	
+	<jstl:choose>
+	
 			<jstl:when test="${principal.userAccount.id == userAccountId }">
-			<td>
+			<display:column title="${edit}">
 			<a href="activityRecord/authenticated/edit.do?q=${row.id }"> <spring:message code="activityrecord.edit" /> </a>
-			</td>
-			<td>
+			
+			</display:column>
+			<display:column title="${delete}">
 			<a href="activityRecord/authenticated/delete.do?q=${row.id }"> <spring:message code="activityrecord.delete" /> </a>
-			</td>
+		</display:column>
 			</jstl:when>
 		</jstl:choose>
 		
-		<jstl:if test="">
 		
-		</jstl:if>
-		
-</acme:list>
-	<br />
 	
+	</display:table>
 	<jstl:choose>
 			<jstl:when test="${principal.userAccount.id == userAccountId }">
 					<a class="btn btn-primary" href="activityRecord/authenticated/create.do"> <spring:message code="activity.create" /> </a>

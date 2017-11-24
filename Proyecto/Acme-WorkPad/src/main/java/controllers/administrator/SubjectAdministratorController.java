@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -114,12 +115,18 @@ public class SubjectAdministratorController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final Integer q) {
 		ModelAndView result;
-		result = new ModelAndView("subject/edit");
-		School school = schoolService.findAll().iterator().next();
-		result.addObject("image", school.getBanner());
-		result.addObject("subject", this.subjectService.findOne(q));
-		final List<Category> categories = this.categoryService.findAll();
-		result.addObject("categories", categories);
+		try {
+			final Administrator a = (Administrator) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+			Assert.isTrue(a.getSubjects().contains(subjectService.findOne(q)));
+			result = new ModelAndView("subject/edit");
+			School school = schoolService.findAll().iterator().next();
+			result.addObject("image", school.getBanner());
+			result.addObject("subject", this.subjectService.findOne(q));
+			final List<Category> categories = this.categoryService.findAll();
+			result.addObject("categories", categories);
+		} catch (Throwable e) {
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 
 		return result;
 	}
@@ -161,6 +168,45 @@ public class SubjectAdministratorController extends AbstractController {
 		return result;
 	}
 
+	// Create ----------------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+
+		result = new ModelAndView("subject/create");
+		School school = schoolService.findAll().iterator().next();
+		Subject subject = new Subject();
+		result.addObject("subject", subject);
+		final List<Category> categories = this.categoryService.findAll();
+		result.addObject("categories", categories);
+		result.addObject("image", school.getBanner());
+		List<Teacher> teachers = this.teacherService.findAll();
+		result.addObject("teachers", teachers);
+		return result;
+
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveCreate(@Valid final Subject subject, final BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors())
+			result = this.creatNewModelAndView(subject, null);
+		else
+			try {
+
+				this.subjectService.save(subject);
+
+				result = new ModelAndView("redirect:/subject/administrator/list.do");
+
+			} catch (final Throwable th) {
+				th.printStackTrace();
+				result = this.creatNewModelAndView(subject, "subject.commit.error");
+			}
+		return result;
+	}
+
 	// Ancillary methods ------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Subject subject) {
@@ -181,6 +227,30 @@ public class SubjectAdministratorController extends AbstractController {
 		result.addObject("categories", categories);
 		result.addObject("subject", subject);
 		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView creatNewModelAndView(final Subject subject) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(subject, null);
+
+		return result;
+	}
+
+	protected ModelAndView creatNewModelAndView(final Subject subject, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("subject/create");
+		School school = schoolService.findAll().iterator().next();
+		result.addObject("image", school.getBanner());
+		List<Category> categories = this.categoryService.findAll();
+		result.addObject("categories", categories);
+		result.addObject("subject", subject);
+		result.addObject("message", message);
+		List<Teacher> teachers = this.teacherService.findAll();
+		result.addObject("teachers", teachers);
 
 		return result;
 	}

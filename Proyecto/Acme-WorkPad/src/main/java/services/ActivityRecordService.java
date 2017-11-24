@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,11 +14,11 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import domain.ActivityRecord;
+import domain.Actor;
 import repositories.ActivityRecordRepository;
 import security.LoginService;
 import security.UserAccount;
-import domain.ActivityRecord;
-import domain.Actor;
 
 @Service
 @Transactional
@@ -113,7 +114,9 @@ public class ActivityRecordService {
 
 	public ActivityRecord create() {
 		// TODO Auto-generated method stub
-		return new ActivityRecord();
+		ActivityRecord activityRecord = new ActivityRecord();
+		activityRecord.setWrittenDate(new Date());
+		return activityRecord;
 	}
 
 	public ActivityRecord reconstruct(final ActivityRecord activityRecord, final BindingResult bindingResult) {

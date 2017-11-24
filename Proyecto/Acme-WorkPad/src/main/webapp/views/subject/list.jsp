@@ -108,6 +108,7 @@
 					code='subject.associate' /></a></td>
 		</jstl:if>
 	</acme:list>
+	<a href="subject/administrator/create.do"><spring:message code="subject.new"></spring:message></a>
 
 </security:authorize>
 
