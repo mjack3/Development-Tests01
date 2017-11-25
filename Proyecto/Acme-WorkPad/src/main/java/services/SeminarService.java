@@ -109,6 +109,7 @@ public class SeminarService {
 		student.getSeminars().add(seminar);
 		this.studentService.save(student);
 		this.activityRecordService.RQNcreateReport("registers.seminar");
+		//
 	}
 
 	public void unRegister(final Seminar seminar) {
