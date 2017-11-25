@@ -22,12 +22,12 @@
 	</definition>
 	
 	<definition name="activity/edit" extends="master.page">	
-		<put-attribute name="title" value="Editar activitid" />
+		<put-attribute name="title" value="Editar actividad" />
 		<put-attribute name="body" value="/views/activity/edit.jsp" />
 	</definition>
 	
 	<definition name="activity/create" extends="master.page">	
-		<put-attribute name="title" value="Crear activitid" />
+		<put-attribute name="title" value="Crear actividad" />
 		<put-attribute name="body" value="/views/activity/create.jsp" />
 	</definition>
 	

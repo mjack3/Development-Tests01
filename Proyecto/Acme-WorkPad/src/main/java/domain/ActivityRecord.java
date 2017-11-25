@@ -1,6 +1,7 @@
 
 package domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,6 +27,8 @@ public class ActivityRecord extends DomainEntity {
 
 	public ActivityRecord() {
 		super();
+		this.attachments = new ArrayList<String>();
+
 	}
 
 	//Getters

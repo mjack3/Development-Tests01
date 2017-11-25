@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.SubjectRepository;
+import security.LoginService;
 import domain.Activity;
 import domain.Administrator;
 import domain.Assignment;
@@ -22,8 +24,6 @@ import domain.School;
 import domain.Student;
 import domain.Subject;
 import domain.Teacher;
-import repositories.SubjectRepository;
-import security.LoginService;
 
 @Transactional
 @Service
@@ -46,19 +46,22 @@ public class SubjectService {
 	@Autowired
 	private AdministratorService	administratorService;
 
+	@Autowired
+	private ActivityRecordService	activityRecordService;
+
 
 	public SubjectService() {
 		super();
 	}
 
-	public Collection<Subject> findSubjectsByWordWithoutSeats(String word) {
+	public Collection<Subject> findSubjectsByWordWithoutSeats(final String word) {
 		Assert.notNull(word);
 		final Collection<Subject> subjects = this.repository.findSubjectsByWordWithoutSeats(word);
 
 		return subjects;
 	}
 
-	public Collection<Subject> findSubjectsByWordWithSeats(String word) {
+	public Collection<Subject> findSubjectsByWordWithSeats(final String word) {
 		Assert.notNull(word);
 		final Collection<Subject> subjects = this.repository.findSubjectsByWordWithSeats(word);
 
@@ -71,10 +74,12 @@ public class SubjectService {
 	 * @param subject
 	 */
 
-	public void update(Subject subject) {
+	public void update(final Subject subject) {
 		// TODO Auto-generated method stub
 		Assert.isTrue(this.repository.exists(subject.getId()));
 		this.repository.save(subject);
+		if (LoginService.hasRole("ADMINISTRATOR"))
+			this.activityRecordService.RQNcreateReport("edits.subject");
 	}
 
 	/**
@@ -85,7 +90,7 @@ public class SubjectService {
 	 * @return
 	 */
 
-	public Subject findSubjectByTeacherIdActivityId(int id, int id2) {
+	public Subject findSubjectByTeacherIdActivityId(final int id, final int id2) {
 		// TODO Auto-generated method stub
 		Assert.notNull(id);
 		Assert.notNull(id2);
@@ -103,7 +108,7 @@ public class SubjectService {
 		return this.repository.findAll();
 	}
 
-	public List<Subject> subjectsByStudents(int id) {
+	public List<Subject> subjectsByStudents(final int id) {
 		return this.repository.subjectsByStudents(id);
 	}
 
@@ -138,8 +143,12 @@ public class SubjectService {
 			aux.setAdministrator(entity.getAdministrator());
 			aux.setStudents(entity.getStudents());
 			m = this.repository.save(aux);
+
+			if (LoginService.hasRole("ADMINISTRATOR"))
+				this.activityRecordService.RQNcreateReport("edits.subject");
+
 		} else {
-			entity.setTicker(generateTicker());
+			entity.setTicker(this.generateTicker());
 			final Administrator admin = this.administratorService.checkPrincipal();
 			entity.setAdministrator(admin);
 			aux = this.repository.save(entity);
@@ -148,32 +157,33 @@ public class SubjectService {
 			this.administratorService.save(admin);
 
 			aux.setAdministrator(admin);
-			m = repository.save(aux);
+			m = this.repository.save(aux);
+
+			if (LoginService.hasRole("ADMINISTRATOR"))
+				this.activityRecordService.RQNcreateReport("creates.subject");
 		}
 		return m;
 	}
 
 	private String generateTicker() {
-		StringBuilder str = new StringBuilder();
+		final StringBuilder str = new StringBuilder();
 
-		String letters = new String("QWERTYUIOPASDFGHJKLZXCVBNM");
-		Random rand = new Random();
+		final String letters = new String("QWERTYUIOPASDFGHJKLZXCVBNM");
+		final Random rand = new Random();
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++)
 			str.append(letters.charAt(rand.nextInt(letters.length())));
-		}
 
 		str.append('-');
 
-		String number = new String("0123456789");
-		for (int i = 0; i < 5; i++) {
+		final String number = new String("0123456789");
+		for (int i = 0; i < 5; i++)
 			str.append(number.charAt(rand.nextInt(number.length())));
-		}
 
 		return str.toString();
 	}
 
-	public Subject saveBulletin(Subject entity) {
+	public Subject saveBulletin(final Subject entity) {
 		Assert.notNull(entity);
 
 		Subject aux = new Subject();
@@ -197,29 +207,30 @@ public class SubjectService {
 
 				saved = this.repository.save(aux);
 			}
+
 		} else
 			saved = this.repository.save(entity);
 		return saved;
 	}
 
-	public Subject findOne(Integer id) {
+	public Subject findOne(final Integer id) {
 		return this.repository.findOne(id);
 	}
 
-	public boolean exists(Integer id) {
+	public boolean exists(final Integer id) {
 		Assert.notNull(id);
 		return this.repository.exists(id);
 	}
 
-	public List<Subject> save(List<Subject> arg0) {
+	public List<Subject> save(final List<Subject> arg0) {
 		Assert.notNull(arg0);
 		Assert.noNullElements(arg0.toArray());
 		return this.repository.save(arg0);
 	}
 
-	public void delete(Subject subject) {
+	public void delete(final Subject subject) {
 		Assert.notNull(subject);
-
+		Assert.isTrue(LoginService.hasRole("ADMINISTRATOR"));
 		subject.setActivities(new ArrayList<Activity>());
 		subject.setBulletins(new ArrayList<Bulletin>());
 
@@ -265,6 +276,7 @@ public class SubjectService {
 			}
 
 		this.repository.delete(subject);
+		this.activityRecordService.RQNcreateReport("deletes.subject");
 
 	}
 
@@ -275,7 +287,7 @@ public class SubjectService {
 	 * @return
 	 */
 
-	public Subject findOnePrincipal(int subjectId) {
+	public Subject findOnePrincipal(final int subjectId) {
 		// TODO Auto-generated method stub
 
 		final Subject subject = this.repository.findOne(subjectId);
@@ -289,7 +301,7 @@ public class SubjectService {
 	 * @return
 	 */
 
-	public Collection<Subject> findAllByPrincipal(Teacher checkPrincipal) {
+	public Collection<Subject> findAllByPrincipal(final Teacher checkPrincipal) {
 		// TODO Auto-generated method stub
 		Assert.notNull(checkPrincipal);
 		return this.repository.findAllByPrincipal(checkPrincipal.getId());
@@ -306,13 +318,13 @@ public class SubjectService {
 		return this.repository.findSubjectsByWordWithSeats(keyword, LoginService.getPrincipal().getId());
 	}
 
-	public Subject findOneByAssignment(int assignmentId) {
+	public Subject findOneByAssignment(final int assignmentId) {
 		Assert.notNull(assignmentId);
 
 		return this.repository.findOneByAssignment(assignmentId);
 	}
 
-	public Subject findOneByGroupId(int id) {
+	public Subject findOneByGroupId(final int id) {
 		// TODO Auto-generated method stub
 		Assert.notNull(id);
 		Assert.isTrue(LoginService.hasRole("STUDENT"));

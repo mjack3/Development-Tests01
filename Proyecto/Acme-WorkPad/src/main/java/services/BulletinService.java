@@ -10,12 +10,12 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.BulletinRepository;
+import security.LoginService;
 import domain.Actor;
 import domain.Bulletin;
 import domain.Subject;
 import forms.BulletinForm;
-import repositories.BulletinRepository;
-import security.LoginService;
 
 @Service
 @Transactional
@@ -23,16 +23,19 @@ public class BulletinService {
 
 	// Managed repository ------------------------------------------
 	@Autowired
-	private BulletinRepository	bulletinRepository;
+	private BulletinRepository		bulletinRepository;
 
 	// Supporting Services ------------------------------------------
 	@Autowired(required = false)
-	private Validator			validator;
+	private Validator				validator;
 
 	@Autowired
-	private SubjectService		subjectService;
+	private SubjectService			subjectService;
 	@Autowired
-	private LoginService		loginService;
+	private LoginService			loginService;
+
+	@Autowired
+	private ActivityRecordService	activityRecordService;
 
 
 	// Constructors -------------------------------------------------
@@ -53,9 +56,9 @@ public class BulletinService {
 
 	public void delete(final Bulletin entity) {
 		Assert.notNull(entity);
-		Actor actor = this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		final Actor actor = this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 
-		Assert.isTrue(bulletinRepository.findBySubject(actor.getId()).contains(entity));
+		Assert.isTrue(this.bulletinRepository.findBySubject(actor.getId()).contains(entity));
 
 		this.bulletinRepository.delete(entity);
 	}
@@ -82,6 +85,7 @@ public class BulletinService {
 	public Bulletin save(final Bulletin bulletin) {
 
 		final Bulletin result = this.bulletinRepository.save(bulletin);
+		this.activityRecordService.RQNcreateReport("posts.bulletin");
 
 		return result;
 	}

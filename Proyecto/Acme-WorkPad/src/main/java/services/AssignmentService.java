@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.AssignmentRepository;
+import security.LoginService;
 import domain.Assignment;
 import domain.Group;
 import domain.Student;
@@ -20,8 +22,6 @@ import domain.Subject;
 import domain.Submission;
 import domain.Teacher;
 import forms.AssignmentForm;
-import repositories.AssignmentRepository;
-import security.LoginService;
 
 @Service
 @Transactional
@@ -40,6 +40,9 @@ public class AssignmentService {
 	@Autowired
 	private LoginService			loginService;
 
+	@Autowired
+	private ActivityRecordService	activityRecordService;
+
 
 	public AssignmentService() {
 		super();
@@ -56,10 +59,15 @@ public class AssignmentService {
 
 	public Assignment save(final Assignment assignment) {
 		Assert.notNull(assignment);
-		Date today = new Date();
+		final Date today = new Date();
 		Assert.isTrue(today.after(assignment.getStartDate()));
 		Assert.isTrue(today.before(assignment.getEndDate()));
 		final Assignment saved = this.repository.save(assignment);
+
+		if (LoginService.hasRole("TEACHER") && assignment.getId() == 0)
+			this.activityRecordService.RQNcreateReport("creates.activity");
+		else if (LoginService.hasRole("TEACHER") && assignment.getId() != 0)
+			this.activityRecordService.RQNcreateReport("edits.activity");
 
 		return saved;
 	}
@@ -68,6 +76,8 @@ public class AssignmentService {
 		// TODO Auto-generated method stub
 		Assert.isTrue(this.repository.exists(assignment.getId()));
 		final Assignment saved = this.repository.save(assignment);
+		if (LoginService.hasRole("TEACHER") && assignment.getId() != 0)
+			this.activityRecordService.RQNcreateReport("edits.activity");
 		return saved;
 	}
 
@@ -76,19 +86,20 @@ public class AssignmentService {
 		Assert.notNull(assignment);
 		Assert.isTrue(this.repository.exists(assignment.getId()));
 
-		Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
+		final Teacher teacher = (Teacher) this.loginService.findActorByUsername(LoginService.getPrincipal().getId());
 		Boolean isAssi = false;
-		for (Subject a : teacher.getSubjects()) {
+		for (final Subject a : teacher.getSubjects())
 			if (a.getAssigments().contains(assignment)) {
 				isAssi = true;
 				break;
 
 			}
-		}
 		Assert.isTrue(isAssi);
 
 		this.teacherService.checkPrincipal();
 		this.repository.delete(assignment);
+		if (LoginService.hasRole("TEACHER"))
+			this.activityRecordService.RQNcreateReport("deletes.activity");
 	}
 
 	public Assignment findOne(final int assignmentId) {
@@ -147,8 +158,15 @@ public class AssignmentService {
 			saved = this.repository.save(assignment);
 			subject.getAssigments().add(saved);
 			this.subjectService.save(subject);
-		} else
+
+			if (LoginService.hasRole("TEACHER"))
+				this.activityRecordService.RQNcreateReport("creates.activity");
+
+		} else {
 			saved = this.repository.save(assignment);
+			if (LoginService.hasRole("TEACHER"))
+				this.activityRecordService.RQNcreateReport("edits.activity");
+		}
 
 		return saved;
 	}
@@ -156,19 +174,14 @@ public class AssignmentService {
 	public Collection<Assignment> findAllByPrincipalStudent() {
 		final Student student = this.studentService.checkPrincipal();
 		Assert.notNull(student);
-		Collection<Group> groups = student.getGroups();
+		final Collection<Group> groups = student.getGroups();
 		final Collection<Assignment> resul = new HashSet<Assignment>();
-		Collection<Subject> subjects = student.getSubjects();
-		if (!student.getGroups().isEmpty() && !student.getSubjects().isEmpty()) {
-
-			for (Group g : groups) {
-				for (Subject s : subjects) {
-					if (s.getGroups().contains(g)) {
+		final Collection<Subject> subjects = student.getSubjects();
+		if (!student.getGroups().isEmpty() && !student.getSubjects().isEmpty())
+			for (final Group g : groups)
+				for (final Subject s : subjects)
+					if (s.getGroups().contains(g))
 						resul.addAll(s.getAssigments());
-					}
-				}
-			}
-		}
 
 		return resul;
 	}
@@ -179,7 +192,7 @@ public class AssignmentService {
 		return this.repository.findAllByGroupId(id);
 	}
 
-	public boolean exists(int assignmentId) {
+	public boolean exists(final int assignmentId) {
 		return this.repository.exists(assignmentId);
 	}
 

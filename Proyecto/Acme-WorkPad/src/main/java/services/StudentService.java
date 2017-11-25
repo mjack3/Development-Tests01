@@ -12,6 +12,10 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import repositories.StudentRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.ActivityRecord;
 import domain.Folder;
 import domain.Group;
@@ -20,27 +24,25 @@ import domain.Seminar;
 import domain.SocialIdentity;
 import domain.Student;
 import domain.Subject;
-import repositories.StudentRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Transactional
 @Service
 public class StudentService {
 
 	@Autowired
-	private StudentRepository	repository;
+	private StudentRepository		repository;
 
 	@Autowired
-	private FolderService		folderService;
+	private FolderService			folderService;
 
 	@Autowired
-	private LoginService		loginService;
+	private LoginService			loginService;
 	@Autowired
-	private SubjectService		subjectService;
+	private SubjectService			subjectService;
 	@Autowired
-	private SeminarService		seminarService;
+	private SeminarService			seminarService;
+	@Autowired
+	private ActivityRecordService	activityRecordService;
 
 
 	public StudentService() {
@@ -158,9 +160,9 @@ public class StudentService {
 			m = this.repository.save(m);
 		} else {
 
-			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			actor.getUserAccount().setPassword(encoder.encodePassword(actor.getUserAccount().getPassword(), null));
-			actor.setFolders(this.folderService.save(createFolders()));
+			actor.setFolders(this.folderService.save(this.createFolders()));
 
 			m = this.repository.save(actor);
 		}

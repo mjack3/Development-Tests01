@@ -43,6 +43,8 @@ public class SubmissionService {
 	private TeacherService			teacherService;
 	@Autowired
 	private LoginService			loginService;
+	@Autowired
+	private ActivityRecordService	activityRecordService;
 
 
 	public SubmissionService() {
@@ -178,6 +180,7 @@ public class SubmissionService {
 			assignment.getSubmission().add(saved);
 			this.groupService.save(group);
 			this.assignmentService.save(assignment);
+			this.activityRecordService.RQNcreateReport("submits.assignment");
 			return saved;
 		} else
 			return resul;

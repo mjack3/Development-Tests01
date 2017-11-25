@@ -18,10 +18,6 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-
-
-
-
 <acme:acme_view entity="${teacher}" skip_fields="name,surname,email,phone,postalAddress,seminars,bibliographiesRecords,subjects"  >
 
  <tr>

@@ -177,4 +177,17 @@ public class ActivityRecordService {
 		final List<ActivityRecord> activityRecords = this.activityRecordRepository.findAllByUserAccountId(userAccountId);
 		return activityRecords;
 	}
+
+	public void RQNcreateReport(final String message) {
+		// TODO Auto-generated method stub
+
+		final ActivityRecord activityRecord = new ActivityRecord();
+
+		activityRecord.setWrittenDate(new Date(System.currentTimeMillis() - 1));
+		activityRecord.setDescription(message);
+
+		this.save(activityRecord);
+
+	}
+
 }

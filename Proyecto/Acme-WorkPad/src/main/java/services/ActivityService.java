@@ -31,6 +31,9 @@ public class ActivityService {
 	@Autowired
 	private AdministratorService	administratorService;
 
+	@Autowired
+	private ActivityRecordService	activityRecordService;
+
 
 	public ActivityService() {
 		super();
@@ -56,6 +59,11 @@ public class ActivityService {
 
 		final Activity saved = this.repository.save(activity);
 
+		if (LoginService.hasRole("TEACHER") && activity.getId() == 0)
+			this.activityRecordService.RQNcreateReport("creates.activity");
+		else if (LoginService.hasRole("TEACHER") && activity.getId() != 0)
+			this.activityRecordService.RQNcreateReport("edits.activity");
+
 		// Actualizo Asignatura
 
 		subject.getActivities().add(saved);
@@ -76,6 +84,8 @@ public class ActivityService {
 		this.checkIsPrincipal(activity);
 
 		final Activity saved = this.repository.save(activity);
+		if (LoginService.hasRole("TEACHER"))
+			this.activityRecordService.RQNcreateReport("edits.activity");
 
 		return saved;
 	}
@@ -90,7 +100,8 @@ public class ActivityService {
 		subject.getActivities().remove(activity);
 		this.subjectService.update(subject);
 		this.repository.delete(activity);
-
+		if (LoginService.hasRole("TEACHER"))
+			this.activityRecordService.RQNcreateReport("deletes.activity");
 	}
 
 	public void deleteAdmin(final Activity activity) {

@@ -21,12 +21,14 @@ import domain.Teacher;
 public class SeminarService {
 
 	@Autowired
-	private SeminarRepository	repository;
+	private SeminarRepository		repository;
 
 	@Autowired
-	private TeacherService		teacherService;
+	private TeacherService			teacherService;
 	@Autowired
-	private StudentService		studentService;
+	private StudentService			studentService;
+	@Autowired
+	private ActivityRecordService	activityRecordService;
 
 
 	public SeminarService() {
@@ -38,6 +40,7 @@ public class SeminarService {
 		Assert.isTrue(LoginService.hasRole("TEACHER"));
 		Assert.isTrue(this.repository.exists(entity.getId()));
 		this.repository.delete(entity);
+		this.activityRecordService.RQNcreateReport("deletes.seminar");
 	}
 
 	public Seminar create() {
@@ -54,6 +57,11 @@ public class SeminarService {
 	}
 
 	public Seminar save(final Seminar entity) {
+
+		if (entity.getId() == 0 && LoginService.hasRole("TEACHER"))
+			this.activityRecordService.RQNcreateReport("creates.seminar");
+		else if (entity.getId() != 0 && LoginService.hasRole("TEACHER"))
+			this.activityRecordService.RQNcreateReport("edits.seminar");
 
 		return this.repository.save(entity);
 	}
@@ -100,6 +108,7 @@ public class SeminarService {
 		Assert.isTrue(!student.getSeminars().contains(seminar));
 		student.getSeminars().add(seminar);
 		this.studentService.save(student);
+		this.activityRecordService.RQNcreateReport("registers.seminar");
 	}
 
 	public void unRegister(final Seminar seminar) {
