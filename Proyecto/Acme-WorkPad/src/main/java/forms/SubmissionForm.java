@@ -1,83 +1,86 @@
 
 package forms;
 
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-
 public class SubmissionForm {
-	private int groupId;
-	private int assignmentId;
+
+	private int				groupId;
+	private int				assignmentId;
 	private String			content;
-	private String	attachments;
+	private List<String>	attachments;
 	private Integer			grade;
 	private Integer			tryNumber;
 	private Double			mark;
-	
-	
+
+
 	//Getters
 
 	@NotNull
-	@Range(min=1)
+	@Range(min = 1)
 	public Integer getTryNumber() {
-		return tryNumber;
+		return this.tryNumber;
 	}
 
 	public Double getMark() {
-		return mark;
+		return this.mark;
 	}
 
 	@NotBlank
 	public String getContent() {
-		return content;
-	}
-
-	
-	public String getAttachments() {
-		return attachments;
+		return this.content;
 	}
 
 	public Integer getGrade() {
-		return grade;
+		return this.grade;
 	}
 
 	//Setters
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
 
-	public void setAttachments(String attachments) {
-		this.attachments = attachments;
-	}
-
-	public void setGrade(Integer grade) {
+	public void setGrade(final Integer grade) {
 		this.grade = grade;
 	}
-	
-	public void setTryNumber(Integer tryNumber) {
+
+	public void setTryNumber(final Integer tryNumber) {
 		this.tryNumber = tryNumber;
 	}
 
-	public void setMark(Double mark) {
+	public void setMark(final Double mark) {
 		this.mark = mark;
 	}
 
 	public int getAssignmentId() {
-		return assignmentId;
+		return this.assignmentId;
 	}
 
-	public void setAssignmentId(int assignmentId) {
+	public void setAssignmentId(final int assignmentId) {
 		this.assignmentId = assignmentId;
 	}
 
 	public int getGroupId() {
-		return groupId;
+		return this.groupId;
 	}
 
-	public void setGroupId(int groupId) {
+	public void setGroupId(final int groupId) {
 		this.groupId = groupId;
+	}
+
+	@ElementCollection
+	public List<String> getAttachments() {
+		return this.attachments;
+	}
+
+	public void setAttachments(final List<String> attachments) {
+		this.attachments = attachments;
 	}
 
 }

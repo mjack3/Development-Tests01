@@ -63,7 +63,7 @@
 <security:authorize access="hasRole('STUDENT')">
 
 	<acme:list
-		entityUrl="{groups:group/student/list.do,bulletins:bulletin/actor/list.do, teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,activities:activity/list.do,activities:activity/list.do, administator:administrator/view.do, category:category/view.do, assigments:assignment/list.do}"
+		entityUrl="{groups:group/student/list.do,bulletins:bulletin/actor/list.do, teacher:teacher/view.do,bibliographiesRecords:bibliographyrecord/list.do,activities:activity/list.do,activities:activity/list.do, administator:administrator/view.do, category:category/view.do, assigments:assignment/student/list.do}"
 		list="${subject}" variable="e" requestURI="${requestURI}"
 		hidden_fields="administrator,students"
 		pagesize="6">

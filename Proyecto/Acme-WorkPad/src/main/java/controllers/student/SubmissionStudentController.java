@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import controllers.AbstractController;
-import domain.Group;
-import domain.School;
-import forms.SubmissionForm;
 import security.LoginService;
 import services.SchoolService;
 import services.StudentService;
 import services.SubmissionService;
+import controllers.AbstractController;
+import domain.Group;
+import domain.School;
+import domain.Submission;
+import forms.SubmissionForm;
 
 @Controller
 @RequestMapping("/submission/student")
@@ -72,7 +73,7 @@ public class SubmissionStudentController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("submission/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("submissions", q.getSubmission());
 
@@ -87,20 +88,35 @@ public class SubmissionStudentController extends AbstractController {
 
 		try {
 
-			this.submissionService.reconstruct(submissionForm, binding);
-
+			final Submission submission = this.submissionService.reconstruct(submissionForm, binding);
 			if (binding.hasErrors())
 				result = this.createEditModelAndView(submissionForm);
 			else
+				//this.submissionService.save(submission);
 				result = new ModelAndView("redirect:/assignment/student/list.do?studentId=" + this.studentService.checkPrincipal().getId());
-		} catch (final Throwable oops) {
-			if (oops.getMessage() == "error.attachment.format")
-				result = this.createEditModelAndView(submissionForm, "submission.attachment.format.error");
-			if (binding.hasErrors())
-				result = this.createEditModelAndView(submissionForm);
-			else
-				result = this.createEditModelAndView(submissionForm, "submission.commit.error");
+
+		} catch (final Throwable oop) {
+			result = this.createEditModelAndView(submissionForm, "submission.attachment.format.error");
 		}
+
+		/*
+		 * try {
+		 * 
+		 * this.submissionService.reconstruct(submissionForm, binding);
+		 * 
+		 * if (binding.hasErrors())
+		 * result = this.createEditModelAndView(submissionForm);
+		 * else
+		 * result = new ModelAndView("redirect:/assignment/student/list.do?studentId=" + this.studentService.checkPrincipal().getId());
+		 * } catch (final Throwable oops) {
+		 * if (oops.getMessage() == "error.attachment.format")
+		 * result = this.createEditModelAndView(submissionForm, "submission.attachment.format.error");
+		 * if (binding.hasErrors())
+		 * result = this.createEditModelAndView(submissionForm);
+		 * else
+		 * result = this.createEditModelAndView(submissionForm, "submission.commit.error");
+		 * }
+		 */
 		return result;
 	}
 
@@ -112,12 +128,12 @@ public class SubmissionStudentController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(SubmissionForm submissionForm, String message) {
+	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm, final String message) {
 
 		ModelAndView result;
 
 		result = new ModelAndView("submission/student/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("submissionForm", submissionForm);
 		result.addObject("message", message);
