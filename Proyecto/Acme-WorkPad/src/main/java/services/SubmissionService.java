@@ -157,6 +157,9 @@ public class SubmissionService {
 			if (!SubmissionService.IsMatch(string, regex)) {
 				binding.rejectValue("attachments", "attachments.error.invalid", "invalid");
 				throw new IllegalArgumentException();
+			} else if (!this.isServer(string)) {
+				binding.rejectValue("attachments", "attachments.error.invalid", "invalid");
+				throw new IllegalArgumentException();
 			}
 
 		//	Generar cadena de enlaces
@@ -179,6 +182,15 @@ public class SubmissionService {
 		} else
 			return resul;
 
+	}
+
+	private boolean isServer(String s) {
+		// TODO Auto-generated method stub
+		s = s.toLowerCase();
+		if (!(s.contains("drive") || s.contains("dropbox") || s.contains("consigna") || s.contains("box") || s.contains("mega") || s.contains("google") || s.contains("skydrive") || s.contains("sugarsync") || s.contains("amazon")))
+			return false;
+		else
+			return true;
 	}
 
 	private static boolean IsMatch(final String s, final String pattern) {

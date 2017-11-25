@@ -1,10 +1,10 @@
 
 package controllers;
 
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.time.DateUtils;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.ActivityRecord;
-import domain.Actor;
-import domain.School;
 import services.ActivityRecordService;
 import services.ActorService;
 import services.SchoolService;
+import domain.ActivityRecord;
+import domain.Actor;
+import domain.School;
 
 @Controller
 @RequestMapping("/activityRecord/authenticated")
@@ -42,7 +42,7 @@ public class ActivityRecordController extends AbstractController {
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "0") int userAccountId) {
 		final ModelAndView resul = new ModelAndView("activityRecord/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		resul.addObject("image", school.getBanner());
 		final List<ActivityRecord> activityRecord;
 		if (userAccountId != 0)
@@ -63,7 +63,7 @@ public class ActivityRecordController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView resul;
-		ActivityRecord activityRecord = this.activityRecordService.create();
+		final ActivityRecord activityRecord = this.activityRecordService.create();
 		resul = this.createEditModelAndView(activityRecord, null);
 		return resul;
 	}
@@ -71,14 +71,14 @@ public class ActivityRecordController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int q) {
 
-		ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
-		ModelAndView resul = this.createEditModelAndView(activityRecord, null);
+		final ActivityRecord activityRecord = this.activityRecordService.findOnePrincipal(q);
+		final ModelAndView resul = this.createEditModelAndView(activityRecord, null);
 
 		return resul;
 	}
 
 	@RequestMapping(value = "edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(ActivityRecord activityRecord, final BindingResult bindingResult) {
+	public ModelAndView save(@Valid ActivityRecord activityRecord, final BindingResult bindingResult) {
 		ModelAndView resul;
 		if (bindingResult.hasErrors())
 			resul = this.createEditModelAndView(activityRecord, null);
@@ -89,12 +89,6 @@ public class ActivityRecordController extends AbstractController {
 			{
 
 				activityRecord = this.activityRecordService.reconstruct(activityRecord, bindingResult);
-
-				final Date tomorrow = DateUtils.addDays(new Date(), 1);
-				if (activityRecord.getWrittenDate().after(tomorrow)) {
-					bindingResult.rejectValue("writtenDate", "must.be.past", "must be past");
-					throw new IllegalArgumentException();
-				}
 
 				if (bindingResult.hasErrors())
 					resul = this.createEditModelAndView(activityRecord, null);
@@ -132,7 +126,7 @@ public class ActivityRecordController extends AbstractController {
 	private ModelAndView createEditModelAndView(final ActivityRecord activityRecord, final String message) {
 		// TODO Auto-generated method stub
 		final ModelAndView resul = new ModelAndView("activityRecord/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		resul.addObject("image", school.getBanner());
 		resul.addObject("activityRecord", activityRecord);
 		resul.addObject("message", message);

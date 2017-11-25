@@ -14,11 +14,11 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import domain.ActivityRecord;
-import domain.Actor;
 import repositories.ActivityRecordRepository;
 import security.LoginService;
 import security.UserAccount;
+import domain.ActivityRecord;
+import domain.Actor;
 
 @Service
 @Transactional
@@ -114,8 +114,8 @@ public class ActivityRecordService {
 
 	public ActivityRecord create() {
 		// TODO Auto-generated method stub
-		ActivityRecord activityRecord = new ActivityRecord();
-		activityRecord.setWrittenDate(new Date());
+		final ActivityRecord activityRecord = new ActivityRecord();
+		activityRecord.setWrittenDate(new Date(System.currentTimeMillis() - 1));
 		return activityRecord;
 	}
 
@@ -130,14 +130,26 @@ public class ActivityRecordService {
 		resul.setDescription(activityRecord.getDescription());
 		resul.setAttachments(activityRecord.getAttachments());
 		resul.setWrittenDate(activityRecord.getWrittenDate());
-		final String pattern = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+		final String pattern = "\\b(https?|ftp|file)://drive|dropbox|consigna|box|mega|skydrive|sugarsync|amazon|box[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 		for (final String s : resul.getAttachments())
-			if (!ActivityRecordService.IsMatch(s, pattern))
-				bindingResult.rejectValue("attachments", "URls only", "URLs only");
-
-		this.validator.validate(resul, bindingResult);
+			if (!ActivityRecordService.IsMatch(s, pattern)) {
+				bindingResult.rejectValue("attachments", "urls.only", "URLs only");
+				throw new IllegalArgumentException();
+			} else if (!this.isServer(s)) {
+				bindingResult.rejectValue("attachments", "urls.only", "URLs only");
+				throw new IllegalArgumentException();
+			}
 
 		return resul;
+	}
+
+	private boolean isServer(String s) {
+		// TODO Auto-generated method stub
+		s = s.toLowerCase();
+		if (!(s.contains("drive") || s.contains("dropbox") || s.contains("consigna") || s.contains("box") || s.contains("mega") || s.contains("google") || s.contains("skydrive") || s.contains("sugarsync") || s.contains("amazon")))
+			return false;
+		else
+			return true;
 	}
 
 	private static boolean IsMatch(final String s, final String pattern) {

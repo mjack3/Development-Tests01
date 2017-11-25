@@ -21,49 +21,17 @@
 <security:authorize access="hasRole('TEACHER')">
 <form:form action="seminar/teacher/save.do" modelAttribute="seminar">
 
-	<div class="form-group" style="width: 20%;">
 
-		<label> <spring:message code="seminar.title" /></label> <br />
-		<input class="form-control" value="${seminar.title}" type="text"
-			name="title" />
-		<form:errors cssClass="error" path="title" />
+
+
+<acme:textbox2 code="seminar.title" path="title"/>
+<acme:textbox2 code="seminar.summary" path="summary"/>
+<acme:textbox2 code="seminar.organisedDate" path="organisedDate"/>
+<acme:textbox2 code="seminar.duration" path="duration"/>
+<acme:textbox2 code="seminar.hall" path="hall"/>
+<acme:textbox2 code="seminar.seats" path="seats"/>
+
 		
-		<br /> 
-		
-		<label> <spring:message code="seminar.summary"/> </label><br />
-		<form:textarea cols="30" rows="10" path="summary" class="form-control"/>
-		<form:errors cssClass="error" path="summary" /> 
-		
-		<br />
-		
-		<label> <spring:message code="seminar.organisedDate" /></label> <br />
-		<input class="form-control" value="${seminar.organisedDate}" type="text"
-			name="organisedDate" />
-		<form:errors cssClass="error" path="organisedDate" />
-		
-		<br /> 
-		
-		<label> <spring:message code="seminar.duration" /></label> <br />
-		<input class="form-control" value="${seminar.duration}" type="number" min="1"
-			name="duration" />
-		<form:errors cssClass="error" path="duration" />
-		
-		<br /> 
-		
-		<label> <spring:message code="seminar.hall" /></label> <br />
-		<input class="form-control" value="${seminar.hall}" type="text" 
-			name="hall" />
-		<form:errors cssClass="error" path="hall" />
-		
-		<br /> 
-		
-		<label> <spring:message code="seminar.seats" /></label> <br />
-		<input class="form-control" value="${seminar.seats}"type="number" min="1"
-			name="seats" />
-		<form:errors cssClass="error" path="seats" />
-		
-		<br /> 
-		</div>
 		
 
 	<spring:message code="seminar.save" var="actorSaveHeader" />

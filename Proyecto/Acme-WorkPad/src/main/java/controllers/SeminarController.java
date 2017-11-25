@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.School;
-import domain.Seminar;
-import domain.Student;
-import domain.Teacher;
 import services.SchoolService;
 import services.SeminarService;
 import services.StudentService;
 import services.TeacherService;
+import domain.School;
+import domain.Seminar;
+import domain.Student;
+import domain.Teacher;
 
 @Controller
 @RequestMapping("/seminar")
@@ -41,7 +41,7 @@ public class SeminarController extends AbstractController {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			result = new ModelAndView("seminar/edit");
-			School school = schoolService.findAll().iterator().next();
+			final School school = this.schoolService.findAll().iterator().next();
 			result.addObject("image", school.getBanner());
 			result.addObject("seminar", seminar);
 		} else
@@ -53,13 +53,13 @@ public class SeminarController extends AbstractController {
 					this.teacherService.save(teacher);
 				}
 				result = new ModelAndView("seminar/list");
-				School school = schoolService.findAll().iterator().next();
+				final School school = this.schoolService.findAll().iterator().next();
 				result.addObject("image", school.getBanner());
 				result.addObject("seminars", teacher.getSeminars());
 			} catch (final Throwable th) {
 
 				result = new ModelAndView("seminar/edit");
-				School school = schoolService.findAll().iterator().next();
+				final School school = this.schoolService.findAll().iterator().next();
 				result.addObject("image", school.getBanner());
 				result.addObject("seminar", seminar);
 				result.addObject("message", "folder.commit.error");
@@ -72,7 +72,7 @@ public class SeminarController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("seminar/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("seminar", q);
 
@@ -88,12 +88,12 @@ public class SeminarController extends AbstractController {
 			this.teacherService.save(teacher);
 			this.seminarService.delete(q);
 			result = new ModelAndView("seminar/list");
-			School school = schoolService.findAll().iterator().next();
+			final School school = this.schoolService.findAll().iterator().next();
 			result.addObject("image", school.getBanner());
 			result.addObject("seminars", teacher.getSeminars());
 		} catch (final Throwable th) {
 			result = new ModelAndView("seminar/list");
-			School school = schoolService.findAll().iterator().next();
+			final School school = this.schoolService.findAll().iterator().next();
 			result.addObject("image", school.getBanner());
 			result.addObject("seminars", teacher.getSeminars());
 		}
@@ -106,7 +106,7 @@ public class SeminarController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("seminar/create");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("seminar", this.seminarService.create());
 
@@ -120,7 +120,7 @@ public class SeminarController extends AbstractController {
 		final Teacher teacher = this.teacherService.checkPrincipal();
 
 		result = new ModelAndView("seminar/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("seminars", teacher.getSeminars());
 
@@ -133,7 +133,7 @@ public class SeminarController extends AbstractController {
 
 		final Student student = this.studentService.checkPrincipal();
 		result = new ModelAndView("seminar/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("seminars", this.seminarService.findAll());
 		result.addObject("mySeminars", student.getSeminars());
@@ -147,7 +147,7 @@ public class SeminarController extends AbstractController {
 
 		final Student student = this.studentService.checkPrincipal();
 		result = new ModelAndView("seminar/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("seminars", student.getSeminars());
 		result.addObject("mySeminars", student.getSeminars());
