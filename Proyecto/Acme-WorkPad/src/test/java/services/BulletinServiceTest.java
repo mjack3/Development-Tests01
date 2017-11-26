@@ -30,11 +30,11 @@ public class BulletinServiceTest extends AbstractTest {
 		Object testingData[][] = {
 			// Loged publica bulletin
 			{
-				"student1", 837, new Bulletin(), JpaSystemException.class
+				"student1", 894, new Bulletin(), JpaSystemException.class
 			},
 			//	No logueado Loged publica bulletin en una asignatura
 			{
-				null, 837, new Bulletin(), IllegalArgumentException.class
+				null, 894, new Bulletin(), IllegalArgumentException.class
 			},
 			//	Profesor publica bulletin en asignatura no válida
 			{
@@ -53,7 +53,7 @@ public class BulletinServiceTest extends AbstractTest {
 		// TODO Auto-generated method stub
 		Class<?> caught;
 
-		bulletin = this.bulletinService.findOne(785);
+		bulletin = this.bulletinService.findOne(841);
 		bulletin.setId(0);
 
 		caught = null;

@@ -334,4 +334,15 @@ public class SubjectService {
 		return resul;
 	}
 
+	public Subject findOnePrincipal2(final Integer id) {
+		// TODO Auto-generated method stub
+		Assert.notNull(id);
+		final Subject subject = this.repository.findOne(id);
+		final Student student = this.studentService.checkPrincipal();
+
+		Assert.isTrue(student.getSubjects().contains(subject));
+
+		return subject;
+	}
+
 }

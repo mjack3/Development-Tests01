@@ -34,15 +34,15 @@ public class GroupServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  Estudiante crea un grupo en una asignatura
 			{
-				"student1", 837, InvalidDataAccessApiUsageException.class
+				"student1", 894, InvalidDataAccessApiUsageException.class
 			},
 			//  Estudiante crea grupo en una asignatura ajena
 			{
-				"student10", 837, IllegalArgumentException.class
+				"student10", 898, IllegalArgumentException.class
 			},
 			//  Studiante crea grupo en asignatura ajena
 			{
-				"student1", 000, IllegalArgumentException.class
+				"student1", null, IllegalArgumentException.class
 			}
 		};
 
@@ -61,7 +61,7 @@ public class GroupServiceTest extends AbstractTest {
 			this.authenticate(username);
 
 			final Group group = this.groupService.create();
-			final Subject subject = this.subjectService.findOnePrincipal(id);
+			final Subject subject = this.subjectService.findOnePrincipal2(id);
 
 			subject.getGroups().add(group);
 			this.subjectService.update(subject);
@@ -79,11 +79,11 @@ public class GroupServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  Estudiante Se une a un grupo de su asignatura
 			{
-				"student10", 806, null
+				"student10", 862, null
 			},
 			//  Estudiante se une dos veces al grupo
 			{
-				"student1", 806, IllegalArgumentException.class
+				"student1", 862, IllegalArgumentException.class
 			},
 			//  Studiante se une a un grupo que no existe
 			{

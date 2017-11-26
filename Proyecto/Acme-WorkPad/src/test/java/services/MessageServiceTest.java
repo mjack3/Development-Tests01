@@ -36,11 +36,11 @@ public class MessageServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			// Admin Intercambia mensajes
 			{
-				"admin", 715, null
+				"admin", 770, null
 			},
 			//	No logueado intercambia mensajes
 			{
-				null, 715, IllegalArgumentException.class
+				null, 765, IllegalArgumentException.class
 			},
 			//	Usuario intercambia mensaje con alguien no existente
 			{

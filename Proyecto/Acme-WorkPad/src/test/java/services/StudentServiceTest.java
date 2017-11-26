@@ -35,11 +35,11 @@ public class StudentServiceTest extends AbstractTest {
 		Object testingData[][] = {
 			// Estudiante accede a los profsores de una asignatira
 			{
-				"student1", 837, null
+				"student1", 894, null
 			},
 			//	No logueado accede a los profesores de una asignatura
 			{
-				null, 837, null
+				null, 894, null
 			},
 			//	Estudiante accede a los profesores de una asignatura que no existe
 			{
@@ -63,11 +63,11 @@ public class StudentServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			// Estudiante accede a las asignatura de un profesor
 			{
-				"student1", 710, null
+				"student1", 765, null
 			},
 			// Nologin accede a las asignatura de un profesor
 			{
-				null, 710, null
+				null, 765, null
 			},
 			// Estudiante accede a las asignatura de un profesor que no existe
 			{
@@ -133,16 +133,16 @@ public class StudentServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			// Estudiante cambia sus datos
 			{
-				"student1", 715, "nuevoNombre", "nuevos apellidos", null
+				"student1", 770, "nuevoNombre", "nuevos apellidos", null
 			},
 
 			// Estudiante edita a otro estudiante
 			{
-				"student1", 711, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				"student1", 771, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
 			},
 			//	No logueado edita a estudiante
 			{
-				null, 714, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				null, 770, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
 			},
 			//	No logueado edita a estudiante que no existe
 			{
@@ -194,11 +194,11 @@ public class StudentServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			// Estudiante se apunta a una asignatura
 			{
-				"student10", 837, null
+				"student10", 894, null
 			},
 			// Estudiante se apunta dos veces
 			{
-				"student1", 837, IllegalArgumentException.class
+				"student1", 894, IllegalArgumentException.class
 			},
 			// Estudiante se apunta a una asignatura que no existe
 			{

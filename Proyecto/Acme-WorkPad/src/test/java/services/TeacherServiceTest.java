@@ -30,11 +30,11 @@ public class TeacherServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			// profesor accede a los profsores de una asignatira
 			{
-				"teacher1", 837, null
+				"teacher1", 894, null
 			},
 			//	No logueado accede a los profesores de una asignatura
 			{
-				null, 837, null
+				null, 894, null
 			},
 			//	Profesor accede a los profesores de una asignatura que no existe
 			{
@@ -55,11 +55,11 @@ public class TeacherServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  accede a las asignatura de un profesor
 			{
-				"teacher1", 710, null
+				"teacher1", 765, null
 			},
 			//  accede a las asignatura de un profesor
 			{
-				null, 710, null
+				null, 765, null
 			},
 			//  accede a las asignatura de un profesor que no existe
 			{
@@ -120,39 +120,39 @@ public class TeacherServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			// teacher1 cambia sus datos
 			{
-				"teacher1", 710, "nuevoNombre", "nuevos apellidos", null
+				"teacher1", 765, "nuevoNombre", "nuevos apellidos", null
 			},
 			//  teacher1 pone a null su nombre
 			{
-				"teacher1", 711, null, "nuevos apellidos", IllegalArgumentException.class
+				"teacher1", 765, null, "nuevos apellidos", ConstraintViolationException.class
 			},
 			// teacher1 edita a otro teacher
 			{
-				"teacher1", 711, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				"teacher1", 765, "nuevonombre", "nuevos apellidos", ConstraintViolationException.class
 			},
 			//	No logueado edita a estudiante
 			{
-				null, 710, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				null, 770, "nuevonombre", "nuevos apellidos", ConstraintViolationException.class
 			},
 			//	No logueado edita a teacher que no existe
 			{
-				null, 000, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				null, 000, "nuevonombre", "nuevos apellidos", ConstraintViolationException.class
 			},
 			//	teacher1 pone nombre nulo
 			{
-				"teacher1", 710, null, "nuevos apellidos", ConstraintViolationException.class
+				"teacher1", 765, null, "nuevos apellidos", ConstraintViolationException.class
 			},
 			//	No logueado pone varios campos nulos
 			{
-				null, 711, null, null, ConstraintViolationException.class
+				null, 765, null, null, ConstraintViolationException.class
 			},
 			//	teacher pone otro campo diferente vacio
 			{
-				"teacher1", 711, "nuevonombre", "", ConstraintViolationException.class
+				"teacher1", 765, "nuevonombre", "", ConstraintViolationException.class
 			},
 			//	teacher pone varios campos vacios
 			{
-				"teacher1", 711, "", "", ConstraintViolationException.class
+				"teacher1", 765, "", "", ConstraintViolationException.class
 			},
 
 		};

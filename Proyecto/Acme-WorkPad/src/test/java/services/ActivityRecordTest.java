@@ -106,15 +106,15 @@ public class ActivityRecordTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  PROFESOR accede a las actividades de una asignatura
 			{
-				"student1", 819, null
+				"student1", 875, null
 			},
 			//  NOLOGIN accede a las actividades
 			{
-				null, 817, IllegalArgumentException.class
+				null, 875, IllegalArgumentException.class
 			},
 			//  PROFESOR accede a la actividades 
 			{
-				"student10", 821, IllegalArgumentException.class
+				"student10", 875, IllegalArgumentException.class
 			}
 		};
 
@@ -146,15 +146,15 @@ public class ActivityRecordTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  PROFESOR accede a las actividades de una asignatura
 			{
-				"student1", 819, null
+				"student1", 875, null
 			},
 			//  NOLOGIN accede a las actividades
 			{
-				null, 817, IllegalArgumentException.class
+				null, 873, IllegalArgumentException.class
 			},
 			//  PROFESOR accede a la actividades 
 			{
-				"student10", 821, IllegalArgumentException.class
+				"student10", 875, IllegalArgumentException.class
 			}
 		};
 

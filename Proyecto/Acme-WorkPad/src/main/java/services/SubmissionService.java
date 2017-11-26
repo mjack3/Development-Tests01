@@ -250,7 +250,7 @@ public class SubmissionService {
 
 	public void submissionDerivarable(final Submission submission, final Integer id) {
 		// TODO Auto-generated method stub
-
+		Assert.notNull(id);
 		final Assignment assignment = this.assignmentService.findOne(id);
 		Assert.notNull(assignment);
 		final Collection<Assignment> assignments = this.assignmentService.findAllByPrincipalStudent();

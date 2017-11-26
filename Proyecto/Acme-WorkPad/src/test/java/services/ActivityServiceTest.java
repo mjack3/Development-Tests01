@@ -34,15 +34,15 @@ public class ActivityServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  PROFESOR accede a las actividades de una asignatura
 			{
-				"teacher1", 837, null
+				"teacher1", 894, null
 			},
 			//  NOLOGIN accede a las actividades de una asignatura
 			{
-				null, 837, IllegalArgumentException.class
+				null, 894, IllegalArgumentException.class
 			},
 			//  PROFESOR accede a la actividades de una asignatura ajena
 			{
-				"teacher2", 837, IllegalArgumentException.class
+				"teacher2", 894, IllegalArgumentException.class
 			}
 		};
 
@@ -75,15 +75,15 @@ public class ActivityServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  PROFESOR accede a las actividades de una asignatura
 			{
-				"teacher1", 794, null
+				"teacher1", 850, null
 			},
 			//  NOLOGIN accede a las actividades de una asignatura
 			{
-				null, 794, IllegalArgumentException.class
+				null, 850, IllegalArgumentException.class
 			},
 			//  PROFESOR accede a la actividades de una asignatura ajena
 			{
-				"teacher2", 794, NullPointerException.class
+				"teacher2", 850, NullPointerException.class
 			}
 		};
 
@@ -117,15 +117,15 @@ public class ActivityServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  PROFESOR Crea actividad en una asignatura
 			{
-				"teacher1", 794, 837, JpaSystemException.class
+				"teacher1", 850, 894, IllegalArgumentException.class
 			},
 			//  NOLOGIN dita actividades de una asignatura
 			{
-				null, 794, 837, JpaSystemException.class
+				null, 850, 894, JpaSystemException.class
 			},
 			//  PROFESOR crea actividad en una asigbnatura ajena 
 			{
-				"teacher2", 794, 837, JpaSystemException.class
+				"teacher2", 850, 894, JpaSystemException.class
 			}
 		};
 
@@ -146,6 +146,7 @@ public class ActivityServiceTest extends AbstractTest {
 			final Activity activity = this.activityService.findOnePrincipal(idActi);
 			activity.setId(0);
 			activity.setVersion(0);
+			activity.setTitle("dsada");
 
 			final Subject subject = this.subjectService.findOnePrincipal(idAsig);
 			this.activityService.save(activity, subject);

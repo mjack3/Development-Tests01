@@ -34,11 +34,11 @@ public class AdministratorServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			// Admin accede a los profsores de una asignatira
 			{
-				"admin", 837, null
+				"admin", 894, null
 			},
 			//	No logueado accede a los profesores de una asignatura
 			{
-				null, 837, null
+				null, 894, null
 			},
 			//	Admin accede a los profesores de una asignatura que no existe
 			{
@@ -59,11 +59,11 @@ public class AdministratorServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			// Admin accede a las asignatura de un profesor
 			{
-				"admin", 710, null
+				"admin", 765, null
 			},
 			// NoLogin accede a las asignatura de un profesor
 			{
-				null, 710, null
+				null, 765, null
 			},
 			// Admin accede a las asignatura de un profesor que no existe
 			{
@@ -125,16 +125,16 @@ public class AdministratorServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			// Admin cambia sus datos
 			{
-				"admin", 705, "nuevoNombre", "nuevos apellidos", null
+				"admin", 760, "nuevoNombre", "nuevos apellidos", null
 			},
 
 			// Admin edita a otro actor 
 			{
-				"admin", 711, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				"admin", 765, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
 			},
 			//	No logueado edita a admin
 			{
-				null, 705, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
+				null, 765, "nuevonombre", "nuevos apellidos", IllegalArgumentException.class
 			},
 			//	No logueado edita a admin que no existe
 			{

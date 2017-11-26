@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -33,11 +32,11 @@ public class SubmissionServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  Estudiante Hace entregable en una asigbnatura matricualda
 			{
-				"student1", 801, null
+				"student1", 857, null
 			},
 			//  Estudiante entrega en una asignatura ajena
 			{
-				"student10", 801, InvalidDataAccessApiUsageException.class
+				"student10", 857, IllegalArgumentException.class
 			},
 			//  Studiante hace una entrega en una asignatura que no existe
 			{

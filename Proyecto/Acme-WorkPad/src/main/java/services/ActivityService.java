@@ -212,8 +212,8 @@ public class ActivityService {
 		Assert.isTrue(LoginService.isAnyAuthenticated());
 		Assert.isTrue(LoginService.hasRole("TEACHER"));
 		final Subject subject = this.subjectService.findOnePrincipal(idSubject);
+		Assert.isTrue(this.teacherService.checkPrincipal().getSubjects().contains(subject));
 
 		return subject.getActivities();
 	}
-
 }

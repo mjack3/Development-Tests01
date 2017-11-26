@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -115,13 +116,13 @@ public class SeminaryServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  profesor edita y crea seminario
 			{
-				"teacher1", 827, null
+				"teacher1", 884, DataIntegrityViolationException.class
 			},
 			//  NOLOGIN accede a las actividades
 			{
-				null, 827, IllegalArgumentException.class
+				null, 883, IllegalArgumentException.class
 			}, {
-				"student1", 827, IllegalArgumentException.class
+				"student1", 883, IllegalArgumentException.class
 			}
 		};
 
@@ -155,11 +156,11 @@ public class SeminaryServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  profesor edita y crea seminario
 			{
-				"student10", 827, null
+				"student10", 883, null
 			},
 			//  NOLOGIN accede a las actividades
 			{
-				null, 827, IllegalArgumentException.class
+				null, 883, IllegalArgumentException.class
 			}, {
 				"teacher", 827, IllegalArgumentException.class
 			}
@@ -195,7 +196,7 @@ public class SeminaryServiceTest extends AbstractTest {
 		final Object testingData1[][] = {
 			//  profesor edita y crea seminario
 			{
-				"student1", 827, null
+				"student1", 883, null
 			},
 			//  NOLOGIN accede a las actividades
 			{
