@@ -86,9 +86,20 @@
 				          <li><a href="teacher/list.do"><spring:message code="master.page.teacher.list" /></a></li>
 				          </security:authorize>
 				        	
+						
+						<security:authentication property="principal.id" var="id" />
+						<li class="dropdown">
+				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records<span class="caret"></span></a>
+				          <ul class="dropdown-menu">
+				          		<li><a href="activityRecord/authenticated/list.do"><spring:message
+								code="master.page.listActivityRecord" /> </a></li>
 								
-						<li><a href="activityRecord/authenticated/list.do"><spring:message
-						code="master.page.listActivityRecord" /> </a></li>
+								<li><a href="activityRecord/authenticated/listSystem.do"><spring:message
+								code="master.page.listActivityRecordSystem" /> </a></li>
+				          </ul>
+				          </li>
+						
+						
 									
 					</security:authorize>
 					

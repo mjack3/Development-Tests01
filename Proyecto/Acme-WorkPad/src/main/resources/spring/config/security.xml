@@ -34,7 +34,9 @@
 				<security:intercept-url access="isAuthenticated()" pattern="/activityRecord/authenticated/**"/>
 				<security:intercept-url access="isAuthenticated()" pattern="/activity/list.do"/>
 				<security:intercept-url access="isAuthenticated()" pattern="/assignment/list.do"/>
+		<security:intercept-url access="isAuthenticated()" pattern="/activityRecord/authenticated/listSystem.do"/>
 				
+		
 		<security:intercept-url access="permitAll" pattern="/**/search.do"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/subject/teacher/**"/>
 		<security:intercept-url access="hasRole('TEACHER')" pattern="/activity/teacher/**"/>

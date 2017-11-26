@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -57,6 +58,20 @@ public class ActivityRecordController extends AbstractController {
 		resul.addObject("principal", principal);
 		resul.addObject("userAccountId", userAccountId);
 		resul.addObject("requestURI", "activityRecord/authenticated/list.do");
+		return resul;
+	}
+
+	@RequestMapping(value = "/listSystem.do", method = RequestMethod.GET)
+	public ModelAndView listSystem() {
+		final ModelAndView resul = new ModelAndView("activityRecord/listSystem");
+
+		final Collection<ActivityRecord> activityRecords = this.activityRecordService.findAllSystemByPrincipal();
+		resul.addObject("activityRecords", activityRecords);
+		resul.addObject("requestURI", "activityRecord/authenticated/listSystem.do");
+
+		final School school = this.schoolService.findAll().iterator().next();
+		resul.addObject("image", school.getBanner());
+
 		return resul;
 	}
 

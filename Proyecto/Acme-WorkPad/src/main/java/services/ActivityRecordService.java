@@ -190,4 +190,11 @@ public class ActivityRecordService {
 
 	}
 
+	public Collection<ActivityRecord> findAllSystemByPrincipal() {
+		// TODO Auto-generated method stub
+		Assert.isTrue(LoginService.isAnyAuthenticated());
+		final Collection<ActivityRecord> activityRecords = this.activityRecordRepository.findAllSystemByUserAccountId(LoginService.getPrincipal().getId());
+		return activityRecords;
+	}
+
 }

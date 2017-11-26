@@ -21,6 +21,11 @@
 		<put-attribute name="body" value="/views/activityRecord/list.jsp" />
 	</definition>
 	
+	<definition name="activityRecord/listSystem" extends="master.page">	
+		<put-attribute name="title" value="Records" />
+		<put-attribute name="body" value="/views/activityRecord/listSystem.jsp" />
+	</definition>
+	
 	<definition name="activityRecord/edit" extends="master.page">	
 		<put-attribute name="title" value="Record form" />
 		<put-attribute name="body" value="/views/activityRecord/edit.jsp" />
