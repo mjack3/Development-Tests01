@@ -190,7 +190,8 @@ public class SubmissionService {
 	private boolean isServer(String s) {
 		// TODO Auto-generated method stub
 		s = s.toLowerCase();
-		if (!(s.contains("drive") || s.contains("dropbox") || s.contains("consigna") || s.contains("box") || s.contains("mega") || s.contains("google") || s.contains("skydrive") || s.contains("sugarsync") || s.contains("amazon")))
+		if (!(s.startsWith("https://drive.google.com1") || s.startsWith("https://www.dropbox.com") || s.startsWith("https://consigna.us.es/") || s.startsWith("https://www.box.com") || s.contains("mega") || s.contains("google")
+			|| s.startsWith("https://onedrive.live.com") || s.startsWith("https://www.sugarsync.com") || s.contains("amazon")))
 			return false;
 		else
 			return true;

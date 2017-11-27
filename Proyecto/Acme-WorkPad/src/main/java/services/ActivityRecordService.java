@@ -130,9 +130,9 @@ public class ActivityRecordService {
 		resul.setDescription(activityRecord.getDescription());
 		resul.setAttachments(activityRecord.getAttachments());
 		resul.setWrittenDate(activityRecord.getWrittenDate());
-		final String pattern = "\\b(https?|ftp|file)://drive|dropbox|consigna|box|mega|skydrive|sugarsync|amazon|box[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+		final String regex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 		for (final String s : resul.getAttachments())
-			if (!ActivityRecordService.IsMatch(s, pattern)) {
+			if (!ActivityRecordService.IsMatch(s, regex)) {
 				bindingResult.rejectValue("attachments", "urls.only", "URLs only");
 				throw new IllegalArgumentException();
 			} else if (!this.isServer(s)) {
@@ -146,7 +146,8 @@ public class ActivityRecordService {
 	private boolean isServer(String s) {
 		// TODO Auto-generated method stub
 		s = s.toLowerCase();
-		if (!(s.contains("drive") || s.contains("dropbox") || s.contains("consigna") || s.contains("box") || s.contains("mega") || s.contains("google") || s.contains("skydrive") || s.contains("sugarsync") || s.contains("amazon")))
+		if (!(s.startsWith("https://drive.google.com") || s.startsWith("https://www.dropbox.com") || s.startsWith("https://consigna.us.es/") || s.startsWith("https://www.box.com") || s.contains("mega") || s.contains("google")
+			|| s.startsWith("https://onedrive.live.com") || s.startsWith("https://www.sugarsync.com") || s.contains("amazon")))
 			return false;
 		else
 			return true;
