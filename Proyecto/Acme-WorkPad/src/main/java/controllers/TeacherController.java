@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.School;
-import domain.Teacher;
 import services.SchoolService;
 import services.TeacherService;
+import domain.School;
+import domain.Teacher;
 
 @Controller
 @RequestMapping("/teacher")
@@ -37,19 +37,19 @@ public class TeacherController extends AbstractController {
 	}
 
 	@RequestMapping("/view")
-	public ModelAndView view(@RequestParam Teacher q) {
+	public ModelAndView view(@RequestParam final Teacher q) {
 
 		try {
 
-			Assert.isTrue(teacherService.exists(q.getId()));
+			Assert.isTrue(this.teacherService.exists(q.getId()));
 			ModelAndView res;
 			res = new ModelAndView("teacher/view");
-			School school = schoolService.findAll().iterator().next();
+			final School school = this.schoolService.findAll().iterator().next();
 			res.addObject("image", school.getBanner());
 			res.addObject("teacher", q);
 			return res;
-		} catch (Throwable e) {
-			ModelAndView res = new ModelAndView("redirect:/welcome/index.do");
+		} catch (final Throwable e) {
+			final ModelAndView res = new ModelAndView("redirect:/welcome/index.do");
 			return res;
 
 		}
@@ -81,11 +81,11 @@ public class TeacherController extends AbstractController {
 			result = this.createNewModelAndView(teacher, null);
 		else
 			try {
-				final Pattern pattern = Pattern.compile("^([+])([0-9]{2})([ ])([(][0-9]{0,3}[)])?([ ])?([0-9]{4,})$");
+				final Pattern pattern = Pattern.compile("^((\\+\\d{2}(\\(\\d{1,3}\\))?)?\\d{4,40})?$");
 				final Matcher matcher = pattern.matcher(teacher.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("teacher/confirm");
-					School school = schoolService.findAll().iterator().next();
+					final School school = this.schoolService.findAll().iterator().next();
 					result.addObject("image", school.getBanner());
 					this.toSave = teacher;
 				} else {
@@ -109,7 +109,7 @@ public class TeacherController extends AbstractController {
 				final Matcher matcher = pattern.matcher(teacher.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("teacher/confirm");
-					School school = schoolService.findAll().iterator().next();
+					final School school = this.schoolService.findAll().iterator().next();
 					result.addObject("image", school.getBanner());
 					this.toSave = teacher;
 				} else {
@@ -128,7 +128,7 @@ public class TeacherController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("teacher/list");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("teachers", this.teacherService.findAll());
 
@@ -166,7 +166,7 @@ public class TeacherController extends AbstractController {
 	protected ModelAndView createNewModelAndView(final Teacher teacher, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("teacher/create");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("teacher", teacher);
 		result.addObject("message", message);
@@ -176,7 +176,7 @@ public class TeacherController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Teacher teacher, final String message) {
 		ModelAndView result;
 		result = new ModelAndView("teacher/edit");
-		School school = schoolService.findAll().iterator().next();
+		final School school = this.schoolService.findAll().iterator().next();
 		result.addObject("image", school.getBanner());
 		result.addObject("teacher", teacher);
 		result.addObject("message", message);

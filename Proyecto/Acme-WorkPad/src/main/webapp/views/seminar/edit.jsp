@@ -21,7 +21,8 @@
 <security:authorize access="hasRole('TEACHER')">
 <form:form action="seminar/teacher/save.do" modelAttribute="seminar">
 
-
+<form:hidden path="id"/>
+<form:hidden path="version"/>
 
 
 <acme:textbox2 code="seminar.title" path="title"/>

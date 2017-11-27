@@ -76,7 +76,7 @@ public class StudentController extends AbstractController {
 			result = this.createNewModelAndView(student, null);
 		else
 			try {
-				final Pattern pattern = Pattern.compile("^([+])([0-9]{2})([ ])([(][0-9]{0,3}[)])?([ ])?([0-9]{4,})$");
+				final Pattern pattern = Pattern.compile("^((\\+\\d{2}(\\(\\d{1,3}\\))?)?\\d{4,40})?$");
 				final Matcher matcher = pattern.matcher(student.getPhone());
 				if (!matcher.matches()) {
 					result = new ModelAndView("student/confirm");
